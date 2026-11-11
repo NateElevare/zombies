@@ -43,7 +43,7 @@ export const HIVE_MISSIONS: MissionDef[] = [
       { kind: 'burrows', at: 'nursery', count: 3, text: 'Collapse the three burrows in the nursery', line: { who: 'eli', text: 'That chamber is where they hatch, and three burrows feed it. Shoot the mouths until they fall in.', mood: 'firm' } },
       { kind: 'pickup', at: 'cache', item: 'formic_sprayer', text: 'Take the Formic Sprayer from the dragged-down crates', line: { who: 'june', text: "They dragged half of Bellwether's stores down here. One of those crates is not ours. Take what is in it.", mood: 'neutral' } },
       { kind: 'boss', at: 'parade', boss: 'marshal', hp: 1, fixed: true, text: 'Kill the Marshal', line: { who: 'ruth', text: 'Something big is standing in the next chamber. It is not moving. It is waiting for you.', mood: 'worried' } },
-      { kind: 'camp', text: 'Make camp at the seal', line: { who: 'eli', text: 'The seal on the door is dissolving. It was alive, that seal. It died when the big one did.', mood: 'relieved' } },
+      { kind: 'camp', text: 'Make camp at the seal', line: { who: 'eli', text: 'The seal on the door has gone dull. It was alive, that seal, and it is dying with the big one. Make camp. It will have fallen in by the time you have eaten.', mood: 'relieved' } },
     ],
     outro: [
       { who: 'eli', text: 'One lock on the far door just went dark. There are six. Five more of those things.', mood: 'worried' },

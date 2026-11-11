@@ -6,6 +6,7 @@ import { emit, phys, rand, sound } from './core';
 import type { GameState, Vec, Zombie, ZombieType } from './types';
 import * as zombies from './zombies';
 import type { Weights } from './road-data';
+import { isFloor } from './hive-world';
 
 /** How many live bugs the hive keeps around the player (fixtures and bosses not counted). */
 export const SWARM_CAP = 120;
@@ -37,6 +38,7 @@ const rt = (state: GameState): HiveRuntime => (state.road!.hiveRt ??= { pools: [
 export const runtime = (state: GameState): HiveRuntime | null => state.road?.hiveRt ?? null;
 export function reset(state: GameState) { if (state.road) state.road.hiveRt = { pools: [], columns: [], swarmT: 6, senseT: 0 }; }
 const isBug = (z: Zombie) => !z.dead && !z.boss && !zombies.isInert(z);
+const onFloor = (state: GameState, x: number, y: number) => { const h = state.road?.world.hive; return !h || isFloor(h, x, y); };
 export function liveBugs(state: GameState) { let n = 0; for (const z of state.zombies) if (isBug(z)) n++; return n; }
 export const burrowsAlive = (state: GameState) => state.zombies.filter(z => !z.dead && z.type === 'burrow');
 
@@ -96,7 +98,8 @@ export function rally(state: GameState, boss: Zombie) {
   for (let k = 0; spots.length < 2 && k < 24; k++) {
     const a = base + (spots.length ? -1 : 1) * (Math.PI / 2) + (rand(state) - 0.5) * 1.2, d = 300 + rand(state) * 260;
     const x = boss.x + Math.cos(a) * d, y = boss.y + Math.sin(a) * d;
-    if (phys.isFree(state, x, y, 20) && Math.hypot(x - p.x, y - p.y) > 240) spots.push({ x, y });
+    // solid rock has no colliders of its own, so "free" is not enough: it has to be carved floor
+    if (phys.isFree(state, x, y, 20) && onFloor(state, x, y) && Math.hypot(x - p.x, y - p.y) > 240) spots.push({ x, y });
   }
   for (const s of spots) { column(state, s, 8, { drone: 1 }, { horde: true, rally: true }); emit(state, { t: 'hive', kind: 'erupt', x: s.x, y: s.y }); }
   emit(state, { t: 'hive', kind: 'rally', x: boss.x, y: boss.y });
@@ -158,7 +161,8 @@ function sense(state: GameState, step: number) {
     const n = 3 + (rand(state) < 0.5 ? 1 : 0);
     for (let i = 0; i < n; i++) {
       const a = rand(state) * Math.PI * 2, x = z.x + Math.cos(a) * 20, y = z.y + Math.sin(a) * 20;
-      spawnBug(state, 'grub', phys.isFree(state, x, y, 9) ? x : z.x, phys.isFree(state, x, y, 9) ? y : z.y);
+      const ok = phys.isFree(state, x, y, 9) && onFloor(state, x, y);
+      spawnBug(state, 'grub', ok ? x : z.x, ok ? y : z.y);
     }
     emit(state, { t: 'hive', kind: 'hatch', x: z.x, y: z.y });
     sound(state, 'zombieDie', z.x, z.y);
@@ -197,7 +201,7 @@ export function update(state: GameState, dt: number, def: SwarmDef | null, types
     while (c.left > 0 && c.t <= 0) {
       c.t += COLUMN_GAP; c.left--;
       const a = rand(state) * Math.PI * 2, x = c.x + Math.cos(a) * 16, y = c.y + Math.sin(a) * 16;
-      const free = phys.isFree(state, x, y, 14);
+      const free = phys.isFree(state, x, y, 14) && onFloor(state, x, y);
       const z = spawnBug(state, pickType(c.types, rand(state)), free ? x : c.x, free ? y : c.y, c.horde, c.tag);
       if (c.rally) z.rally = 8;
     }

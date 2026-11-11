@@ -343,6 +343,7 @@ describe('the Marshal', () => {
       most = Math.max(most, bugs(s).filter(z => z.type === 'drone').length);
       pools = Math.max(pools, bosses.fx(s).pools.filter(q => q.kind === 'acid').length);
       if (bugs(s).some(z => ((z as hive.Bug).rally ?? 0) > 0 && (z as hive.Bug).mul === hive.RALLY_MUL)) rallied = true;
+      for (const z of s.zombies) if (!z.dead && !isFloor(s.road!.world.hive!, z.x, z.y)) throw new Error(`${z.type} outside the cave at ${Math.round(z.x)},${Math.round(z.y)}`);
       if (i % 600 === 599) killBugs(s);
     }
     expect(most).toBeGreaterThanOrEqual(16);
