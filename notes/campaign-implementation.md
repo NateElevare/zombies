@@ -1,3 +1,5 @@
+> **Removed on 2026-11-11.** A Light in the Valley was taken out of the game at Nate's request: `src/sim/campaign*.ts`, `src/ui/campaign.ts`, `src/render/campaign.ts`, `tests/campaign.test.ts`, `tools/check-campaign.mjs` and `tools/check-story-legacy.mjs` are deleted (they are in git history on `main`). The cast art in `src/campaign-art.ts` stays: the road stories use it. What follows describes the story as it was.
+
 # A Light in the Valley — playable campaign
 
 Implemented from `campaign.md` and `campaign-art.md`, with the requested **legacy / overhead art** scope. The angled art pack is not regenerated or replaced.

@@ -54,7 +54,7 @@ export const PASSIVES: Record<PassiveId, PassiveDef> = {
 export const GADGET_IDS = Object.keys(GADGETS) as GadgetId[];
 export const PASSIVE_IDS = Object.keys(PASSIVES) as PassiveId[];
 /** XP per kill, by zombie type. */
-export const SHARD_XP: Record<ZombieType, number> = { walker: 1, runner: 2, crawler: 2, bloater: 4, brute: 6 };
+export const SHARD_XP: Record<ZombieType, number> = { walker: 1, runner: 2, crawler: 2, bloater: 4, brute: 6, drone: 1, honeypot: 3, grub: 1, burrow: 4, egg: 1 };
 
 // Per-level tables (index = level - 1). Evolved values are separate.
 const T = {

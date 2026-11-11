@@ -1,10 +1,8 @@
 // Dependency-free JSON boundary shared with the Node server.
-import { validCampaign } from './campaign-save.ts';
 export const record = (v: unknown): v is Record<string, any> => !!v && typeof v === 'object' && !Array.isArray(v);
 export function validSaveCore(data: unknown): boolean {
   return record(data) && data.version === 2 && Number.isInteger(data.seed) && data.seed >= 0 && data.seed <= 4294967295 &&
-    record(data.player) && Number.isFinite(data.player.x) && Number.isFinite(data.player.y) && record(data.player.inv) && Array.isArray(data.player.inv.slots) &&
-    (data.campaign === undefined || validCampaign(data.campaign));
+    record(data.player) && Number.isFinite(data.player.x) && Number.isFinite(data.player.y) && record(data.player.inv) && Array.isArray(data.player.inv.slots);
 }
 export function validCloudSave(data: unknown): boolean {
   if (!validSaveCore(data) || !record(data)) return false;

@@ -13,6 +13,7 @@ import type { Art } from './art';
 import { TX } from './art';
 import { D, hash2, rng, hexColor, type View } from './common';
 import { doorSide } from './worldobjs';
+import { ZONE_FLOOR, type HiveInfo } from '../sim/hive-world';
 
 export const CH = 1024;
 const MAXCH = 20;
@@ -270,6 +271,129 @@ export class Ground {
     this.dt.render();
   }
 
+  /** A flat colour over a world rect, clipped to the chunk. */
+  private wash(col: number, alpha: number, x: number, y: number, w: number, h: number) {
+    const x0 = Math.max(x, this.ox), y0 = Math.max(y, this.oy), x1 = Math.min(x + w, this.ox + CH), y1 = Math.min(y + h, this.oy + CH);
+    if (x1 > x0 && y1 > y0 && alpha > 0) this.dt.fill(col, alpha, x0 - this.ox, y0 - this.oy, x1 - x0, y1 - y0);
+  }
+  /** The Hive Below: solid rock with the cave carved out of it (sim/hive-world.ts). Each cell has its own floor
+   *  colour; the walls get a lit rim and lumps so the tile edges read as dug earth; the dam is poured concrete. */
+  private *paintHive(c: Chunk, h: HiveInfo): Generator<void, void, void> {
+    const T = h.tile, n = h.n, ox = this.ox, oy = this.oy;
+    const tx0 = Math.max(0, Math.floor(ox / T) - 1), ty0 = Math.max(0, Math.floor(oy / T) - 1), tx1 = Math.min(n - 1, Math.floor((ox + CH) / T) + 1), ty1 = Math.min(n - 1, Math.floor((oy + CH) / T) + 1);
+    const F = (x: number, y: number) => x >= 0 && y >= 0 && x < n && y < n && h.floor[y * n + x] === 1;
+    const Z = (x: number, y: number) => h.zone[y * n + x] || 8;
+    const mixc = (a: number, b: number, t: number) => { const ch = (s: number) => Math.round(((a >> s) & 255) + (((b >> s) & 255) - ((a >> s) & 255)) * t); return (ch(16) << 16) | (ch(8) << 8) | ch(0); };
+    const floorCol = (z: number) => mixc(ZONE_FLOOR[z], 0x000000, 0.22), wallCol = (z: number) => mixc(ZONE_FLOOR[z], 0x0a0705, 0.62), wallHi = (z: number) => mixc(ZONE_FLOOR[z], 0x0a0705, 0.3);
+    // 1. rock: almost black, with a little grain for the flashlight to catch
+    this.tileRect(['gravel', 'dirt'], hash2(c.cx, c.cy, 5), ox, oy, CH, CH, 0x100d0a);
+    this.wash(0x070504, 0.8, ox, oy, CH, CH);
+    this.dt.render();
+    yield; this.ctx(c);
+    // 2. the floor: earth texture washed with the cell's colour, one run of tiles at a time
+    for (let ty = ty0; ty <= ty1; ty++) for (let tx = tx0; tx <= tx1; tx++) {
+      if (!F(tx, ty)) continue;
+      const z = Z(tx, ty); let x1 = tx; while (x1 < tx1 && F(x1 + 1, ty) && Z(x1 + 1, ty) === z) x1++;
+      const w = (x1 - tx + 1) * T;
+      this.tileRect(['dirt', 'gravel'], hash2(tx, ty, 9), tx * T, ty * T, w, T, floorCol(z));
+      this.wash(floorCol(z), 0.56, tx * T, ty * T, w, T);
+      tx = x1;
+    }
+    this.dt.render();
+    yield; this.ctx(c);
+    // 3. shading and edges
+    const dam = h.dam;
+    this.vector((g) => {
+      // the bugs' trail: a faint line of slime along the way they walk
+      const inChunk = (k: number) => { const x = k % n, y = (k / n) | 0; return x >= tx0 && x <= tx1 && y >= ty0 && y <= ty1; };
+      g.fillStyle(0xb7e04a, 0.2);
+      for (let i = 0; i + 1 < h.route.length; i++) {
+        const a = h.route[i], b = h.route[i + 1]; if (!inChunk(a)) continue;
+        const ax = (a % n + 0.5) * T, ay = (((a / n) | 0) + 0.5) * T, bx = (b % n + 0.5) * T, by = (((b / n) | 0) + 0.5) * T, hs = hash2(a, i, 21);
+        const jx = ((hs & 15) - 7) * 1.4, jy = (((hs >>> 4) & 15) - 7) * 1.4, horiz = Math.abs(bx - ax) > Math.abs(by - ay);
+        g.fillEllipse((ax + bx) / 2 + jx, (ay + by) / 2 + jy, horiz ? 34 : 9, horiz ? 9 : 34, 10);
+        if (hs & 64) g.fillEllipse(ax + jy, ay + jx, 7, 7, 8);
+      }
+      // big soft blotches break up the tiling (damp patches, trodden ground)
+      const B = rng(hash2(c.cx, c.cy, 311));
+      for (let k = 0; k < 26; k++) {
+        const bx = ox + B() * CH, by = oy + B() * CH, dark = B() < 0.6;
+        if (!F(Math.floor(bx / T), Math.floor(by / T))) continue;
+        g.fillStyle(dark ? 0x000000 : 0xfff2d8, dark ? 0.09 : 0.03);
+        g.fillEllipse(bx, by, 90 + B() * 240, 60 + B() * 150, 14);
+      }
+      for (let ty = ty0; ty <= ty1; ty++) for (let tx = tx0; tx <= tx1; tx++) {
+        if (!F(tx, ty)) continue;
+        const x = tx * T, y = ty * T, hs = hash2(tx, ty, 77), z = Z(tx, ty);
+        // stones, and standing water on the bed of the reservoir
+        if (((hs >>> 6) & 7) < 3) { g.fillStyle(0x000000, 0.28); g.fillEllipse(x + 10 + ((hs >>> 9) % 60), y + 10 + ((hs >>> 15) % 60), 5 + ((hs >>> 21) & 7), 4 + ((hs >>> 24) & 3), 8); }
+        if (((hs >>> 11) & 7) < 2) { g.fillStyle(0xfff2d8, 0.08); g.fillEllipse(x + 8 + ((hs >>> 13) % 64), y + 8 + ((hs >>> 19) % 64), 4 + ((hs >>> 5) & 3), 3, 8); }
+        if (z === 8 && ((hs >>> 17) & 15) === 0) { g.fillStyle(0x10181c, 0.5); g.fillEllipse(x + 40, y + 40, 60 + (hs & 31), 34 + ((hs >>> 5) & 15), 14); g.fillStyle(0x8fa4b0, 0.1); g.fillEllipse(x + 34, y + 36, 26, 8, 10); }
+        // the wall throws a soft shadow onto the floor beside it
+        for (const [dx, dy] of [[0, -1], [0, 1], [-1, 0], [1, 0]] as const) {
+          if (F(tx + dx, ty + dy)) continue;
+          for (const [depth, a] of [[30, 0.16], [16, 0.2]] as const) {
+            g.fillStyle(0x000000, a);
+            if (dy < 0) g.fillRect(x, y, T, depth); else if (dy > 0) g.fillRect(x, y + T - depth, T, depth); else if (dx < 0) g.fillRect(x, y, depth, T); else g.fillRect(x + T - depth, y, depth, T);
+          }
+        }
+      }
+      // the walls: a lit rim of dug earth on every rock tile that borders the cave, lumpy so the grid does not show
+      for (let ty = ty0; ty <= ty1; ty++) for (let tx = tx0; tx <= tx1; tx++) {
+        if (F(tx, ty)) continue;
+        const x = tx * T, y = ty * T, R = rng(hash2(tx, ty, 131));
+        if (tx >= dam.x / T && tx < (dam.x + dam.w) / T && ty >= dam.y / T && ty < (dam.y + dam.h) / T) continue;   // the dam is drawn below
+        for (const [dx, dy] of [[0, -1], [0, 1], [-1, 0], [1, 0]] as const) {
+          if (!F(tx + dx, ty + dy)) continue;
+          const z = Z(tx + dx, ty + dy), W = 18;
+          g.fillStyle(wallCol(z), 1);
+          if (dy < 0) g.fillRect(x, y, T, W); else if (dy > 0) g.fillRect(x, y + T - W, T, W); else if (dx < 0) g.fillRect(x, y, W, T); else g.fillRect(x + T - W, y, W, T);
+          // lumps along the edge, pushing a little way into the cave
+          for (let k = 0; k < 4; k++) {
+            const t = (k + 0.2 + R() * 0.6) / 4 * T, rad = 9 + R() * 8, push = 2 + R() * 6;
+            const cx = dy !== 0 ? x + t : dx < 0 ? x - push + 4 : x + T + push - 4, cy = dx !== 0 ? y + t : dy < 0 ? y - push + 4 : y + T + push - 4;
+            g.fillStyle(wallCol(z), 1); g.fillCircle(cx, cy, rad);
+            g.fillStyle(wallHi(z), 0.55); g.fillCircle(cx - rad * 0.25, cy - rad * 0.3, rad * 0.5);
+            g.fillStyle(0x000000, 0.3); g.fillEllipse(cx + rad * 0.3, cy + rad * 0.45, rad * 1.1, rad * 0.5, 8);
+          }
+          g.fillStyle(wallHi(z), 0.7);
+          if (dy < 0) g.fillRect(x, y, T, 3); else if (dy > 0) g.fillRect(x, y + T - 3, T, 3); else if (dx < 0) g.fillRect(x, y, 3, T); else g.fillRect(x + T - 3, y, 3, T);
+        }
+        // inner corners
+        for (const [dx, dy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]] as const) {
+          if (!F(tx + dx, ty + dy) || F(tx + dx, ty) || F(tx, ty + dy)) continue;
+          const z = Z(tx + dx, ty + dy);
+          g.fillStyle(wallCol(z), 1); g.fillCircle(dx < 0 ? x : x + T, dy < 0 ? y : y + T, 14);
+        }
+      }
+      // the dam: poured concrete along the north side of the bed, stained to the old water line
+      if (dam.x < ox + CH + 40 && dam.x + dam.w > ox - 40 && dam.y < oy + CH + 40 && dam.y + dam.h > oy - 40) {
+        g.fillStyle(0x5b5d59, 1); g.fillRect(dam.x, dam.y, dam.w, dam.h);
+        g.fillStyle(0x3d3f3c, 1); g.fillRect(dam.x, dam.y, dam.w, 70);                      // the far lip
+        g.fillStyle(0x7a7c77, 1); g.fillRect(dam.x, dam.y + 70, dam.w, 26);                 // the walkway along the top
+        g.fillStyle(0x24302c, 0.5); g.fillRect(dam.x, dam.y + dam.h - 120, dam.w, 120);     // the old water line
+        g.fillStyle(0x000000, 0.35); for (let x = dam.x; x <= dam.x + dam.w; x += 160) g.fillRect(x - 2, dam.y + 96, 4, dam.h - 96);
+        g.fillStyle(0x000000, 0.3); g.fillRect(dam.x, dam.y + dam.h, dam.w, 26); g.fillStyle(0x000000, 0.18); g.fillRect(dam.x, dam.y + dam.h + 26, dam.w, 26);
+        const R = rng(hash2(c.cx, c.cy, 9));
+        for (let k = 0; k < 40; k++) { g.fillStyle(0x1c2622, 0.25); g.fillRect(dam.x + R() * dam.w, dam.y + 110 + R() * 60, 6 + R() * 10, 60 + R() * 140); }
+      }
+    });
+    yield; this.ctx(c);
+    // 4. the lumps of resin and fungus that light the place, in each cell's own colour
+    const lump = this.art.atlasOf('hive_lump_0');
+    if (lump) {
+      for (const gl of h.glows) {
+        if (gl.kind !== 'wall' || gl.x < ox - 40 || gl.y < oy - 40 || gl.x > ox + CH + 40 || gl.y > oy + CH + 40) continue;
+        const hs = hash2(gl.x, gl.y, 5);
+        for (let k = 0; k < 3; k++) {
+          const a = ((hs >>> (k * 5)) & 31) / 31 * Math.PI * 2, d = k ? 12 + ((hs >>> (k * 3)) & 7) * 2 : 0;
+          this.dt.stamp(lump, `hive_lump_${(hs + k) % 3}`, gl.x + Math.cos(a) * d - ox, gl.y + Math.sin(a) * d - oy, { tint: gl.col, scale: k ? 0.5 : 0.8, rotation: a } as any);
+        }
+      }
+      this.dt.render();
+    }
+  }
+
   prof: number[] = [];
   private *paint(c: Chunk): Generator<void, void, void> {
     const T = performance.now(); const pf = this.prof; pf.length = 0;
@@ -277,6 +401,8 @@ export class Ground {
     const ox = (this.ox = c.cx * CH), oy = (this.oy = c.cy * CH);
     const dt = (this.dt = c.dt);
     dt.clear();
+    const hive = state.road?.world.hive;
+    if (hive) { yield* this.paintHive(c, hive); return; }
     // 1. district terrain per 256 cell
     for (let j = 0; j < 4; j++) for (let i = 0; i < 4; i++) {
       const x = ox + i * 256, y = oy + j * 256;

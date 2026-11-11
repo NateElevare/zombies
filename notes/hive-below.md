@@ -354,3 +354,64 @@ the whole route can be walked.
 - **Art sheets:** enemy sheets use the zombie layout (8 x 4) plus four "special" frames in row 4, cells 2 to 5, the slot the bloater's pulse frames use today. Boss sheets use the boss layout (4 x 4). The importer should scale each creature to its radius rather than trusting the sheet's scale.
 - **The removed story:** `src/sim/campaign*.ts`, `src/ui/campaign.ts`, `src/render/campaign.ts`, their tests and `tools/check-story-legacy.mjs` are what "the story's own files" means. `src/campaign-art.ts` stays: the Long Road draws its gates, camps and cast from it.
 - **What could still change:** the swarm cap, if 120 costs too many frames, and every number here once it has been played.
+
+## Build log
+
+### Step 1, built 2026-11-11: the Breach and the Warrens
+
+Playable from the title screen: **Story → The Hive Below**. It is locked until A Group in Need is finished; for testing,
+press **F9** and click **Unlock The Hive Below** (it does not mark the other stories complete). With no earlier save on
+the machine the testing unlock starts a fresh survivor with an SMG; otherwise the survivor of A Group in Need (or of
+The Long Road, if that is all there is) carries over.
+
+What exists:
+
+- **The Hollow** (`src/sim/hive-world.ts`): all seven cells and the Breach are carved, 200 x 200 tiles of 80 px, the same
+  map every time. Route through every arena about 47,700 px. Only the Breach and the Warrens have missions; the other
+  cells are behind their seals and show as faint shapes on the map.
+- **Missions 1 and 2** (`src/sim/hive-data.ts`), run by the Long Road's mission code (`src/sim/road.ts`), with two new
+  objective kinds: `burrows` (collapse them) and a boss that is already `fixed` in its arena, plus hold-out waves that
+  climb out of one place (`from`).
+- **The swarm** (`src/sim/hive.ts`): burrows that send columns of 8 to 14, the Drone's alarm pheromone and frenzy, the
+  Honeypot's honey, egg clusters that hatch Grubs, Grubs that grow into Drones. Burrow mouths and egg clusters are inert
+  zombie types, so every weapon already hurts them.
+- **The Marshal** (`src/sim/bosses.ts`): jaw charge (stunned 1.4 s if it hits a wall), rally (two columns of eight and a
+  speed-up), formic arc (five pools across 90 degrees), and a second charge in a row below half health.
+- **Formic Sprayer, Mandible Shears, ichor, royal jelly** (`src/sim/combat.ts`, `items.ts`).
+- **The look**: cave floor and walls per cell (`src/render/ground.ts`), cave light from resin lumps, floodlights, the
+  rift and honey (`src/render/lighting.ts`), seals, rift and honey sprites (`src/render/hive.ts`), the map and minimap
+  (`src/ui/mapview.ts`). Insects bleed yellow-green.
+- **Art**: the painted sheets are used as delivered. `art/hive/props.ts` adds code-drawn pixel props the brief did not
+  cover (burrow mouth, egg cluster, resin seal, the rift, honey, resin lumps); `npm run art:hive` packs them into a sixth
+  atlas, `hive_props`. Replace them with painted ones by keeping the frame names.
+- **A Light in the Valley** is deleted (see `notes/campaign-implementation.md`).
+
+Numbers worth knowing when playing it (all in `src/sim/hive.ts` and `hive-data.ts` unless noted):
+
+| What | Value | Where |
+|---|---|---|
+| Live bugs the hive will keep at most | 120 (`SWARM_CAP`) | `hive.ts` |
+| Warrens: bugs the burrows keep up, seconds between columns, column size | 60, 20 s (13 s at the story's pressure of 1.5), 8 to 14 | mission `swarm` in `hive-data.ts` |
+| Breach hold-out | 60 s, a wave of 7 every 6 s, from the rift | `hive-data.ts` |
+| Burrow health, egg cluster health | 260, 45 | `zombies.ts` `TYPES` |
+| Honey pool | radius 62 px, 7 s, half speed for you and for bugs | `hive.ts` |
+| Corrosion (Sprayer) | up to 6 stacks, 2 damage per stack twice a second, 4 s | `zombies.ts` |
+| Mandible Shears cut-through | 2 more bugs within 150 px behind a kill | `combat.ts` |
+
+Measured: the simulation costs 0.44 ms a tick with 120 live bugs, 0.54 ms with 150 and 0.72 ms with 200 (Node, one
+core; a tick has 16.7 ms). The renderer's cost at those counts could not be measured in the build machine's software
+renderer: check it on the real machine with the F8 recorder before changing the cap.
+
+Different from the plan, on purpose:
+
+- The Breach has Drones only. Hoppers arrive with the Granary in step 2.
+- A seal on a tunnel that runs straight along x or y is a thin plug. A diagonal tunnel still needs a square block; the
+  first diagonal seal is the Granary's exit, so that is step 2's to solve.
+- The honey pool is 124 px across, not 110, so it fills more of a tunnel.
+- The checkpoint camp and its crates appear when you make camp, not before (nobody is ahead of you underground).
+- Finishing mission 2 shows a "part one complete" card. The save is kept, and Continue goes on with mission 3 once it exists.
+
+Tests: `tests/hive.test.ts` (map connectivity and seals, the unlock and carry-over, a scripted playthrough of both
+missions, each swarm behaviour, the Marshal's moves, both weapons, the cost of 200 bugs) and `tests/hive-art.test.ts`.
+
+Not done yet: steps 2 to 4. Nothing in the Warrens has been balanced by play, only by arithmetic.

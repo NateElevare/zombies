@@ -14,6 +14,6 @@ export * as player from './player';
 export * as game from './game';
 export * as bosses from './bosses';
 export * as cityBosses from './city-bosses';
-export * as campaign from './campaign';
 export * as road from './road';
+export * as hive from './hive';
 export * as roadData from './road-data';

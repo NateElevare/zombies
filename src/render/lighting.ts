@@ -19,6 +19,7 @@ import type { Light } from './fx';
 import { getVfxEnabled } from './vfx-post';
 import { storyEffectOffset } from './story-projection';
 import { isAngledStory } from '../story-mode';
+import * as road from '../sim/road';
 
 const LS = 0.5;                // lightmap resolution relative to the screen
 const M = 10;                  // lightmap margin (px) so the blur never samples outside the texture
@@ -176,13 +177,21 @@ export class Lighting {
       // personal light so you can always read your own body (a touch more indoors / at night)
       soft(px, py, 150, 0xb8c4d8, 0.12 + 0.4 * Math.max(night, this.indoor) * (1 - level));
     }
-    if (state.mode === 'survival' && state.legacyStory && state.campaign) {
-      const station = state.buildings.find(b => b.id === 'campaign-haven');
-      if (station && state.campaign.done.includes('clear')) {
-        const powered = state.campaign.done.includes('power') && state.campaign.fuel > 0 && state.campaign.encounter?.id !== 'blackout';
-        soft(station.x + 330, station.y + 175, powered ? 480 : 160, 0xf4d49a, powered ? .85 : .5);
-        if (powered) soft(station.x + 70, station.y + 355, 260, 0xf5d5a5, .65);
+    // The Hive Below: there is no sky. What you see by is the resin and fungus on the walls (a colour per cell),
+    // the floodlights on the dam once the breaker is thrown, the rift, and the honey.
+    const hive = state.road?.world.hive;
+    if (hive && state.road) {
+      const lit = state.road.lights;
+      // a camp's lamp burns once the camp is made: every checkpoint behind you, and this one while you are making it
+      const r = state.road, camping = r.phase !== 'play' || road.current(state)?.kind === 'camp';
+      for (const gl of hive.glows) {
+        if (gl.kind === 'flood' && !lit) continue;
+        if (gl.kind === 'camp' && !(gl.camp! < r.mission || (gl.camp === r.mission && camping))) continue;
+        const breathe = gl.kind === 'wall' ? 0.88 + 0.12 * Math.sin(time * 1.3 + gl.x * 0.011 + gl.y * 0.007) : gl.kind === 'flood' ? 1 : 0.92 + 0.08 * Math.sin(time * 2.1 + gl.x);
+        soft(gl.x, gl.y, gl.r, gl.col, gl.i * breathe);
+        if (gl.kind === 'flood') soft(gl.x, gl.y + 280, 760, gl.col, 0.3);   // thrown down across the bed
       }
+      for (const q of state.road.hiveRt?.pools ?? []) soft(q.x, q.y, q.r * 2.4, 0xffb840, 0.4 * Math.min(1, q.life));
     }
     for (let i = 0; i < nFires; i++) {
       const f = fires[i];

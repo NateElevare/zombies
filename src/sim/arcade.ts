@@ -15,7 +15,7 @@ const ARENA = { x: 6800, y: 7200, w: 2400, h: 1600 };
 const BORDER = 40, VIEW_RADIUS = 700, BEST_KEY = 'deadzone_arcade_best';
 const WEAPON_DROPS = ['shotgun', 'smg', 'revolver', 'bat', 'machete'];   // Cola & Mints is a boss trophy
 const WEAPON_DROPS_LATE = [...WEAPON_DROPS, 'assault_rifle', 'hunting_rifle'];
-const POINTS: Record<ZombieType, number> = { walker: 10, runner: 15, brute: 30, crawler: 12, bloater: 25 };
+const POINTS: Record<ZombieType, number> = { walker: 10, runner: 15, brute: 30, crawler: 12, bloater: 25, drone: 6, honeypot: 18, grub: 3, burrow: 30, egg: 8 };
 const gates = [0.2, 0.5, 0.8].flatMap(t => [
   { x: ARENA.x + ARENA.w * t, y: ARENA.y + 80, horizontal: true },
   { x: ARENA.x + ARENA.w * t, y: ARENA.y + ARENA.h - 80, horizontal: true },

@@ -13,7 +13,6 @@ import { Armory } from './armory';
 import * as arcade from '../sim/arcade';
 import * as road from '../sim/road';
 import { keybinds } from '../keybinds';
-import { CampaignUi } from './campaign';
 import { RoadUi } from './road';
 
 const OPENERS = new Set<string>(['inventory', 'tech', 'craft', 'map']);
@@ -35,7 +34,6 @@ export function createUi(): UiLike {
   let pendingTarget: Target = null;
 
   const hud = new Hud(rootEl);
-  const campaignUi = new CampaignUi(rootEl);
   const roadUi = new RoadUi(rootEl);
   const overlays: Overlays = new Overlays(rootEl, {
     close: () => closeOverlay(),
@@ -94,7 +92,7 @@ export function createUi(): UiLike {
     if (!e.repeat && keybinds.action(e.code, 'play') === 'mute') { toggleMute(); }
     const s = state;
     if (!s) return;
-    if (e.code === 'Tab' && s.ui !== 'campaign') e.preventDefault();
+    if (e.code === 'Tab') e.preventDefault();
     const ui = s.ui;
     if (s.screen === 'dead' || ui === 'dead') { if (e.code !== 'F8' && e.code !== 'F9' && e.code !== 'F5' && e.code !== 'F12') { e.stopPropagation(); } return; }
     const stop = () => { e.preventDefault(); e.stopPropagation(); };
@@ -106,13 +104,6 @@ export function createUi(): UiLike {
         e.preventDefault();
         if (s.road?.phase === 'briefing') road.begin(s); else if (s.road?.phase === 'complete') road.next(s);
       }
-      return;
-    }
-    if (ui === 'campaign') {
-      if (e.code === 'F8' || e.code === 'F9' || e.code === 'F5' || e.code === 'F12') return;
-      // Let native buttons receive Tab/Enter/Space while keeping gameplay keys out.
-      e.stopPropagation();
-      if (e.code === 'Escape' && !e.repeat) { e.preventDefault(); closeOverlay(); }
       return;
     }
     if (ui === 'levelup') {
@@ -167,7 +158,7 @@ export function createUi(): UiLike {
 
     attach(s, sh) {
       shellApi = sh;
-      campaignUi.attach(s); roadUi.attach(s, sh);
+      roadUi.attach(s, sh);
       overlays.hide(); hud.detach(); pendingTarget = null;
       dev.attach(s); levelup.attach(s); armory.attach(s);
       if (!s) { state = null; overlays.detach(); title.show(sh); return; }
@@ -179,7 +170,7 @@ export function createUi(): UiLike {
       if (!s || s !== state) return;
       reconcile(s);
       hud.update(s, dt, blocking(s));
-      campaignUi.update(s); roadUi.update(s);
+      roadUi.update(s);
       levelup.update(s, dt);
       armory.update(s);
       dev.update();
@@ -205,7 +196,7 @@ export function createUi(): UiLike {
     },
 
     detach() {
-      campaignUi.attach(null); roadUi.attach(null, null);
+      roadUi.attach(null, null);
       title.hide();
       state = null; pendingTarget = null; dev.attach(null); levelup.attach(null); armory.attach(null);
       overlays.detach(); hud.detach();

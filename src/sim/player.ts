@@ -101,8 +101,9 @@ export function update(state: GameState, input: InputState, dt: number) {
   else if ((p._regenDelay || 0) > 0) p._regenDelay! -= dt;
   else p.stamina = Math.min(p.maxStamina, p.stamina + 18 * (m.staminaRegenMult || 1) * dt);
   if (state.mode === 'arcade') p.stamina = p.maxStamina;
+  if ((p.jelly ?? 0) > 0) p.jelly = Math.max(0, p.jelly! - dt);
   if (moving) {
-    const l = Math.hypot(mx, my), speed = p.speed * (m.speedMult || 1) * (p.sprinting ? 1.6 * (1 + (state.arcade?.run?.aug?.sprint ?? 0)) : 1);
+    const l = Math.hypot(mx, my), speed = p.speed * (m.speedMult || 1) * (p.slowMul ?? 1) * (p.sprinting ? 1.6 * (1 + (state.arcade?.run?.aug?.sprint ?? 0)) : 1);
     p.x += mx / l * speed * dt; p.y += my / l * speed * dt;
     phys.collideCircle(state, p);
     p._noiseT = (p._noiseT || 0) - dt;

@@ -1,7 +1,7 @@
 import type { ItemType, Rarity, EquipKey, Stack } from './types';
 export type { ItemType, Rarity } from './types';
 export interface ItemDef { id: string; name: string; type: ItemType; rarity: Rarity; color: string; glyph: string; desc: string; stack: number;
-  /** borrow another item's art (sprites + icon) until this one gets its own */ look?: string; slot?: EquipKey; armor?: number; weightless?: boolean; slots?: number; use?: { heal?: number; food?: number; water?: number; stamina?: number; stopBleed?: boolean; time: number } }
+  /** borrow another item's art (sprites + icon) until this one gets its own */ look?: string; slot?: EquipKey; armor?: number; weightless?: boolean; slots?: number; use?: { heal?: number; food?: number; water?: number; stamina?: number; stopBleed?: boolean; /** seconds of +20% damage (royal jelly) */ boost?: number; time: number } }
 export interface Recipe { id: string; name: string; out: Stack; in: Record<string, number>; station: string | null; time: number }
 // Data ported verbatim from legacy/js/sv/sv-items.js.
 export const RARITY_COLORS: Record<Rarity, string> = {
@@ -14,6 +14,27 @@ export const RARITY_COLORS: Record<Rarity, string> = {
 /** Item id whose art (in-hand sprite, icon) this item uses. */
 export const lookOf = (id: string) => (Object.hasOwn(ITEMS, id) && ITEMS[id].look) || id;
 export const ITEMS: Record<string, ItemDef> = {
+  // ---- The Hive Below
+  "formic_sprayer": {
+    "id": "formic_sprayer", "name": "Formic Sprayer", "type": "weapon", "rarity": "epic", "color": "#c48ae0", "glyph": "FRM",
+    "desc": "Hive weapon (ant). A stream of formic acid out to 240 px that passes through the first bug. Every hit adds a stack of corrosion that keeps burning. Runs on ichor: 80 to a tank.",
+    "stack": 1, "slot": "primary"
+  },
+  "mandible_shears": {
+    "id": "mandible_shears", "name": "Mandible Shears", "type": "weapon", "rarity": "legendary", "color": "#ffb43a", "glyph": "SHR",
+    "desc": "Boss trophy (The Marshal). A heavy snap in a narrow arc. A kill cuts through to two more bugs behind it.",
+    "stack": 1, "slot": "melee"
+  },
+  "ichor": {
+    "id": "ichor", "name": "Ichor", "type": "ammo", "rarity": "uncommon", "color": "#79bd73", "glyph": "ICH",
+    "desc": "What the hive's dead run on. Ammunition for every insect gun. Anything with six legs can drop it.",
+    "stack": 400
+  },
+  "royal_jelly": {
+    "id": "royal_jelly", "name": "Royal Jelly", "type": "consumable", "rarity": "rare", "color": "#70a9df", "glyph": "RJ",
+    "desc": "Restores 50 health and adds 20% damage for 10 seconds.",
+    "stack": 10, "use": { "heal": 50, "boost": 10, "time": 1.5 }
+  },
   "butcher_cleaver": {
     "id": "butcher_cleaver", "name": "Butcher's Cleaver", "type": "weapon", "rarity": "legendary", "color": "#ffb43a", "glyph": "CLV",
     "desc": "Boss trophy (The Butcher). A slab of sharpened steel: huge hits, wide arcs, and every wound it opens heals you a little.",

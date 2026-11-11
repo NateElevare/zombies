@@ -3,6 +3,7 @@
 import { WORLD, CELL, Grid, makeRng, phys } from './core';
 import { gen, finalizeVisuals } from './world';
 import type { GameState, Building, Rect, Vec, District } from './types';
+import type { HiveInfo } from './hive-world';
 
 const N = 3;                                   // 3 x 3 sectors
 export const SECTOR = WORLD.w / N;             // 5333
@@ -12,7 +13,9 @@ const MARGIN = 420;                            // sector wall -> first road line
 
 export type SiteId =
   | 'haven' | 'havenYard' | 'pharmacy' | 'school' | 'gas' | 'overpass' | 'toll' | 'precinct' | 'dispatch'
-  | 'hospital' | 'depot' | 'railcut' | 'pumping' | 'ranger' | 'clearing' | 'fort' | 'motorpool' | 'relay' | 'reservoir';
+  | 'hospital' | 'depot' | 'railcut' | 'pumping' | 'ranger' | 'clearing' | 'fort' | 'motorpool' | 'relay' | 'reservoir'
+  // The Hive Below (sim/hive-world.ts)
+  | 'dam' | 'rift' | 'trail' | 'nursery' | 'cache' | 'parade';
 
 export interface Gate extends Rect { id: number; from: number; to: number; dir: 'h' | 'v'; open: boolean; }
 export interface Sector { id: number; col: number; row: number; rect: Rect; district: District; name: string; entry: Vec; exit: Vec; }
@@ -25,6 +28,10 @@ export interface RoadWorld {
   /** checkpoint camps, index = mission that ends there (0-based) */
   camps: Vec[];
   start: Vec;
+  /** set only by sim/hive-world.ts: the carved cave map of "The Hive Below" */
+  hive?: HiveInfo;
+  /** the Warrens' three objective burrows */
+  nurseryBurrows?: Vec[];
 }
 
 // sector order along the route: (col,row) pairs, row 2 = bottom

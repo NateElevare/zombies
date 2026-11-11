@@ -8,7 +8,9 @@ import { lookOf } from '../sim/items';
 import { weaponStats } from '../sim/progression';
 import { darkness } from '../sim/game';
 import { NumKind } from './vfx-numbers';
-import { TYPES } from '../sim/zombies';
+import { TYPES, isHiveType } from '../sim/zombies';
+import { ALARM_TIME, GRUB_GROWS, HATCH_TIME, type Bug } from '../sim/hive';
+import { hiveDesignR, hivePrefix } from './hive';
 import { characterFrame } from '../characters';
 import type { Art } from './art';
 import { TX } from './art';
@@ -26,6 +28,8 @@ interface ZV {
   /** additive white silhouette above the lightmap: the hit flash reads even at night */
   flash: Phaser.GameObjects.Image;
   stamp: number; phase: number; hitT: number; key: string; walk: string[] | null; attack: string[] | null; hit: string[] | null; climb: string[] | null; pulseF: string[] | null; atlas: string;
+  /** The Hive Below: the creature's `special` frames, its design radius and walk frame rate (0 = not a hive sprite) */
+  special: string[] | null; designR: number; fps: number;
 }
 
 export class Actors {
@@ -262,11 +266,12 @@ export class Actors {
         fire: this.scene.add.image(0, 0, TX.px).setDepth(D.glow).setBlendMode(Phaser.BlendModes.ADD),
         pulse: this.scene.add.image(0, 0, TX.px).setDepth(D.zombieOver).setBlendMode(Phaser.BlendModes.ADD),
         flash: this.scene.add.image(0, 0, TX.px).setDepth(D.glow).setBlendMode(Phaser.BlendModes.ADD).setTintMode(Phaser.TintModes.FILL).setTint(0xffffff),
-        stamp: 0, phase: 0, hitT: 0, key: '', walk: null, attack: null, hit: null, climb: null, pulseF: null, atlas: '',
+        stamp: 0, phase: 0, hitT: 0, key: '', walk: null, attack: null, hit: null, climb: null, pulseF: null, atlas: '', special: null, designR: 0, fps: 0,
       };
     }
-    const pre = `zombie_${z.type}_${z.variant}_`;
+    const bug = isHiveType(z.type), pre = bug ? hivePrefix(z.type) : `zombie_${z.type}_${z.variant}_`;
     v.key = pre;
+    v.special = bug ? this.art.seq(pre + 'special') : null; v.designR = bug ? hiveDesignR(this.art, z.type) : 0; v.fps = bug ? 12 : 0;
     v.walk = this.art.seq(pre + 'walk') || this.art.seq(`zombie_${z.type}_0_walk`);
     v.attack = this.art.seq(pre + 'attack');
     v.hit = this.art.seq(pre + 'hit');
@@ -307,9 +312,10 @@ export class Actors {
       const climbing = state.mode === 'road' && z.windowClimb && v.climb ? z.windowClimb : null;
       const ang = climbing ? (climbing.axis === 'x' ? (climbing.direction > 0 ? 0 : Math.PI) : climbing.direction > 0 ? Math.PI / 2 : -Math.PI / 2) : angleLerp(z.prevAngle, z.angle, alpha);
       const t = TYPES[z.type] || TYPES.walker;
-      const sc = s * z.r / (DESIGN_R[z.type] || 15);
+      const sc = s * z.r / (v.designR || DESIGN_R[z.type] || 15);
       const spd = Math.hypot(z.vx, z.vy);
-      const fps = (art.manifest.characterInfo?.zombies?.[z.type]?.walkFrameRate) || 8;
+      const fps = v.fps || (art.manifest.characterInfo?.zombies?.[z.type]?.walkFrameRate) || 8;
+      const fixture = z.type === 'burrow' || z.type === 'egg', bug = z as Bug;
       // distance-driven gait: frame rate scales with actual speed (|v| / nominal speed)
       if (spd > 2) v.phase += dt * fps * Math.min(2.2, Math.max(0.35, spd / t.speed));
       v.hitT = Math.max(0, v.hitT - dt);
@@ -319,17 +325,28 @@ export class Actors {
       else if (v.hitT > 0.06 && v.hit) f = v.hit[Math.min(v.hit.length - 1, Math.floor(((0.16 - v.hitT) / 0.1) * v.hit.length))];
       else if (spd <= 2 && v.pulseF) f = v.pulseF[Math.floor(state.time * 6 + v.phase) % v.pulseF.length]; // idle bloater: pustules throb
       else if (v.walk) f = v.walk[Math.floor(v.phase) % v.walk.length];
+      // The Hive Below: each sheet's `special` row is the creature's own moment
+      if (v.special && !(z.attackT < 0.5) && !(v.hitT > 0.06)) {
+        const sp = v.special, at = (k: number) => sp[Math.max(0, Math.min(sp.length - 1, Math.floor(k * sp.length)))];
+        if (z.type === 'burrow') { if ((bug.eruptT ?? 99) < 0.7) f = at((bug.eruptT ?? 0) / 0.7 * 2 % 1); }          // a column is climbing out
+        else if (z.type === 'egg') { if ((bug.hatchT ?? 0) > 0) f = at((bug.hatchT ?? 0) / HATCH_TIME); }              // about to hatch
+        else if (z.type === 'honeypot') { if (spd <= 2) f = sp[Math.floor(state.time * 4 + v.phase) % sp.length]; }      // standing: the honey sloshes
+        else if (z.type === 'grub') { if ((bug.age ?? 0) > GRUB_GROWS - 1.2) f = at(((bug.age ?? 0) - (GRUB_GROWS - 1.2)) / 1.2); }   // about to grow up
+        else if (z.type === 'drone') { if ((bug.alarm ?? 0) > ALARM_TIME - 0.5 && !z.horde) f = at((ALARM_TIME - (bug.alarm ?? 0)) / 0.5); }   // it has just been marked: antennae up
+      }
       const spr = v.spr;
       // hit pop: a quick squash-and-stretch on impact
       const pop = v.hitT > 0.08 ? 1 + (v.hitT - 0.08) * 1.6 : 1;
       if (f) { if (spr.frame.name !== f) spr.setTexture(art.atlasOf(f)!, f); spr.setScale(sc * pop); }
       else spr.setScale((z.r / 52) * pop);
       // shamble: tiny lateral body sway on top of the frames
-      const wob = f && !climbing ? Math.sin(v.phase * 0.8) * 0.05 : 0;
+      const wob = f && !climbing && !fixture ? Math.sin(v.phase * 0.8) * 0.05 : 0;
       spr.setPosition(x, y).setRotation(ang + wob);
+      if (fixture) { spr.setDepth(D.floorObj); v.shadow.setVisible(false); } else if (spr.depth !== D.zombie) { spr.setDepth(D.zombie); v.shadow.setVisible(true); }
       if (v.hitT > 0.09) spr.setTintMode(Phaser.TintModes.FILL).setTint(0xffffff);
       else if (v.hitT > 0) spr.setTintMode(Phaser.TintModes.MULTIPLY).setTint(0xff7a70);
       else if (Number(z.sticky) > 0) spr.setTintMode(Phaser.TintModes.MULTIPLY).setTint(0xb8835a);   // Cola & Mints foam
+      else if (Number(z.corro) > 0) spr.setTintMode(Phaser.TintModes.MULTIPLY).setTint(0xb9e36a);    // formic acid eating in
       else if (spr.tintMode !== Phaser.TintModes.MULTIPLY || (f && spr.isTinted)) { spr.setTintMode(Phaser.TintModes.MULTIPLY); if (f) spr.clearTint(); }
       // emissive white silhouette (above the darkness), fading over the flash window
       if (v.hitT > 0.04 && f) {
@@ -368,6 +385,16 @@ export class Actors {
       if (b.dead) continue;
       const x = b.prevX + (b.x - b.prevX) * alpha+offsetX, y = b.prevY + (b.y - b.prevY) * alpha+offsetY;
       if (!inView(view, x, y, 80)) continue;
+      if (b.corrode) {   // Formic Sprayer: a stream of green acid, droplets that fatten as they fly
+        let f = this.foam[nf];
+        if (!f) { f = this.scene.add.image(0, 0, TX.soft).setDepth(D.player + 4); this.foam.push(f); }
+        nf++;
+        const k = Math.max(0, Math.min(1, 1 - b.life / 0.43));
+        f.setTexture(TX.drop).setTint((nf & 1) ? 0xb7e04a : 0xd4ef89).setScale(0.13 + 0.15 * k, 0.1 + 0.1 * k);
+        f.setVisible(true).setPosition(x, y).setRotation(Math.atan2(b.vy, b.vx)).setAlpha(0.95 - k * 0.3);
+        this.fx.post.glow(x, y, 12, 0xb7e04a, 0.28);
+        continue;
+      }
       if (b.sticky) {   // Cola & Mints: brown foam blobs that swell as they fly
         let f = this.foam[nf];
         if (!f) { f = this.scene.add.image(0, 0, TX.soft).setDepth(D.player + 4); this.foam.push(f); }

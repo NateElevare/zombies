@@ -1,8 +1,8 @@
 // mapview.ts — pre-rendered low-res world map + minimap / full-map drawing (port of legacy sv-worldrender drawMinimap/drawMap).
 import type { GameState, Vec } from '../sim/types';
 import * as explore from '../sim/explore';
-import * as campaign from '../sim/campaign';
 import * as road from '../sim/road';
+import { ZONE_FLOOR, type HiveInfo } from '../sim/hive-world';
 
 const MAPRES = 2048;
 export const POICOL: Record<string, string> = {
@@ -25,10 +25,28 @@ export function worldSize(state: GameState) {
 }
 
 const images = new WeakMap<GameState, HTMLCanvasElement | null>();
+const hiveDrawn = new WeakMap<GameState, number>();
+/** The Hive Below: the deepest cell June has mapped so far (the sector of the current mission). */
+const hiveKnown = (state: GameState) => state.road?.world.hive ? road.missionOf(state)?.sector ?? 0 : -1;
+const css = (c: number, k = 1) => `rgb(${Math.round(((c >> 16) & 255) * k)},${Math.round(((c >> 8) & 255) * k)},${Math.round((c & 255) * k)})`;
+/** The Hollow: cells you have reached in their own colour, the rest of the comb as a faint shape in the rock. */
+function drawHiveMap(g: CanvasRenderingContext2D, h: HiveInfo, known: number) {
+  const T = h.tile, n = h.n;
+  g.fillStyle = '#0b0908'; g.fillRect(0, 0, n * T, n * T);
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+    if (!h.floor[y * n + x]) continue;
+    const z = h.zone[y * n + x] || 8, sector = z === 8 ? 0 : z;
+    g.fillStyle = sector <= known ? css(ZONE_FLOOR[z], 0.8) : '#1c1815';
+    g.fillRect(x * T, y * T, T + 1, T + 1);
+  }
+  g.fillStyle = '#6a6c68'; g.fillRect(h.dam.x, h.dam.y + 60, h.dam.w, h.dam.h - 60);
+  g.fillStyle = '#b48cff'; g.beginPath(); g.arc(h.rift.x, h.rift.y, 70, 0, Math.PI * 2); g.fill();
+}
 
 /** Pre-render (once per state) the whole world to a 2048px image. */
 export function getMapImage(state: GameState): HTMLCanvasElement | null {
-  if (images.has(state)) return images.get(state)!;
+  const hive = state.road?.world.hive, known = hiveKnown(state);
+  if (images.has(state) && (!hive || hiveDrawn.get(state) === known)) return images.get(state)!;
   let c: HTMLCanvasElement | null = null;
   try {
     c = document.createElement('canvas');
@@ -37,6 +55,7 @@ export function getMapImage(state: GameState): HTMLCanvasElement | null {
     const { w: W, h: H } = worldSize(state);
     const s = MAPRES / Math.max(W, H);
     g.setTransform(s, 0, 0, s, 0, 0);
+    if (hive) { drawHiveMap(g, hive, known); g.setTransform(1, 0, 0, 1, 0, 0); images.set(state, c); hiveDrawn.set(state, known); return c; }
     g.fillStyle = MAPSURF.forest; g.fillRect(0, 0, W, H);
     for (const d of state.decor) {
       if (d.kind === 'lot') { g.fillStyle = MAPSURF[d.sub || 'grass'] || MAPSURF.grass; g.fillRect(d.x, d.y, d.w, d.h); }
@@ -145,20 +164,20 @@ export function drawMinimap(ctx: CanvasRenderingContext2D, state: GameState, px:
     ctx.fillStyle = POICOL[q.kind] || '#ddd'; ctx.strokeStyle = '#000'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.arc(sx, sy, 3.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   }
-  // hostiles nearby (radar blips)
-  ctx.fillStyle = 'rgba(230,60,50,0.9)';
+  // hostiles nearby (radar blips); a burrow is a bigger amber mark, an egg cluster is not a hostile
   for (const z of state.zombies) {
-    if (z.dead) continue;
+    if (z.dead || z.type === 'egg') continue;
     const dx = z.x - p.x, dy = z.y - p.y;
     if (dx * dx + dy * dy > 1100 * 1100) continue;
-    const [sx, sy] = toS(z.x, z.y); ctx.fillRect(sx - 1.2, sy - 1.2, 2.4, 2.4);
+    const [sx, sy] = toS(z.x, z.y);
+    if (z.type === 'burrow') { ctx.fillStyle = '#f0a93a'; ctx.fillRect(sx - 2.5, sy - 2.5, 5, 5); ctx.fillStyle = '#1a100a'; ctx.fillRect(sx - 1, sy - 1, 2, 2); }
+    else { ctx.fillStyle = 'rgba(230,60,50,0.9)'; ctx.fillRect(sx - 1.2, sy - 1.2, 2.4, 2.4); }
   }
   for (const d of state.drops) {
     if (d.kind !== 'deathbag') continue;
     const [sx, sy] = toS(d.x, d.y); ctx.fillStyle = '#e04545'; ctx.fillRect(sx - 3, sy - 3, 6, 6);
   }
   const bp = bedPos(state);
-  campaignMarkers(ctx,state,toS,px,px,false);
   roadMarkers(ctx, state, toS, px, px, false);
   if (bp) { const [sx, sy] = toS(bp.x, bp.y); bedIcon(ctx, Math.max(7, Math.min(px - 7, sx)), Math.max(7, Math.min(px - 7, sy)), 5); }
   const [ax, ay] = toS(p.x, p.y); arrow(ctx, ax, ay, p.angle, 6);
@@ -183,8 +202,10 @@ export function drawFullMap(ctx: CanvasRenderingContext2D, state: GameState, vie
   const fs = Math.max(11, Math.round(size / 55));
   const PRIO: Record<string, number> = { military: 0, hospital: 1, police: 2, gun_store: 3, school: 4, park: 5 };
   const pois = state.pois.filter((q) => q.kind !== 'district' && seen(state, q.x, q.y)).slice().sort((a, b) => (PRIO[a.kind] ?? 9) - (PRIO[b.kind] ?? 9));
+  // The Hive Below: only the cells already reached have a name on June's map
+  const hiveNames = state.road?.world.hive ? new Set(state.road.world.sectors.filter(sec => sec.id <= hiveKnown(state)).map(sec => sec.name)) : null;
   for (const q of state.pois) {
-    if (q.kind !== 'district' || !seen(state, q.x, q.y)) continue;
+    if (q.kind !== 'district' || !seen(state, q.x, q.y) || (hiveNames && !hiveNames.has(q.name))) continue;
     const [sx, sy] = toS(q.x, q.y);
     if (sx > -120 && sy > -20 && sx < W + 120 && sy < H + 20) label(ctx, q.name.toUpperCase(), sx, sy, Math.round(fs * 1.35), 'rgba(232,232,224,0.75)', true);
   }
@@ -205,7 +226,6 @@ export function drawFullMap(ctx: CanvasRenderingContext2D, state: GameState, vie
     label(ctx, 'Your stuff', sx, sy - fs, fs, '#e04545', true);
   }
   const bp = bedPos(state);
-  campaignMarkers(ctx,state,toS,W,H,true);
   roadMarkers(ctx, state, toS, W, H, true);
   if (bp) { const [sx, sy] = toS(bp.x, bp.y); bedIcon(ctx, sx, sy, Math.max(6, fs * 0.7)); label(ctx, 'Base', sx, sy - fs * 1.2, fs, '#e8d070', true); }
   const p = state.player;
@@ -216,32 +236,18 @@ export function drawFullMap(ctx: CanvasRenderingContext2D, state: GameState, vie
   ctx.restore();
 }
 
-function campaignMarkers(ctx:CanvasRenderingContext2D,state:GameState,toS:(x:number,y:number)=>readonly[number,number],w:number,h:number,labels:boolean){
-  if(!state.campaign||state.mode!=='survival')return;
-  const map=campaign.sites(state)!,selected=campaign.tracked(state),seen=new Set<string>();
-  for(const o of campaign.available(state)){
-    if(seen.has(o.site))continue;seen.add(o.site);const site=map[o.site],raw=toS(site.x,site.y);
-    const x=Math.max(9,Math.min(w-9,raw[0])),y=Math.max(9,Math.min(h-9,raw[1]));
-    if(labels&&(raw[0]<0||raw[0]>w||raw[1]<0||raw[1]>h))continue;
-    ctx.fillStyle=o.site===selected?.site?'#f4cf80':'#9ebda9';ctx.strokeStyle='#14251c';ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(x,y-7);ctx.lineTo(x+6,y);ctx.lineTo(x,y+7);ctx.lineTo(x-6,y);ctx.closePath();ctx.fill();ctx.stroke();
-    if(labels)label(ctx,site.name,x,y-17,12,'#f4cf80',true);
-  }
-  const home=toS(map.haven.x,map.haven.y);bedIcon(ctx,Math.max(8,Math.min(w-8,home[0])),Math.max(8,Math.min(h-8,home[1])),6);
-  for(const r of state.campaign.residents)if(r.following){const [x,y]=toS(r.x,r.y);if(x<0||x>w||y<0||y>h)continue;ctx.fillStyle='#9ed9ac';ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();if(labels)label(ctx,r.name,x,y+14,11,'#b9e2bb',false);}
-  if(state.campaign.bus){const [x,y]=toS(state.campaign.bus.x,state.campaign.bus.y);ctx.fillStyle='#e0b85d';ctx.fillRect(x-6,y-3,12,6);if(labels)label(ctx,'Convoy',x,y-12,11,'#e0b85d',false);}
-}
-
 /** The Long Road: the current objective, the gates on the route and the group's camp. */
 function roadMarkers(ctx: CanvasRenderingContext2D, state: GameState, toS: (x: number, y: number) => readonly [number, number], w: number, h: number, labels: boolean) {
   const r = state.road; if (!r || state.mode !== 'road') return;
   const clampP = (p: readonly [number, number]) => [Math.max(9, Math.min(w - 9, p[0])), Math.max(9, Math.min(h - 9, p[1]))] as const;
+  const hive = !!r.world.hive, known = hiveKnown(state);
   for (const g of r.world.gates) {
+    if (hive && g.id > known) continue;   // seals further in are not on the map yet
     const raw = toS(g.x + g.w / 2, g.y + g.h / 2);
     if (raw[0] < -10 || raw[0] > w + 10 || raw[1] < -10 || raw[1] > h + 10) continue;
-    ctx.fillStyle = g.open ? '#8fd98a' : '#e05050'; ctx.strokeStyle = '#111'; ctx.lineWidth = 1.5;
+    ctx.fillStyle = g.open ? '#8fd98a' : hive ? '#f0a93a' : '#e05050'; ctx.strokeStyle = '#111'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.rect(raw[0] - 5, raw[1] - 5, 10, 10); ctx.fill(); ctx.stroke();
-    if (labels) label(ctx, g.open ? 'Gate (open)' : 'Gate (locked)', raw[0], raw[1] - 12, 11, g.open ? '#8fd98a' : '#e05050', false);
+    if (labels) label(ctx, hive ? (g.open ? 'Seal (broken)' : 'Resin seal') : g.open ? 'Gate (open)' : 'Gate (locked)', raw[0], raw[1] - 12, 11, g.open ? '#8fd98a' : hive ? '#f0a93a' : '#e05050', false);
   }
   for (const c of r.cast) { const [x, y] = toS(c.x, c.y); if (x < 0 || x > w || y < 0 || y > h) continue; ctx.fillStyle = '#9ed9ac'; ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2); ctx.fill(); }
   for (const a of r.allies) {

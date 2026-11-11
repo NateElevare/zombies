@@ -17,9 +17,20 @@ export const TYPES = {
   runner: { r: 11, hp: 25, speed: 135, damage: 8, xp: 15, color: '#a3b545' },
   brute: { r: 22, hp: 160, speed: 43, damage: 26, xp: 40, color: '#4e6b3a' },
   crawler: { r: 9, hp: 20, speed: 92, damage: 6, xp: 12, color: '#7d6b4e' },
-  bloater: { r: 19, hp: 78, speed: 48, damage: 12, xp: 25, color: '#8a9a3a' }
+  bloater: { r: 19, hp: 78, speed: 48, damage: 12, xp: 25, color: '#8a9a3a' },
+  // The Hive Below (sim/hive.ts). Tuned for the dark: they get no night speed bonus.
+  drone: { r: 13, hp: 24, speed: 82, damage: 7, xp: 6, color: '#c98a3a' },
+  honeypot: { r: 19, hp: 75, speed: 45, damage: 10, xp: 18, color: '#e0a83a' },
+  grub: { r: 8, hp: 12, speed: 95, damage: 4, xp: 3, color: '#d8cfa8' },
+  // inert: a burrow mouth and an egg cluster. No AI, no attack, nothing pushes them; they are shot, cut or burned.
+  burrow: { r: 30, hp: 260, speed: 0, damage: 0, xp: 30, color: '#3a2a1c' },
+  egg: { r: 18, hp: 45, speed: 0, damage: 0, xp: 8, color: '#cfd8a0' }
 };
-export const VARIANTS: Record<ZombieType, number> = { walker: 4, runner: 3, brute: 2, crawler: 2, bloater: 2 };
+export const VARIANTS: Record<ZombieType, number> = { walker: 4, runner: 3, brute: 2, crawler: 2, bloater: 2, drone: 1, honeypot: 1, grub: 1, burrow: 1, egg: 1 };
+/** The Hive Below's creatures (and its two fixtures). */
+export const isHiveType = (t: ZombieType) => t === 'drone' || t === 'honeypot' || t === 'grub' || t === 'burrow' || t === 'egg';
+/** A burrow mouth or an egg cluster: a target, not a creature. */
+export const isInert = (z: Zombie) => z.type === 'burrow' || z.type === 'egg';
 interface AiZombie extends Zombie {
   losTimer: number; seesPlayer: boolean; memory: number; decisionTimer: number; side: number;
   avoidTimer: number; progressTimer: number; progressX: number; progressY: number; stuckTime: number; attackTarget: string | null;
@@ -28,6 +39,9 @@ interface AiZombie extends Zombie {
   // All set in spawn() so every zombie keeps one object shape (hot loops stay monomorphic).
   pathTimer: number; direct: boolean; navX: number; navY: number; navOn: boolean; unstick: number;
   crowded: boolean;  // another zombie overlaps us on the side we're walking toward (set by separate())
+  inert: boolean;    // a fixture (burrow, egg cluster): skipped by the AI, the crowd and the bite loop
+  mul: number;       // speed multiplier owned by sim/hive.ts (honey 0.5, frenzy 1.2); 1 everywhere else
+  nightMul: number;  // 1.25 for the city's dead, 1 for the hive's (they live in the dark)
   home: string | null;   // building this zombie was spawned in (indoor packs stay inside while wandering)
   cutoff: boolean;       // no path to the player (e.g. it would have to go through a doorway): stand and stare
   pursuit: number;       // seconds left of close pursuit: it was near when the player ducked through a doorway, so it follows
@@ -50,8 +64,6 @@ const PACK_KEEP = 2100;            // packs further than this are put away (surv
 const REFILL_DAYS = 2;             // a cleared building stays empty this many days
 /** True if the player has built something inside this building: it's their base, nothing spawns there. */
 export function isBase(state: GameState, b: Rect) {
-  // Campaign shelters must not refill with indoor packs between visits or after loading.
-  if (state.campaign && (b as Rect & { id?: string }).id?.startsWith('campaign-')) return true;
   for (const s of state.structures || []) {
     if (s.dead) continue;
     const cx = s.x + s.w / 2, cy = s.y + s.h / 2;
@@ -72,7 +84,7 @@ function nearBase(state: GameState, x: number, y: number) {
 const random = rand;
 const night = isNight;
 const sight = phys.lineOfSight;
-function blood(state: GameState, x: number, y: number, amount: number, angle = 0) { emit(state, { t: 'blood', x, y, amount, angle }); }
+function blood(state: GameState, x: number, y: number, amount: number, angle = 0, ichor = false) { emit(state, ichor ? { t: 'blood', x, y, amount, angle, ichor } : { t: 'blood', x, y, amount, angle }); }
 function overlaps(z: { x: number; y: number; r: number }, o: Rect, margin = 0) {
   const dx = z.x - Math.max(o.x, Math.min(o.x + o.w, z.x));
   const dy = z.y - Math.max(o.y, Math.min(o.y + o.h, z.y));
@@ -122,7 +134,9 @@ export function spawn(state: GameState, type: ZombieType, x: number, y: number, 
     horde: !!horde, losTimer: random(state) * 0.25, seesPlayer: false, memory: 0,
     decisionTimer: 1 + random(state) * 3, side: random(state) < 0.5 ? -1 : 1,
     avoidTimer: 0, progressTimer: 0, progressX: x, progressY: y, stuckTime: 0, attackTarget: null,
-    pathTimer: 0, direct: false, navX: 0, navY: 0, navOn: false, unstick: 0, crowded: false, home: null, cutoff: false, pursuit: 0 };
+    pathTimer: 0, direct: false, navX: 0, navY: 0, navOn: false, unstick: 0, crowded: false, home: null, cutoff: false, pursuit: 0,
+    inert: type === 'burrow' || type === 'egg', mul: 1, nightMul: isHiveType(type) ? 1 : 1.25 };
+  if (z.inert) { z.angle = 0; z.state = 'idle'; z.horde = false; }
   z.prevAngle = z.angle;
   (state.zombies as AiZombie[]).push(z);
   return z;
@@ -355,7 +369,7 @@ function move(state: GameState, z: AiZombie, dt: number, isNight: boolean, home:
   // halfway through a window frame: slow, and the pane goes
   let climbSlow = 1;
   if (climbsWindows(state, z)) { const win = climbing(state, z); if (win) { climbSlow = 0.32; smashWindow(state, win); } }
-  const step = Math.min(z.speed * stickySlow(z) * (isNight ? 1.25 : 1) * (z.state === 'wander' ? 0.4 : 1) * (z.crowded ? CROWD_SLOW : 1) * climbSlow * dt, Math.max(0, distance - stop));
+  const step = Math.min(z.speed * z.mul * stickySlow(z) * (isNight ? z.nightMul : 1) * (z.state === 'wander' ? 0.4 : 1) * (z.crowded ? CROWD_SLOW : 1) * climbSlow * dt, Math.max(0, distance - stop));
   const nav = navigate(state, z, dt, home);
   if (nav) {
     // The path leads through a player structure: break it once in reach.
@@ -431,14 +445,14 @@ function separate(state: GameState, dt: number) {
   sepHead.fill(-1);
   // Insert in reverse so each chain lists lower indices first (same pair order as a plain bucket scan).
   for (let i = n - 1; i >= 0; i--) {
-    const z = list[i]; if (z.dead) continue;
+    const z = list[i]; if (z.dead || z.inert) continue;
     const cx = Math.floor(z.x / SEP_CELL), cy = Math.floor(z.y / SEP_CELL), h = sepHash(cx, cy, mask);
     sepCx[i] = cx; sepCy[i] = cy; sepNext[i] = sepHead[h]; sepHead[h] = i;
   }
   const strength = Math.min(1, dt * 10);
   for (let i = 0; i < n; i++) list[i].crowded = false;
   for (let i = 0; i < n; i++) {
-    const a = list[i]; if (a.dead) continue;
+    const a = list[i]; if (a.dead || a.inert) continue;
     const ax = Math.cos(a.angle), ay = Math.sin(a.angle);
     const col = sepCx[i], row = sepCy[i];
     for (let yy = row - 1; yy <= row + 1; yy++) for (let xx = col - 1; xx <= col + 1; xx++) {
@@ -460,7 +474,7 @@ function separate(state: GameState, dt: number) {
       }
     }
   }
-  for (const z of list) if (!z.dead) constrain(state, z);
+  for (const z of list) if (!z.dead && !z.inert) constrain(state, z);
 }
 export function update(state: GameState, dt: number) {
   const p = state.player; if (!p || !Number.isFinite(dt) || dt <= 0) return;
@@ -482,7 +496,7 @@ export function update(state: GameState, dt: number) {
   for (const z of (state.zombies as AiZombie[])) {
     if (z.dead) continue;
     z.attackCooldown = Math.max(0, z.attackCooldown - dt); z.hitFlash = Math.max(0, z.hitFlash - dt);
-    stickyTick(state, z, dt); if (z.dead) continue;
+    stickyTick(state, z, dt); if (!z.dead) corrodeTick(state, z, dt); if (z.dead || z.inert) continue;
     z.avoidTimer = Math.max(0, z.avoidTimer - dt); z.memory = Math.max(0, z.memory - dt);
     z.decisionTimer -= dt; z.losTimer -= dt;
     if (z.pursuit > 0) z.pursuit = z.state === 'idle' || z.state === 'wander' ? 0 : Math.max(0, z.pursuit - dt);
@@ -525,7 +539,7 @@ export function update(state: GameState, dt: number) {
   // Read final constrained positions so the art enters/exits on the same tick as the crossing.
   for (const z of state.zombies) updateWindowClimb(state, z);
   for (const z of (state.zombies as AiZombie[])) {
-    if (z.dead || p.dead || p.hp <= 0 || z.attackCooldown > 0) continue;
+    if (z.dead || z.inert || p.dead || p.hp <= 0 || z.attackCooldown > 0) continue;
     if (Math.hypot(p.x - z.x, p.y - z.y) <= p.r + z.r + 2 && sight(state, z.x, z.y, p.x, p.y)) {
       if (player.damage) player.damage(state, z.damage, Math.atan2(p.y - z.y, p.x - z.x));
       z.attackCooldown = z.type === 'crawler' ? 0.65 : 0.9;
@@ -542,7 +556,7 @@ export function update(state: GameState, dt: number) {
 export function noise(state: GameState, x: number, y: number, radius: number) {
   if (!(radius > 0)) return;
   for (const z of (state.zombies as AiZombie[])) {
-    if (z.dead || z.horde || z.seesPlayer || Math.hypot(z.x - x, z.y - y) > radius) continue;
+    if (z.dead || z.inert || z.horde || z.seesPlayer || Math.hypot(z.x - x, z.y - y) > radius) continue;
     z.target = { x, y }; z.memory = 8; z.state = 'investigate'; z.attackTarget = null;
   }
 }
@@ -588,9 +602,27 @@ function stickyTick(state: GameState, z: AiZombie, dt: number) {
   }
   if (Number(z.sticky) <= 0) { z.sticky = 0; z.stickyStacks = 0; }
 }
+/** Formic acid: each hit adds a stack (max 6) and refreshes 4s of corrosion. Damage over time only; it does not slow. */
+export const CORRODE_MAX = 6, CORRODE_TIME = 4;
+export function corrode(state: GameState, zombie: Zombie) {
+  const z = zombie as AiZombie;
+  z.corro = CORRODE_TIME;
+  z.corroStacks = Math.min(CORRODE_MAX, (Number(z.corroStacks) || 0) + 1);
+  if (z.corroT === undefined || Number(z.corroT) <= 0) z.corroT = 0.5;
+}
+function corrodeTick(state: GameState, z: AiZombie, dt: number) {
+  if (!(Number(z.corro) > 0)) return;
+  z.corro = Number(z.corro) - dt;
+  z.corroT = Number(z.corroT) - dt;
+  if (Number(z.corroT) <= 0) {
+    z.corroT = 0.5;
+    damage(state, z, 2 * (Number(z.corroStacks) || 1), NaN, { burn: true, source: 'acid' });
+  }
+  if (Number(z.corro) <= 0) { z.corro = 0; z.corroStacks = 0; }
+}
 /** How far a push moves this zombie, as a fraction of normal: bosses never budge, late arcade waves resist (knockRes). */
 export function knockMul(z: Zombie) {
-  return z.boss ? 0 : Math.max(0, 1 - (Number(z.knockRes) || 0));
+  return z.boss || isInert(z) ? 0 : Math.max(0, 1 - (Number(z.knockRes) || 0));
 }
 export function damage(state: GameState, zombie: Zombie, amount: number, angle: number, opts?: DamageOptions) {
   const z = zombie as AiZombie;
@@ -601,29 +633,28 @@ export function damage(state: GameState, zombie: Zombie, amount: number, angle: 
   // SIM-A's legacy bullet path identifies hits with source:'player' and a crit flag.
   // Accept that precise form during integration, as well as the new explicit bullet source.
   const legacyBullet = opts?.source === 'player' && typeof opts.crit === 'boolean' && !opts.melee && !opts.burn && !opts.explosion;
-  if (opts?.source === 'bullet' || legacyBullet) emit(state, { t: 'bulletHit', x: z.x, y: z.y, angle, surface: 'flesh' });
+  const bug = isHiveType(z.type);
+  if (opts?.source === 'bullet' || legacyBullet) emit(state, z.type === 'burrow' ? { t: 'bulletHit', x: z.x, y: z.y, angle, surface: 'wall' } : bug ? { t: 'bulletHit', x: z.x, y: z.y, angle, surface: 'flesh', ichor: true } : { t: 'bulletHit', x: z.x, y: z.y, angle, surface: 'flesh' });
   // Combat owns ignition and burn duration; burn:true identifies its damage ticks.
   if (Number.isFinite(angle) && !(opts && opts.burn)) {
     const knock = (z.type === 'brute' ? 2 : 6) * knockMul(z);
     if (knock > 0) { z.x += Math.cos(angle) * knock; z.y += Math.sin(angle) * knock; constrain(state, z); }
   }
-  blood(state, z.x, z.y, 4, angle);
+  if (z.type !== 'burrow') blood(state, z.x, z.y, 4, angle, bug);
   if (state.player && Math.hypot(z.x - state.player.x, z.y - state.player.y) < 700) sound(state, 'hit');
   if (z.hp > 0) {
-    if (!z.horde && state.player && (!opts || opts.source !== 'bloater')) {
+    if (!z.horde && !z.inert && state.player && (!opts || opts.source !== 'bloater')) {
       z.target = { x: state.player.x, y: state.player.y }; z.memory = 8; z.state = 'investigate'; z.losTimer = 0;
     }
     return;
   }
   z.dead = true;
-  if (state.mode === 'survival' && state.campaign?.encounter && z.campaignEncounter === state.campaign.encounter.id)
-    state.campaign.encounter.kills = Math.min(state.campaign.encounter.total, state.campaign.encounter.kills + 1);
   if (state.stats) state.stats.kills = (state.stats.kills || 0) + 1;
   if (state.mode === 'survival') {
     if (progression.addXP) progression.addXP(state, (TYPES[z.type] || TYPES.walker).xp);
     if (loot.zombieDrop) loot.zombieDrop(state, z);
   }
-  blood(state, z.x, z.y, 12, angle);
+  if (z.type !== 'burrow') blood(state, z.x, z.y, 12, angle, bug);
   if (state.player && Math.hypot(z.x - state.player.x, z.y - state.player.y) < 700) sound(state, 'zombieDie');
   emit(state, { t: 'zombieKilled', id: z.id, x: z.x, y: z.y, type: z.type, variant: z.variant, angle: z.angle, ...(z.boss ? { boss: z.boss as import('./bosses').BossId, radius: Number((z as { drawR?: number }).drawR) || z.r } : {}) });
   if (z.type === 'bloater') explode(state, z);

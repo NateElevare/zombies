@@ -7,8 +7,6 @@ import * as game from './game';
 import * as salvage from './salvage';
 import * as explore from './explore';
 import { characterId } from '../characters';
-import * as campaign from './campaign';
-import { prepare as prepareCampaign } from './campaign-world';
 
 export const SAVE_KEY = 'deadzone_survival_v2';
 export const KEY = SAVE_KEY;
@@ -18,7 +16,6 @@ const equipment: EquipKey[] = ['primary', 'secondary', 'melee', 'head', 'body', 
 const playerFields = ['character', 'x', 'y', 'r', 'angle', 'speed', 'hp', 'maxHp', 'stamina', 'maxStamina', 'food', 'water', 'dead', 'active', 'xp', 'level', 'sp', 'tech', 'spawn', 'flashlight', 'bleeding'] as const;
 const structureFields = ['id', 'type', 'x', 'y', 'w', 'h', 'hp', 'maxHp', 'rot'] as const;
 export interface SaveData {
-  campaign?: campaign.CampaignState;
   version: number; seed: number; rngState: number; clock: GameState['clock']; stats: GameState['stats'];
   player: Pick<Player, typeof playerFields[number]> & { inv: PlayerInventory };
   containers: Record<string, { searched: boolean; inv: Inventory | null }>;
@@ -59,7 +56,7 @@ function inventory(data: unknown, isPlayer: boolean): Inventory | PlayerInventor
   }
   return result;
 }
-function valid(data: unknown): data is SaveData { return validSaveCore(data) && (!record(data) || data.campaign === undefined || campaign.validCampaign(data.campaign)); }
+function valid(data: unknown): data is SaveData { return validSaveCore(data); }
 /** Pure JSON boundary: no storage access and no mutation of live inventories. */
 export function serialize(state: GameState): string {
   if (!state?.player?.inv) throw new Error('Cannot save without a player');
@@ -68,7 +65,6 @@ export function serialize(state: GameState): string {
     version: VERSION, seed: state.seed >>> 0, rngState: state.rngState >>> 0, clock: copy(state.clock), stats: copy(state.stats),
     player: { ...pick(p, playerFields), inv: inventory(p.inv, true) }, containers: {}, drops: [], structures: [], base: copy(state.base || { bed: null }),
   };
-  if (state.mode === 'survival' && state.campaign) data.campaign = copy(state.campaign);
   for (const c of state.containers) if (c.searched) Object.defineProperty(data.containers, c.id, { value: { searched: true, inv: c.inv ? inventory(c.inv, false) : null }, enumerable: true });
   for (const d of state.drops) data.drops.push({ id: d.id, x: d.x, y: d.y, r: 12, kind: d.kind === 'deathbag' ? 'deathbag' : 'loot', life: d.life, inv: inventory(d.inv, false) });
   if (state.salvaged?.length) data.salvaged = state.salvaged.slice();
@@ -102,8 +98,6 @@ export function apply(state: GameState, data: unknown): boolean {
   try {
     if (!state || !valid(data)) return false;
     const source = copy(data), saved = source.player;
-    if (source.campaign) { prepareCampaign(state); state.campaign = copy(source.campaign); }
-    else delete state.campaign;
     const player: Player = {
       x: saved.x, y: saved.y, r: 14, angle: 0, speed: 190, hp: 100, maxHp: 100, stamina: 100, maxStamina: 100,
       food: 100, water: 100, dead: false, active: 'secondary', xp: 0, level: 1, sp: 0, tech: {},

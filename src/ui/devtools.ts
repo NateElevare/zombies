@@ -36,6 +36,7 @@ export class DevTools {
   private resetArmed = false;
   private resetBtn: HTMLButtonElement | null = null;
   private unlockNeedBtn: HTMLButtonElement | null = null;
+  private unlockHiveBtn: HTMLButtonElement | null = null;
   private unlockFailed = false;
   constructor(root: HTMLElement, private onReset: () => void = () => {}, private onStoryUnlock: () => void = () => {}) {
     this.root = root;
@@ -78,9 +79,16 @@ export class DevTools {
       }
     });
     this.unlockNeedBtn.title = 'Unlock the sequel for testing without completing The Long Road. Existing story saves are preserved.';
-    this.row('Story access', [this.unlockNeedBtn]);
+    this.unlockHiveBtn = this.btn('Unlock The Hive Below', () => {
+      if (road.devUnlockHiveBelow()) {
+        this.onStoryUnlock();
+        if (this.s) toast(this.s, 'The Hive Below unlocked — select it under Story on the title screen.', '#9fd8ff');
+      }
+    });
+    this.unlockHiveBtn.title = 'Unlock the third story for testing without completing A group in need. Existing story saves are preserved.';
+    this.row('Story access', [this.unlockNeedBtn, this.unlockHiveBtn]);
     this.resetBtn = this.btn('Reset progress', () => this.resetProgress());
-    this.resetBtn.title = 'Deletes every save on this device (survival, both Road stories, arcade best and augment cores) and, if signed in, the cloud survival save';
+    this.resetBtn.title = 'Deletes every save on this device (survival, all three Road stories, arcade best and augment cores) and, if signed in, the cloud survival save';
     this.row('Saves', [this.resetBtn]);
     this.root.appendChild(box);
   }
@@ -93,7 +101,7 @@ export class DevTools {
     }
     this.resetArmed = false; this.resetBtn!.textContent = 'Reset progress'; this.resetBtn!.classList.remove('on');
     this.onReset();   // quit first: quitting a run writes its checkpoint / banks its cores
-    for (const key of [saves.SAVE_KEY, saves.SAVE_TIME_KEY, road.ROAD_SAVE_KEY, road.NEED_SAVE_KEY, road.NEED_TEST_UNLOCK_KEY, 'deadzone_arcade_best', 'deadzone_arcade_augments']) {
+    for (const key of [saves.SAVE_KEY, saves.SAVE_TIME_KEY, road.ROAD_SAVE_KEY, road.NEED_SAVE_KEY, road.NEED_TEST_UNLOCK_KEY, road.HIVE_SAVE_KEY, road.HIVE_TEST_UNLOCK_KEY, 'deadzone_arcade_best', 'deadzone_arcade_augments']) {
       try { localStorage.removeItem(key); } catch { /* storage blocked */ }
     }
     void cloud.clearSurvival().catch(() => {});
@@ -115,6 +123,11 @@ export class DevTools {
       const unlocked = road.hasGroupInNeedTestUnlock();
       this.unlockNeedBtn.disabled = unlocked;
       this.unlockNeedBtn.textContent = unlocked ? 'A group in need unlocked' : this.unlockFailed ? 'Unlock failed — retry' : 'Unlock A group in need';
+    }
+    if (this.unlockHiveBtn) {
+      const unlocked = road.hasHiveBelowTestUnlock();
+      this.unlockHiveBtn.disabled = unlocked;
+      this.unlockHiveBtn.textContent = unlocked ? 'The Hive Below unlocked' : 'Unlock The Hive Below';
     }
     const s = this.s;
     this.clock.textContent = s ? `${game.timeLabel(s)}  ·  ${game.isNight(s) ? 'night' : 'day'}  ·  ${s.zombies.filter((z) => !z.dead).length} zombies` : 'no game running';

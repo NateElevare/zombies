@@ -14,8 +14,10 @@ describe('Hive authored art contract',()=>{
  });
  it('resolves every animation to real atlas frames with the prescribed sizes',()=>{
   const atlases=Object.fromEntries(pack.atlases.map((id:string)=>[id,read(`public/assets/${id}.json`)]));
-  expect(new Set(pack.anims.map((a:any)=>a.key)).size).toBe(123);
-  expect(Object.keys(pack.frames)).toHaveLength(472);
+  // 123 painted animations + 9 code-drawn prop animations (art/hive/props.ts)
+  expect(new Set(pack.anims.map((a:any)=>a.key)).size).toBe(132);
+  expect(Object.keys(pack.frames)).toHaveLength(472+pack.props.frames);expect(pack.props.frames).toBe(32);
+  for(const key of ['hive_burrow_0_walk','hive_burrow_0_special','hive_burrow_0_death','hive_burrow_0_corpse','hive_egg_0_walk','hive_egg_0_special','hive_egg_0_death','hive_egg_0_corpse','hive_rift'])expect(pack.anims.find((x:any)=>x.key===key)?.atlas,key).toBe('hive_props');
   for(const a of Object.values(pack.creatures) as any[]){
    const poses=Object.entries(a.animations);expect(poses.length).toBe(a.kind==='enemy'?6:poses.some(([p])=>p==='sac')?8:7);
    let total=0;

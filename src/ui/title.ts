@@ -13,9 +13,9 @@ import { assetUrl } from '../asset-url';
 import * as road from '../sim/road';
 
 const STORY_TAB_KEY = 'deadzone_story_tab';
-type StoryTab = 'road' | 'need';
+type StoryTab = 'road' | 'need' | 'hive';
 /** A remembered tab that no longer exists (the retired open-world campaign) falls back to The Long Road. */
-function preferredStoryTab(): StoryTab { try { return localStorage.getItem(STORY_TAB_KEY) === 'need' ? 'need' : 'road'; } catch { return 'road'; } }
+function preferredStoryTab(): StoryTab { try { const t = localStorage.getItem(STORY_TAB_KEY); return t === 'need' || t === 'hive' ? t : 'road'; } catch { return 'road'; } }
 
 
 export class Title {
@@ -150,9 +150,12 @@ export class Title {
 
   private renderRoad(surv: HTMLElement) {
     const shell = this.shell!;
-    const sequel = this.storyTab === 'need', story: road.RoadStory = sequel ? 'group-in-need' : 'long-road';
-    const missions = road.missionsFor(story), source = road.readSave();
-    surv.appendChild(el('p', 'mode-desc', sequel
+    const hive = this.storyTab === 'hive', sequel = this.storyTab !== 'road', story: road.RoadStory = hive ? 'hive-below' : sequel ? 'group-in-need' : 'long-road';
+    // each continuation carries over the survivor of the story before it
+    const missions = road.missionsFor(story), source = hive ? road.readSave('group-in-need') ?? road.readSave() : road.readSave();
+    surv.appendChild(el('p', 'mode-desc', hive
+      ? 'The Hive Below: the reservoir at North Ridge drained in one night, and something is climbing out of the tear in its bed. Go down into the Hollow, a hive of seven cells: giant dead insects that swarm in columns, a brood boss sealing every door, and the Queen in the middle. A new map and new insect weapons. First part: the Breach and the Warrens. Your skills, level, character and gear carry over from A group in need.'
+      : sequel
       ? 'A group in need: a distress call from St. Mercy sends you back through Bellwether. Break the siege, rescue four armed survivors, and fight beside them all the way home to North Ridge. Ten new missions on the same map. Your skills, level, character and gear carry over from The Long Road.'
       : 'The Long Road: Haven has fallen. Fight across nine quarantine sectors of Bellwether to reach the convoy at North Ridge. Ten missions, locked gates, a checkpoint at every one. Top-down, no building: run, shoot, scavenge.'));
     const save = road.readSave(story);
@@ -167,10 +170,12 @@ export class Title {
       });
       surv.appendChild(c);
       const m = missions[save.mission];
-      surv.appendChild(el('div', 'cont-sub', save.done ? 'Campaign complete · ' + save.totals.kills + ' kills' : `Mission ${save.mission + 1} / ${missions.length} · ${m.title} · Lv ${save.snapshot.level}`));
+      surv.appendChild(el('div', 'cont-sub', save.done ? (hive ? 'First part complete · ' : 'Campaign complete · ') + save.totals.kills + ' kills' : `Mission ${save.mission + 1} / ${missions.length} · ${m.title} · Lv ${save.snapshot.level}`));
     }
-    if (sequel && !road.canStartGroupInNeed()) {
-      surv.appendChild(el('p', 'cont-sub', 'Complete The Long Road to start this continuation with your survivor and unlocked skills.'));
+    if (hive ? !road.canStartHiveBelow() : sequel && !road.canStartGroupInNeed()) {
+      surv.appendChild(el('p', 'cont-sub', hive
+        ? 'Locked. Complete A group in need to go down into the hive with your survivor and unlocked skills.'
+        : 'Complete The Long Road to start this continuation with your survivor and unlocked skills.'));
       return;
     }
     if (sequel) surv.appendChild(el('p', 'cont-sub', source
@@ -184,7 +189,7 @@ export class Title {
       const no = el('button', 'btn', 'CANCEL'); no.addEventListener('click', () => { this.confirmingRoad = false; this.refresh(); });
       row.append(yes, no); box.appendChild(row); surv.appendChild(box);
     } else {
-      const nb = el('button', save ? 'btn' : 'big-btn', sequel ? 'START A GROUP IN NEED' : 'NEW ROAD'); nb.disabled = this.busy;
+      const nb = el('button', save ? 'btn' : 'big-btn', hive ? 'START THE HIVE BELOW' : sequel ? 'START A GROUP IN NEED' : 'NEW ROAD'); nb.disabled = this.busy;
       nb.addEventListener('click', () => { if (this.busy) return; if (save) { this.confirmingRoad = true; this.refresh(); } else this.startRoad(); });
       surv.appendChild(nb);
     }
@@ -195,7 +200,7 @@ export class Title {
   private startRoad() {
     if (this.busy) return;
     this.busy = true; this.refresh();
-    try { if (this.storyTab === 'need') this.shell!.newRoad(undefined, 'group-in-need'); else this.shell!.newRoad(this.selectedCharacter); }
+    try { if (this.storyTab === 'hive') this.shell!.newRoad(undefined, 'hive-below'); else if (this.storyTab === 'need') this.shell!.newRoad(undefined, 'group-in-need'); else this.shell!.newRoad(this.selectedCharacter); }
     catch (e) { console.error(e); this.say('The game could not be started.'); this.busy = false; this.refresh(); }
   }
 
@@ -204,7 +209,7 @@ export class Title {
     surv.replaceChildren();
     surv.appendChild(el('h3', '', 'STORY'));
     const tabs = el('div', 'tabs mini story-tabs');
-    for (const [id, name] of [['road', 'THE LONG ROAD'], ['need', 'A GROUP IN NEED']] as const) {
+    for (const [id, name] of [['road', 'THE LONG ROAD'], ['need', 'A GROUP IN NEED'], ['hive', 'THE HIVE BELOW']] as const) {
       const b = el('button', 'tab' + (this.storyTab === id ? ' active' : ''), name);
       b.addEventListener('click', () => { this.storyTab = id; this.confirmingRoad = false; try { localStorage.setItem(STORY_TAB_KEY, id); } catch { /* optional */ } this.refresh(); });
       tabs.appendChild(b);

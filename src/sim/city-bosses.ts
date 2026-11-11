@@ -20,10 +20,6 @@ const NEAR = 1500;
 export const isLair = (b: Building) => b.w * b.h >= LAIR_AREA;
 /** Which boss lives in a lair: fixed per world seed and building. */
 export const lairBoss = (state: GameState, b: Building): bosses.BossId => {
-  const sites = state.campaign ? state._campaignSites as import('./campaign-world').Sites | undefined : undefined;
-  if (sites?.hospital.building === b.id) return 'plague';
-  if (sites?.depot.building === b.id) return 'juggernaut';
-  if (sites?.checkpoint.building === b.id) return 'butcher';
   return bosses.BOSS_IDS[hash(`${state.seed}:${b.id}`) % bosses.BOSS_IDS.length];
 };
 /** City bosses are tuned for a scavenger with a pistol, then grow with the days survived. */

@@ -3,11 +3,14 @@ import {readFileSync,existsSync} from 'node:fs';
 import {ITEMS,lookOf} from '../src/sim/items';
 import {WEAPONS} from '../src/sim/combat';
 import {STRUCTURES} from '../src/sim/base';
-import {VARIANTS} from '../src/sim/zombies';
+import {VARIANTS,isHiveType} from '../src/sim/zombies';
+import type {ZombieType} from '../src/sim/types';
 import {CHARACTERS} from '../src/characters';
 import {storyPropFrame,storyStructureFrame,storyBillboardPlacement,storyDumpsterPlacement,STORY_CARS,STORY_FURNITURE} from '../src/render/story-assets';
 import type {Solid} from '../src/sim/types';
 const art=JSON.parse(readFileSync('public/assets/story-art.json','utf8'));
+// The Hive Below is drawn top-down only (the road renderer); its painted art is covered by tests/hive-art.test.ts.
+const hiveArt=JSON.parse(readFileSync('public/assets/hive-art.json','utf8')),hiveItem=(id:string)=>Object.hasOwn(hiveArt.icons,id);
 const dirs=['e','se','s','ne','n'];
 const has=(name:string)=>expect(art.frames[name],name).toBeDefined();
 describe('Story art runtime coverage',()=>{
@@ -39,13 +42,13 @@ describe('Story art runtime coverage',()=>{
   });
   it('supports every skin, weapon and wearable combination in all source directions',()=>{
     for(const skin of CHARACTERS)for(const d of dirs){for(let pose=0;pose<12;pose++)has(`story_torso_${skin.id}_${d}_${pose}`);for(let f=0;f<4;f++)has(`story_death_${skin.id}_${d}_${f}`);}
-    for(const id of Object.keys(WEAPONS).filter(id=>id!=='unarmed'))for(const d of dirs)has(`story_weapon_${lookOf(id)}_${d}`);
+    for(const id of Object.keys(WEAPONS).filter(id=>id!=='unarmed'&&!hiveItem(id)))for(const d of dirs)has(`story_weapon_${lookOf(id)}_${d}`);
     for(const item of Object.values(ITEMS).filter(i=>i.type==='armor'||i.type==='backpack'))for(const d of dirs)has(`story_gear_${item.id}_${d}`);
     for(const d of dirs)for(const [pose,n]of Object.entries({idle:2,walk:8,run:8,strafe_left:8,strafe_right:8,backpedal:8}))for(let i=0;i<n;i++)has(`story_legs_${d}_${pose}_${i}`);
     expect(art.locomotion).toMatchObject({version:2,frames:8,hip:{x:128,y:134}});
   });
   it('covers all zombie variants through death and all vehicle wreck states',()=>{
-    for(const[type,n]of Object.entries(VARIANTS))for(let variant=0;variant<n;variant++){
+    for(const[type,n]of Object.entries(VARIANTS).filter(([t])=>!isHiveType(t as ZombieType)))for(let variant=0;variant<n;variant++){
       if(type==='walker'&&variant===0){expect(existsSync('public/assets/angle_zombie_v3_256.json')).toBe(true);continue;}
       for(const d of dirs)for(let i=0;i<12;i++)has(`story_zombie_${type}_${variant}_${d}_${i}`);
     }
@@ -54,7 +57,7 @@ describe('Story art runtime coverage',()=>{
   it('covers every furniture, buildable and collectible type',()=>{
     for(const id of STORY_FURNITURE)for(let d=0;d<4;d++)has(`story_props_${id}_${d}`);
     for(const id of [...Object.keys(STRUCTURES),'wood_door_open','stash_open'])for(let d=0;d<4;d++)has(`story_structures_${id}_${d}`);
-    for(const item of Object.values(ITEMS)){has(item.type==='weapon'?`story_weapon_${lookOf(item.id)}_e`:`story_item_${item.id}`);expect(existsSync(`public/assets/story-icons/${lookOf(item.id)}.png`),item.id).toBe(true);}
+    for(const item of Object.values(ITEMS)){if(!hiveItem(item.id))has(item.type==='weapon'?`story_weapon_${lookOf(item.id)}_e`:`story_item_${item.id}`);expect(existsSync(`public/assets/story-icons/${lookOf(item.id)}.png`),item.id).toBe(true);}
     for(const id of Object.keys(STRUCTURES))expect(existsSync(`public/assets/story-icons/struct_${id}.png`),id).toBe(true);
     const inventory=JSON.parse(readFileSync('art/angle/source/story-v1/inventory.json','utf8'));
     for(const [category,prefix]of [['wallMaterial','wall'],['roofMaterial','roof'],['floorMaterial','floor']])for(const id of inventory.world[category])has(`story_material_${prefix}_${id}`);

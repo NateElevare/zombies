@@ -80,8 +80,8 @@ export class RoadRender {
         img.setRotation(horiz ? 0 : Math.PI / 2).setScale(segLen * 1.4 / img.frame.width, thick * 1.1 / img.frame.height).setAlpha(1);
       }
     }
-    // ---- gates
-    for (const g of r.world.gates) {
+    // ---- gates (The Hive Below has resin seals instead: render/hive.ts)
+    for (const g of r.world.hive ? [] : r.world.gates) {
       const cx = g.x + g.w / 2, cy = g.y + g.h / 2;
       if (!vis(cx, cy, 300)) continue;
       const img = this.props.get().setTexture('campaign_props', g.open ? 'gate_1' : 'gate_0').setPosition(cx, cy).setDepth(D.structure);
@@ -96,6 +96,7 @@ export class RoadRender {
     // ---- camps: the one ahead (where the group waits) and the one behind
     for (const m of [r.mission - 1, r.mission]) {
       if (m < 0 || m > 9) continue;
+      if (r.world.hive && m === r.mission && r.phase === 'play' && road.current(s)?.kind !== 'camp') continue;   // nobody is ahead of you down here: the camp goes up when you get there
       for (const p of this.campProps(s, m)) {
         if (!vis(p.x, p.y)) continue;
         const img = this.props.get().setTexture('campaign_props', p.frame).setPosition(p.x, p.y).setRotation(p.angle).setDepth(D.floorObj + 1);
@@ -202,6 +203,7 @@ function markerLabel(o: import('../sim/road-data').ObjectiveDef, s: GameState) {
     case 'holdout': return 'HOLD HERE';
     case 'pickup': return (QUEST_ITEMS[o.item] ?? o.item.replace(/_/g, ' ')).toUpperCase();
     case 'boss': return 'TARGET';
+    case 'burrows': return 'BURROW';
     case 'interact': return o.label.toUpperCase();
     default: return (road.sectorOf(s) ? o.text : 'OBJECTIVE').toUpperCase().slice(0, 40);
   }

@@ -11,13 +11,18 @@ import * as inv from './inventory';
 import * as loot from './loot';
 import * as saves from './save';
 import * as explore from './explore';
-import * as campaign from './campaign';
 
 export const DAY_LENGTH = 600;
 const NIGHT_START = 420;
 const smooth = (v: number) => { const x = clamp(v, 0, 1); return x * x * (3 - 2 * x); };
 export function isNight(state: GameState) { return state.clock.t >= NIGHT_START; }
 export function darkness(state: GameState) {
+  // The Hive Below has no daylight: dusk in the crater, then black as you go down the rift
+  const hive = state.road?.world.hive;
+  if (hive && state.player) {
+    const b = hive.breach, e = Math.hypot((state.player.x - b.x) / b.rx, (state.player.y - b.y) / b.ry);
+    return 0.8 + 0.08 * smooth((e - 0.95) / 0.55);
+  }
   const t = state.clock.t;
   if (t < 330) return 0.15;
   if (t < NIGHT_START) return 0.15 + 0.82 * smooth((t - 330) / 90);
@@ -54,7 +59,6 @@ export const START_AMMO = 96;
 export function newGame(seed?: number, character: import('../characters').CharacterId = 'survivor'): GameState {
   const state = newState(seed === undefined ? hash(String(Date.now())) : seed);
   world.generate(state);
-  campaign.init(state);
   const p = state.player = player.create(state.spawnPoint.x, state.spawnPoint.y);
   p.character = character;
   inv.bind(state);
@@ -146,7 +150,6 @@ export function step(state: GameState, input: InputState, dt: number) {
   state.time += dt;
   updateClock(state, dt);
   player.update(state, input, dt);
-  if (input.pressed.has('interact') && !state.interact && !state.ui && campaign.nearest(state)) campaign.open(state);
   explore.update(state, dt);
   if (state.dev?.god) { const p = state.player; p.hp = p.maxHp; p.stamina = p.maxStamina; p.food = 100; p.water = 100; p.bleeding = 0; }
   if (!state.player.dead && (state.ui === null || state.ui === 'build')) {
@@ -154,7 +157,6 @@ export function step(state: GameState, input: InputState, dt: number) {
     if (!state.player.dead) zombies.update(state, dt);
     if (!state.player.dead) cityBosses.update(state, dt);
     if (!state.player.dead) base.update(state, input, dt);
-    if (!state.player.dead) campaign.update(state, dt);
   }
   if (state.player.dead) onDied(state);
   state.drops = state.drops.filter(drop => {

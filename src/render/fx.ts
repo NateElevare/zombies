@@ -9,7 +9,9 @@ import { D, inView, type View } from './common';
 import { PostFx } from './vfx-post';
 import { DamageNumbers } from './vfx-numbers';
 import { BOSSES, type BossId } from '../sim/bosses';
-import { bossFrameSize } from '../boss-art';
+import { bossFrameSize, bossPrefix } from '../boss-art';
+import { isHiveType } from '../sim/zombies';
+import { hiveDesignR, hivePrefix } from './hive';
 
 // ---------------------------------------------------------------- particles
 const enum Layer { Floor, Lit, Glow }
@@ -64,6 +66,8 @@ class DecalRing {
 }
 
 const GIB = [0x5a0a0a, 0x7a1612, 0x40080a, 0x6a2a1e];
+// insects: yellow-green ichor and bits of shell
+const ICHOR = [0xb7e04a, 0x8fb52a, 0xd4ef89, 0x6f8f1f], CHITIN = [0x5a3a1c, 0x7a5226, 0x3a2410, 0x8fb52a];
 const DEBRIS = [0x3a3632, 0x4e4842, 0x2a2622, 0x5a4a3a];
 
 interface Dying { on: boolean; spr: Phaser.GameObjects.Image; t: number; frames: string[] | null; atlas: string; corpse: string | null; x: number; y: number; ang: number; sc: number; dur: number }
@@ -205,6 +209,17 @@ export class Fx {
           }
           break;
         }
+        if (ev.acid) {
+          // formic acid: a green hiss where the stream lands
+          this.spawn(Layer.Lit, null, TX.puff, ev.x, ev.y, { life: 0.3, s0: 0.14, s1: 0.4, a0: 0.55, a1: 0, tint: 0xb7e04a, rot: this.rnd() * 6.28 });
+          for (let i = 0; i < 2; i++) { const a = back + this.rr(-1.2, 1.2), speed = this.rr(40, 110); this.spawn(Layer.Lit, null, TX.drop, ev.x, ev.y, { life: 0.28, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, drag: 5, s0: this.rr(0.08, 0.14), s1: 0.05, a0: 1, a1: 0, tint: ICHOR[i] }); }
+          break;
+        }
+        if (ev.surface === 'flesh' && ev.ichor) {
+          for (let i = 0; i < 3; i++) { const a = back + this.rr(-0.8, 0.8), sp = this.rr(60, 150); this.spawn(Layer.Lit, null, TX.drop, ev.x, ev.y, { vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, drag: 5, life: this.rr(0.2, 0.35), rot: this.rnd() * 6.28, s0: this.rr(0.09, 0.16), s1: 0.07, a0: 0.95, a1: 0.2, tint: ICHOR[i % ICHOR.length] }); }
+          this.spawn(Layer.Lit, null, TX.puff, ev.x + Math.cos(ev.angle) * 8, ev.y + Math.sin(ev.angle) * 8, { vx: Math.cos(ev.angle) * 60, vy: Math.sin(ev.angle) * 60, drag: 5, life: 0.3, s0: 0.18, s1: 0.45, a0: 0.4, a1: 0, tint: 0x8fb52a });
+          break;
+        }
         if (ev.surface === 'flesh') {
           this.spawn(Layer.Lit, 'blood_spray', TX.drop, ev.x, ev.y, { life: 0.3, rot: ev.angle + this.rr(-0.2, 0.2), s0: s * 0.8, s1: s * 1.15, a0: 0.95, a1: 0, origin: [0.04, 0.5], tint: this.art.has('blood_spray_0') ? 0xffffff : 0x701010 });
           // exit mist + a small back-spatter toward the shooter
@@ -237,8 +252,18 @@ export class Fx {
         if (ev.surface === 'metal') this.light(ev.x, ev.y, 110, 0xffb060, 0.6, 0.06);
         break;
       }
+      case 'hive': this.hiveFx(ev.kind, ev.x, ev.y); break;
       case 'blood': {
         const n = Math.min(12, 2 + Math.round(ev.amount * 1.4));
+        if (ev.ichor) {
+          // an insect: yellow-green ichor instead of blood
+          for (let i = 0; i < n; i++) {
+            const a = ev.angle + this.rr(-0.8, 0.8), sp = this.rr(50, 200);
+            this.spawn(Layer.Lit, null, TX.drop, ev.x, ev.y, { vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, drag: 6, life: this.rr(0.25, 0.55), rot: this.rnd() * 6.28, s0: this.rr(0.1, 0.2), s1: 0.08, a0: 0.95, a1: 0.2, tint: ICHOR[i % ICHOR.length] });
+          }
+          if (ev.amount >= 6 || this.rnd() < 0.2) this.bloodPool(ev.x + Math.cos(ev.angle) * 10, ev.y + Math.sin(ev.angle) * 10, 0.4 + Math.min(1, ev.amount * 0.1), ev.angle, true);
+          break;
+        }
         for (let i = 0; i < n; i++) {
           const a = ev.angle + this.rr(-0.8, 0.8), sp = this.rr(50, 200);
           this.spawn(Layer.Lit, 'blood_drop', TX.drop, ev.x, ev.y, { vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, drag: 6, life: this.rr(0.25, 0.55), rot: this.rnd() * 6.28, s0: s * this.rr(0.6, 1.05), s1: s * 0.45, a0: 0.95, a1: 0.2, tint: this.art.has('blood_drop_0') ? 0xffffff : 0x6a0c0c, frame: i });
@@ -264,10 +289,11 @@ export class Fx {
       }
     }
   }
-  bloodPool(x: number, y: number, size: number, ang: number) {
+  bloodPool(x: number, y: number, size: number, ang: number, ichor = false) {
     const d = this.blood.add(x, y, 40 * size);
-    const fr = this.art.seq(this.rnd() < 0.3 ? 'blood_smear' : 'blood_pool') || this.art.seq('blood_pool');
-    if (fr) { const f = fr[Math.floor(this.rnd() * fr.length)]; d.img.setTexture(this.art.atlasOf(f)!, f).setOrigin(0.5, 0.5).setScale(this.art.scale * size).setRotation(ang + this.rr(-0.4, 0.4)); }
+    const fr = ichor ? null : this.art.seq(this.rnd() < 0.3 ? 'blood_smear' : 'blood_pool') || this.art.seq('blood_pool');
+    if (ichor) d.img.setTexture(TX.drop).setOrigin(0.5, 0.5).setScale(size * 0.8).setTint(0x5f7a1a).setRotation(this.rnd() * 6.28);
+    else if (fr) { const f = fr[Math.floor(this.rnd() * fr.length)]; d.img.setTexture(this.art.atlasOf(f)!, f).setOrigin(0.5, 0.5).setScale(this.art.scale * size).setRotation(ang + this.rr(-0.4, 0.4)); }
     else d.img.setTexture(TX.drop).setScale(size).setTint(0x4a0808).setRotation(this.rnd() * 6.28);
     d.a = 0.9; d.img.setAlpha(0.9);
   }
@@ -275,41 +301,83 @@ export class Fx {
     const s = this.art.scale;
     const t = TYPES[type] || TYPES.walker;
     const design: Record<string, number> = { walker: 15, runner: 13, crawler: 13, brute: 24, bloater: 20 };
-    const bossFrames = boss && this.art.has(`boss_${boss}_death_0`);
-    const sc = bossFrames ? (radius || BOSSES[boss!].r) * 2.7 / bossFrameSize(boss!) : s * t.r / (design[type] || 15);
+    const bossFrames = boss && this.art.has(`${bossPrefix(boss)}death_0`);
+    const bug = !boss && isHiveType(type);
+    const sc = bossFrames ? (radius || BOSSES[boss!].r) * 2.7 / bossFrameSize(boss!) : s * t.r / (bug ? hiveDesignR(this.art, type) : design[type] || 15);
     let d = this.dying.find((q) => !q.on);
     if (!d) {
       if (this.dying.length >= 40) { d = this.dying[0]; this.finishDying(d); }
       else { d = { on: false, spr: this.scene.add.image(0, 0, TX.px).setDepth(D.decal + 2), t: 0, frames: null, atlas: '', corpse: null, x, y, ang, sc, dur: 0.7 }; this.dying.push(d); }
     }
-    const pre = bossFrames ? `boss_${boss}_` : `zombie_${type}_${variant}_`;
+    const pre = bossFrames ? bossPrefix(boss!) : bug ? hivePrefix(type) : `zombie_${type}_${variant}_`;
+    const fixture = type === 'burrow' || type === 'egg';
+    if (fixture) ang = 0;
     d.on = true; d.t = 0; d.x = x; d.y = y; d.ang = ang; d.sc = sc;
     d.frames = this.art.seq(pre + 'death');
     d.corpse = bossFrames ? pre + 'death_2' : this.art.has(pre + 'corpse_0') ? pre + 'corpse_0' : null;
-    d.dur = d.frames ? d.frames.length / (bossFrames ? 6 : 12) : 0.4;
+    d.dur = d.frames ? d.frames.length / (bossFrames ? 6 : bug ? 10 : 12) : 0.4;
     if (d.frames) { d.atlas = this.art.atlasOf(d.frames[0])!; d.spr.setTexture(d.atlas, d.frames[0]).setScale(sc).clearTint(); }
     else d.spr.setTexture(TX.ring).setScale(t.r / 52).setTint(0x5a6a48);
     d.spr.setVisible(true).setPosition(x, y).setRotation(ang).setAlpha(1);
-    this.bloodPool(x, y, 0.8 + t.r / 30, ang);
+    if (fixture) return;   // a burrow caves in and an egg cluster bursts: their own effect ('hive' events), no gore
+    const ichor = bug || !!bossFrames && bossPrefix(boss!).startsWith('hive_');
+    this.bloodPool(x, y, 0.8 + t.r / 30, ang, ichor);
     // gore burst: a fan of droplets plus a few chunky gibs that hop and settle (many more when blown up)
     const b = this.boom;
     const blast = b.t >= 0 && this.clock - b.t < 0.25 && Math.hypot(x - b.x, y - b.y) < b.r * 1.7;
     const big = type === 'brute' || type === 'bloater';
-    const blood = this.art.has('blood_drop_0');
+    const blood = this.art.has('blood_drop_0') && !ichor;
     const drops = blast ? 12 : big ? 9 : 6;
     for (let i = 0; i < drops; i++) {
       const a = ang + this.rr(-1.1, 1.1), sp = this.rr(80, blast ? 320 : 240);
-      this.spawn(Layer.Lit, 'blood_drop', TX.drop, x, y, { vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, drag: 5, life: this.rr(0.3, 0.6), rot: this.rnd() * 6.28, s0: s * this.rr(0.7, 1.2), s1: s * 0.5, a0: 0.95, a1: 0.3, tint: blood ? 0xffffff : 0x6a0c0c, frame: i });
+      this.spawn(Layer.Lit, ichor ? null : 'blood_drop', TX.drop, x, y, { vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, drag: 5, life: this.rr(0.3, 0.6), rot: this.rnd() * 6.28, s0: (ichor ? 0.18 : s) * this.rr(0.7, 1.2), s1: (ichor ? 0.18 : s) * 0.5, a0: 0.95, a1: 0.3, tint: ichor ? ICHOR[i % ICHOR.length] : blood ? 0xffffff : 0x6a0c0c, frame: i });
     }
-    this.spawn(Layer.Lit, 'blood_spray', TX.drop, x, y, { life: 0.34, rot: ang, s0: s * 1.1, s1: s * 1.6, a0: 0.95, a1: 0, origin: [0.04, 0.5], tint: this.art.has('blood_spray_0') ? 0xffffff : 0x701010 });
+    if (!ichor) this.spawn(Layer.Lit, 'blood_spray', TX.drop, x, y, { life: 0.34, rot: ang, s0: s * 1.1, s1: s * 1.6, a0: 0.95, a1: 0, origin: [0.04, 0.5], tint: this.art.has('blood_spray_0') ? 0xffffff : 0x701010 });
     const gibs = blast ? 9 : big ? 5 : 3;
     const away = blast ? Math.atan2(y - b.y, x - b.x) : ang;
     for (let i = 0; i < gibs; i++) {
       const a = away + this.rr(blast ? -1.4 : -0.9, blast ? 1.4 : 0.9), sp = this.rr(70, blast ? 360 : 220);
-      this.spawn(Layer.Floor, null, TX.chunk, x, y, { vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, drag: 1.2, life: this.rr(5, 8), rot: this.rnd() * 6.28, vr: this.rr(-20, 20), s0: this.rr(0.75, 1.2) * (blast ? 1.2 : 1), asp: this.rr(0.8, 1.4), a0: 1, a1: 1, tint: GIB[i % GIB.length], z: 8, vz: this.rr(140, blast ? 380 : 280) });
+      this.spawn(Layer.Floor, null, TX.chunk, x, y, { vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, drag: 1.2, life: this.rr(5, 8), rot: this.rnd() * 6.28, vr: this.rr(-20, 20), s0: this.rr(0.75, 1.2) * (blast ? 1.2 : 1), asp: this.rr(0.8, 1.4), a0: 1, a1: 1, tint: ichor ? CHITIN[i % CHITIN.length] : GIB[i % GIB.length], z: 8, vz: this.rr(140, blast ? 380 : 280) });
     }
-    if (blast) this.bloodPool(x + Math.cos(away) * 26, y + Math.sin(away) * 26, 0.9, away);
+    if (blast) this.bloodPool(x + Math.cos(away) * 26, y + Math.sin(away) * 26, 0.9, away, ichor);
     this.shake += blast ? 2 : big ? 4 : 1.2;
+  }
+
+  /** The Hive Below: honey, burrows and eggs have their own bursts (no fire). */
+  private hiveFx(kind: 'honey' | 'erupt' | 'collapse' | 'hatch' | 'rally', x: number, y: number) {
+    const s = this.art.scale;
+    const spray = (n: number, tints: number[], speed: [number, number], size: [number, number], life: [number, number], layer = Layer.Lit) => {
+      for (let i = 0; i < n; i++) {
+        const a = this.rnd() * 6.28, sp = this.rr(speed[0], speed[1]);
+        this.spawn(layer, null, TX.drop, x, y, { vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, drag: 4.5, life: this.rr(life[0], life[1]), rot: this.rnd() * 6.28, s0: this.rr(size[0], size[1]), s1: size[0] * 0.5, a0: 1, a1: 0.1, tint: tints[i % tints.length] });
+      }
+    };
+    const dust = (n: number, r: number, tint: number, a0 = 0.5) => {
+      for (let i = 0; i < n; i++) { const a = this.rnd() * 6.28, d = this.rnd() * r; this.spawn(Layer.Lit, 'dust', TX.puff, x + Math.cos(a) * d, y + Math.sin(a) * d, { vx: Math.cos(a) * this.rr(20, 90), vy: Math.sin(a) * this.rr(20, 90) - 12, drag: 2.5, life: this.rr(0.6, 1.3), rot: this.rnd() * 6.28, s0: s * 0.5, s1: s * 1.5, a0, a1: 0, tint }); }
+    };
+    if (kind === 'honey') {
+      spray(16, [0xe8a020, 0xffd870, 0xb06a10], [80, 300], [0.12, 0.26], [0.3, 0.7]);
+      this.spawn(Layer.Lit, null, TX.shock, x, y, { life: 0.35, s0: 0.2, s1: 1.1, a0: 0.6, a1: 0, tint: 0xffc850 });
+      this.light(x, y, 220, 0xffb840, 0.7, 0.4);
+      this.shake += 2.5;
+    } else if (kind === 'erupt') {
+      dust(7, 26, 0x8a6a40, 0.55);
+      spray(10, [0x5a4028, 0x8a6a40, 0x2c1c10], [60, 220], [0.08, 0.16], [0.35, 0.8]);
+      this.light(x, y, 200, 0xb48cff, 0.5, 0.5);
+    } else if (kind === 'collapse') {
+      dust(18, 40, 0x9a8a70, 0.7);
+      spray(14, [0x5a4028, 0x8a6a40, 0x2c1c10], [80, 320], [0.1, 0.2], [0.4, 0.9]);
+      for (let i = 0; i < 9; i++) { const a = this.rnd() * 6.28, sp = this.rr(70, 240); this.spawn(Layer.Floor, null, TX.chunk, x, y, { vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, drag: 1.3, life: this.rr(4, 7), rot: this.rnd() * 6.28, vr: this.rr(-16, 16), s0: this.rr(0.7, 1.3), asp: this.rr(0.8, 1.4), a0: 1, a1: 1, tint: CHITIN[i % 3], z: 6, vz: this.rr(140, 300) }); }
+      this.spawn(Layer.Lit, null, TX.shock, x, y, { life: 0.6, s0: 0.3, s1: 1.5, a0: 0.45, a1: 0, tint: 0x9a8e7e });
+      this.shake += 7;
+    } else if (kind === 'hatch') {
+      spray(14, ICHOR, [60, 240], [0.1, 0.2], [0.3, 0.6]);
+      this.bloodPool(x, y, 1.1, 0, true);
+    } else {
+      // the Marshal's pheromone burst
+      this.spawn(Layer.Glow, null, TX.shock, x, y, { life: 0.7, s0: 0.3, s1: 3.2, a0: 0.5, a1: 0, tint: 0xf0a93a });
+      this.light(x, y, 420, 0xf0a93a, 0.6, 0.6);
+    }
   }
 
   private explosion(x: number, y: number, R: number) {

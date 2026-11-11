@@ -98,8 +98,12 @@ export interface Player extends Vec, Interp {
   xp: number; level: number; sp: number; tech: Record<string, true>;
   spawn: Vec; sprinting: boolean; flashlight: boolean; bleeding: number;
   burstQueue?: number; combatTimer?: number;
+  /** The Hive Below: movement multiplier while standing in honey (sim/hive.ts sets it every tick) */ slowMul?: number;
+  /** seconds of royal jelly left: +20% damage dealt */ jelly?: number;
 }
-export type ZombieType = 'walker' | 'runner' | 'brute' | 'crawler' | 'bloater';
+export type ZombieType = 'walker' | 'runner' | 'brute' | 'crawler' | 'bloater'
+  // The Hive Below (sim/hive.ts): giant dead insects, and two things that only sit there to be destroyed
+  | 'drone' | 'honeypot' | 'grub' | 'burrow' | 'egg';
 export type ZombieState = 'idle' | 'wander' | 'investigate' | 'chase' | 'attackStructure';
 export interface Zombie extends Vec, Interp {
   id: string; r: number; type: ZombieType;
@@ -118,7 +122,7 @@ export interface Zombie extends Vec, Interp {
 export interface Bullet extends Vec {
   prevX: number; prevY: number;
   vx: number; vy: number; angle: number; damage: number; life: number; r: number;
-  pierce: number; ricochet: number; explosive: number; incendiary: boolean; sticky?: boolean;
+  pierce: number; ricochet: number; explosive: number; incendiary: boolean; sticky?: boolean; corrode?: boolean;
   hit: Set<string> | null; dead: boolean; color: string; weapon: string;
 }
 
@@ -130,8 +134,10 @@ export type SimEvent =
   | { t: 'sound'; name: string; x?: number; y?: number; vol?: number }
   | { t: 'shot'; x: number; y: number; angle: number; weapon: string; cls: WeaponClass }
   | { t: 'swing'; x: number; y: number; angle: number; weapon: string }
-  | { t: 'bulletHit'; x: number; y: number; angle: number; surface: 'flesh' | 'wall' | 'metal' | 'wood'; sticky?: boolean }
-  | { t: 'blood'; x: number; y: number; angle: number; amount: number }
+  | { t: 'bulletHit'; x: number; y: number; angle: number; surface: 'flesh' | 'wall' | 'metal' | 'wood'; sticky?: boolean; /** formic acid splash */ acid?: boolean; /** the target bleeds ichor (an insect) */ ichor?: boolean }
+  | { t: 'blood'; x: number; y: number; angle: number; amount: number; /** yellow-green: an insect's */ ichor?: boolean }
+  /** The Hive Below: honey bursting, a burrow sending a column or caving in, eggs hatching (render + audio cue) */
+  | { t: 'hive'; kind: 'honey' | 'erupt' | 'collapse' | 'hatch' | 'rally'; x: number; y: number }
   | { t: 'zombieHurt'; id: string; x: number; y: number; angle: number }
   | { t: 'zombieKilled'; id: string; x: number; y: number; angle: number; type: ZombieType; variant: number; boss?: import('./bosses').BossId; radius?: number }
   | { t: 'zombieAttack'; id: string; x: number; y: number }
@@ -159,7 +165,6 @@ export type SimEvent =
   | { t: 'propSmashed'; x: number; y: number; kind: string; sub: string };   // a boss broke an arena prop
 
 export type UiName =
-  | 'campaign'
   | 'road'                        // Long Road mission cards: briefing / mission complete / ending (sim paused)
   | 'inventory' | 'loot' | 'stash' | 'workbench' | 'tech' | 'craft' | 'map' | 'pause' | 'dead' | 'build'
   | 'levelup'                     // arcade card picker (sim paused until upgrades.choose)
@@ -184,7 +189,6 @@ export interface InputState {
 export type GameMode = 'survival' | 'arcade' | 'road';
 export interface Clock { t: number; day: number }
 export interface GameState {
-  campaign?: import('./campaign').CampaignState;
   /** The Long Road linear campaign (sim/road.ts). Runtime; saved separately under its own key. */
   road?: import('./road').RoadState;
   mode: GameMode;

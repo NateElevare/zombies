@@ -2,7 +2,8 @@
 
 A top-down zombie survival RPG built with **Phaser 4 + TypeScript**. It has a Node 24 server with MongoDB accounts and cloud saves.
 
-- **Survival:** a procedurally generated 16,000px city. Loot every building, manage your inventory and equipment, build a base, level up through 7 tech trees, and survive the nights and hordes.
+- **Story:** three linked stories on the title screen, each with its own checkpoint save. *The Long Road* and *A Group in Need* cross the city of Bellwether (`notes/road.md`). *The Hive Below* goes underground into a hive of giant dead insects on its own map, with swarms, burrows, brood bosses and insect weapons; it unlocks when A Group in Need is finished and carries that survivor over. The first of its four parts is built: the Breach and the Warrens (`notes/hive-below.md`).
+- **Survival engine:** the open-world city (looting, inventory, base building, 7 tech trees, nights and hordes) is still in the code and its tests, and the other modes are built on it. It has no button on the title screen since the story that used it, A Light in the Valley, was removed.
 - **Arcade:** endless waves in an arena. Kills drop XP, and each level-up offers a choice of 3 cards: auto-firing gadgets (saw blades, molotov, drone, shock coil, frag) and passives. A max-level gadget plus its paired passive evolves into a stronger form (`src/sim/upgrades.ts`).
 - **Effects:** glow, color grading, damage numbers, particles and hit-stop. Turn the glow off in **Settings** if the game stutters.
 

@@ -19,6 +19,9 @@ import { buildingAt } from './world';
 import { CAST, MISSIONS, QUEST_ITEMS, type Line, type MissionDef, type ObjectiveDef, type Place, type Speaker, type Weights } from './road-data';
 import { NEED_MISSIONS, RESCUED_GROUP } from './need-data';
 import { createSquad, updateSquad, type RoadAlly } from './road-squad';
+import * as hive from './hive';
+import { build as buildHive, isFloor, zoneAt, zoneOfSector } from './hive-world';
+import { HIVE_MISSIONS } from './hive-data';
 
 export const ROAD_SAVE_KEY = 'deadzone_road_v1';
 export const NEED_SAVE_KEY = 'deadzone_need_v1';
@@ -31,10 +34,21 @@ export function canStartGroupInNeed(): boolean { return hasGroupInNeedTestUnlock
 export function devUnlockGroupInNeed(): boolean {
   try { globalThis.localStorage?.setItem(NEED_TEST_UNLOCK_KEY, '1'); return hasGroupInNeedTestUnlock(); } catch { return false; }
 }
-export type RoadStory = 'long-road' | 'group-in-need';
-export const missionsFor = (story: RoadStory = 'long-road') => story === 'group-in-need' ? NEED_MISSIONS : MISSIONS;
-export const storyTitle = (story: RoadStory = 'long-road') => story === 'group-in-need' ? 'A group in need' : 'The Long Road';
-const saveKey = (story: RoadStory) => story === 'group-in-need' ? NEED_SAVE_KEY : ROAD_SAVE_KEY;
+/** The Hive Below: its own save slot; locked until A Group in Need is finished (or unlocked for testing). */
+export const HIVE_SAVE_KEY = 'deadzone_hive_v1';
+export const HIVE_TEST_UNLOCK_KEY = 'deadzone_hive_test_unlock';
+export function hasHiveBelowTestUnlock(): boolean {
+  try { return globalThis.localStorage?.getItem(HIVE_TEST_UNLOCK_KEY) === '1'; } catch { return false; }
+}
+export function canStartHiveBelow(): boolean { return hasHiveBelowTestUnlock() || !!readSave('group-in-need')?.done; }
+/** Testing access is separate from story progress: never marks A Group in Need complete. */
+export function devUnlockHiveBelow(): boolean {
+  try { globalThis.localStorage?.setItem(HIVE_TEST_UNLOCK_KEY, '1'); return hasHiveBelowTestUnlock(); } catch { return false; }
+}
+export type RoadStory = 'long-road' | 'group-in-need' | 'hive-below';
+export const missionsFor = (story: RoadStory = 'long-road') => story === 'group-in-need' ? NEED_MISSIONS : story === 'hive-below' ? HIVE_MISSIONS : MISSIONS;
+export const storyTitle = (story: RoadStory = 'long-road') => story === 'group-in-need' ? 'A group in need' : story === 'hive-below' ? 'The Hive Below' : 'The Long Road';
+const saveKey = (story: RoadStory) => story === 'group-in-need' ? NEED_SAVE_KEY : story === 'hive-below' ? HIVE_SAVE_KEY : ROAD_SAVE_KEY;
 export const ROAD_SEED = 0x4c6f6e67;   // one authored map: every run plays the same city
 const SECTOR_PAD = 60;
 /** Global pressure dial: ambient spawn rate and the zombie count of every clear / hold-out objective are multiplied by this. */
@@ -96,6 +110,8 @@ export interface RoadState {
   interactTarget: MissionTarget | null;
   fullToastT: number;
   lastCompleted: { title: string; kills: number; time: number; deaths: number } | null;
+  /** The Hive Below: honey pools, queued columns and spawner timers (sim/hive.ts) */
+  hiveRt?: hive.HiveRuntime;
 }
 
 export const missionsOf = (state: GameState) => missionsFor(state.road!.story);
@@ -118,9 +134,26 @@ export function newGroupInNeed(): GameState | null {
   save(state); return state;
 }
 
+/** Carry over the survivor of A Group in Need: level, skills and gear. Testing access also permits an unfinished checkpoint or a fresh survivor. */
+export function newHiveBelow(): GameState | null {
+  const need = readSave('group-in-need');
+  if (!need?.done && !hasHiveBelowTestUnlock()) return null;
+  const source = need ?? readSave('long-road');
+  const state = createRoad(source?.character ?? 'survivor', ROAD_SEED, 'hive-below', source?.snapshot);
+  if (!source) {
+    // testing with no earlier story on this machine: a kit that can face a swarm
+    const p = state.player;
+    p.inv.equip.primary = { id: 'smg', qty: 1, mag: combat.WEAPONS.smg.magSize };
+    inv.add(p.inv, 'ammo_9mm', 180); inv.add(p.inv, 'medkit', 2);
+    p.active = 'primary';
+    state.road!.snapshot = snapshotPlayer(p);
+  }
+  save(state); return state;
+}
+
 function createRoad(character: CharacterId, seed: number, story: RoadStory, snapshot?: PlayerSnapshot, mission = 0): GameState {
   const state = newState(seed, 'road');
-  const world = build(state);
+  const world = story === 'hive-below' ? buildHive(state) : build(state);
   const p = state.player = player.create(world.start.x, world.start.y);
   p.character = character;
   inv.bind(state);
@@ -142,10 +175,12 @@ function createRoad(character: CharacterId, seed: number, story: RoadStory, snap
 export function continueRoad(story: RoadStory = 'long-road'): GameState | null {
   const data = readSave(story);
   if (!data) return null;
-  const state = createRoad(data.character, data.seed, story, data.snapshot, data.mission);
+  // a story that has grown since it was finished (The Hive Below is built in steps) carries on with the next mission
+  const more = !!data.done && data.mission + 1 < missionsFor(story).length;
+  const state = createRoad(data.character, data.seed, story, data.snapshot, more ? data.mission + 1 : data.mission);
   const r = state.road!;
   r.totals = data.totals; r.attempts = data.attempts;
-  if (data.done) { r.phase = 'ended'; state.ui = 'road'; }
+  if (data.done && !more) { r.phase = 'ended'; state.ui = 'road'; }
   return state;
 }
 
@@ -190,6 +225,7 @@ function buildingOf(state: GameState, id: Place): Building | null {
 }
 export function campOf(state: GameState, m: number): Vec {
   const w = state.road!.world;
+  if (w.hive) return m < 0 ? w.start : w.camps[Math.min(m, w.camps.length - 1)];
   if (state.road!.story === 'group-in-need') {
     if (m < 0) { const relay = w.sites.relay!; return { x: relay.x + relay.w / 2, y: relay.y + relay.h + 140 }; }
     const def = NEED_MISSIONS[m], sec = w.sectors[def.sector];
@@ -212,7 +248,7 @@ export function campOf(state: GameState, m: number): Vec {
 function placeOf(state: GameState, at: Place, mode: 'door' | 'inside' | 'center', rng: Rng): Vec {
   const r = state.road!;
   if (at === 'camp') return campOf(state, r.mission);
-  if (at === 'prevCamp') return r.mission === 0 && r.story === 'long-road' ? r.world.start : campOf(state, r.mission - 1);
+  if (at === 'prevCamp') return r.mission === 0 && r.story !== 'group-in-need' ? r.world.start : campOf(state, r.mission - 1);
   if (at === 'entry') return sectorOf(state).entry;
   const s = siteRect(state, at);
   if (!s) return campOf(state, r.mission);
@@ -258,7 +294,7 @@ export function startMission(state: GameState, m: number, snapshot?: PlayerSnaps
   // fresh body at the checkpoint
   p.dead = false; p.hp = p.maxHp; p.stamina = p.maxStamina; p.food = p.water = 100; p.bleeding = 0; p.invuln = 1.5;
   p.reloadTimer = p.reloadTotal = 0; p.swingTimer = 0; p.fireCooldown = 0; p.burstQueue = 0; p.vx = p.vy = 0;
-  const start = m === 0 && r.story === 'long-road' ? r.world.start : campOf(state, m - 1);
+  const start = m === 0 && r.story !== 'group-in-need' ? r.world.start : campOf(state, m - 1);
   p.x = start.x; p.y = start.y; phys.collideCircle(state, p);
   state.clock.t = def.clock; state.clock.day = m + 1;
   r.snapshot = snapshotPlayer(p);
@@ -281,6 +317,12 @@ export function startMission(state: GameState, m: number, snapshot?: PlayerSnaps
   placeScavenge(state, rng);
   placeCast(state);
   r.allies = []; r.trail = [];
+  if (r.world.hive) {
+    // the floodlights on the dam come on in the first mission and stay on; underground you want your torch
+    r.lights = m >= 1;
+    if (def.clock >= 420) p.flashlight = true;
+    placeHive(state, def, rng);
+  }
   if (r.story === 'group-in-need') {
     r.lights = m >= 3;
     if (m >= 5) createSquad(state, p, true);
@@ -327,7 +369,7 @@ function complete(state: GameState) {
   r.totals.time += state.time - r.missionStart;
   for (const l of def.outro) r.log.push(l);
   // open the gate out of this sector for good and save the checkpoint
-  if (r.story === 'long-road' && r.mission < r.world.gates.length) { r.world.gates[r.mission].open = true; syncGates(state); }
+  if (r.story !== 'group-in-need' && r.mission < r.world.gates.length) { r.world.gates[r.mission].open = true; syncGates(state); }
   r.snapshot = snapshotPlayer(state.player);
   save(state);
   sound(state, 'levelUp');
@@ -340,12 +382,19 @@ function syncGates(state: GameState) {
     g.open = r.story === 'group-in-need' || i < r.mission || g.open;
     const have = r.gateSolids[i];
     if (g.open && have) { phys.removeSolid(state, have); r.gateSolids[i] = null; }
-    if (!g.open && !have) r.gateSolids[i] = phys.addSolid(state, { x: g.x, y: g.y, w: g.w, h: g.h, kind: 'wall', sub: 'gate', solid: true, blocksBullets: true, blocksSight: false, campaignArt: true } as any);
+    // a quarantine gate is bars you can see through; a hive seal is a plug of resin
+    if (!g.open && !have) r.gateSolids[i] = phys.addSolid(state, { x: g.x, y: g.y, w: g.w, h: g.h, kind: 'wall', sub: r.world.hive ? 'seal' : 'gate', solid: true, blocksBullets: true, blocksSight: !!r.world.hive, campaignArt: true } as any);
   });
 }
 
 function placeCast(state: GameState) {
   const r = state.road!, c = campOf(state, r.mission), rng = missionRng(state, 7);
+  if (r.world.hive) {
+    // Mara, Eli and June watch from the dam; nobody follows you underground (the radio does)
+    const home = r.world.start;
+    r.cast = r.mission === 0 ? (['mara', 'eli', 'june'] as Speaker[]).map((id, i) => ({ id, ...freeNear(state, { x: home.x - 70 + i * 50, y: home.y - 90 - (i % 2) * 30 }, 14, rng, 160), angle: Math.PI / 4 })) : [];
+    return;
+  }
   if (r.story === 'group-in-need') {
     const home = campOf(state, -1);
     r.cast = (['mara', 'eli', 'june', 'ruth'] as Speaker[]).map((id, i) => ({ id, ...freeNear(state, { x: home.x + (i - 1.5) * 60, y: home.y + 80 }, 14, rng), angle: -Math.PI / 2 }));
@@ -364,8 +413,11 @@ export function dropAt(state: GameState, at: Vec, stack: Stack, quest = false) {
   state.drops.push(d);
   return d;
 }
-function placeCaches(state: GameState, def: MissionDef, rng: Rng) {
+/** `camp` selects the checkpoint's own supplies: in the hive they arrive when the camp does, not before. */
+function placeCaches(state: GameState, def: MissionDef, rng: Rng, camp?: boolean) {
+  const late = !!state.road!.world.hive;
   for (const c of def.caches) {
+    if (camp !== undefined ? (c.at === 'camp') !== camp : late && c.at === 'camp') continue;
     const b = c.at !== 'camp' && c.at !== 'entry' && c.at !== 'prevCamp' ? buildingOf(state, c.at) : null;
     const centre = placeOf(state, c.at, b ? 'inside' : 'center', rng);
     c.items.forEach((it, i) => {
@@ -408,6 +460,34 @@ function placeScavenge(state: GameState, rng: Rng) {
     const wdef = combat.WEAPONS[pick.id];
     dropAt(state, at, { id: pick.id, qty: pick.qty[0] + Math.floor(rng.next() * (pick.qty[1] - pick.qty[0] + 1)), ...(wdef ? { mag: wdef.magSize } : {}) });
     placed++;
+  }
+}
+/** The Hive Below: the cell's burrows and egg clusters, the burrows an objective asks for, wanderers, and supplies in the nooks. */
+function placeHive(state: GameState, def: MissionDef, rng: Rng) {
+  const r = state.road!, h = r.world.hive!, p = state.player, zone = zoneOfSector(def.sector), sec = sectorOf(state).rect;
+  hive.reset(state);
+  for (const b of h.burrows[zone]) hive.spawnFixture(state, 'burrow', b);
+  for (const e of h.eggs[zone]) hive.spawnFixture(state, 'egg', e);
+  def.objectives.forEach((o, i) => {
+    if (o.kind === 'burrows') for (const b of (r.world.nurseryBurrows ?? []).slice(0, o.count)) hive.spawnFixture(state, 'burrow', b, r.objectives[i].tag);
+  });
+  // wanderers: idle until one of them sees you (and then the pheromone does the rest)
+  for (let k = 0, placed = 0; k < 600 && placed < (def.scouts ?? 0); k++) {
+    const x = sec.x + rng.next() * sec.w, y = sec.y + rng.next() * sec.h;
+    if (zoneAt(h, x, y) !== zone || !isFloor(h, x, y) || !phys.isFree(state, x, y, 24) || Math.hypot(x - p.x, y - p.y) < 650) continue;
+    (zombies.spawn(state, pickType(def.types, rng), x, y) as Zombie & { roadTag?: string }).roadTag = 'scout';
+    placed++;
+  }
+  // what the hive dragged down from the city: bullets, bandages and the odd gun, in the corners off the route
+  const owned = new Set(['ammo_9mm', ...Object.values(p.inv.equip).map(st => st && combat.WEAPONS[st.id]?.ammo).filter(Boolean) as string[]]);
+  const pool = [...SCAVENGE.filter(e => !e.id.startsWith('ammo_') || owned.has(e.id) || e.id === 'ammo_556'), { id: 'ichor', qty: [20, 40] as [number, number], w: 6 }, { id: 'royal_jelly', qty: [1, 1] as [number, number], w: 0.8 }];
+  let total = 0; for (const e of pool) total += e.w;
+  for (const n of h.nooks[zone]) {
+    if (rng.next() > 0.8) continue;
+    let roll = rng.next() * total, pick = pool[0];
+    for (const e of pool) { roll -= e.w; if (roll <= 0) { pick = e; break; } }
+    const wdef = combat.WEAPONS[pick.id];
+    dropAt(state, freeNear(state, n, 26, rng, 120), { id: pick.id, qty: pick.qty[0] + Math.floor(rng.next() * (pick.qty[1] - pick.qty[0] + 1)), ...(wdef ? { mag: wdef.magSize } : {}) });
   }
 }
 function placeQuestItems(state: GameState, def: MissionDef, rng: Rng) {
@@ -458,8 +538,10 @@ function startObjective(state: GameState) {
       break;
     }
     case 'holdout': run.timer = o.seconds; run.waveT = 1.5; run.need = o.seconds; break;
+    case 'burrows': run.need = objectiveBurrows(state, run.tag).length; run.kills = 0; break;
     case 'interact': run.hold = 0; break;
     case 'boss': break;   // spawns when the player comes close
+    case 'camp': if (r.world.hive) placeCaches(state, missionOf(state), rng, true); break;   // the camp and its crates are carried down to you
   }
 }
 function finishObjective(state: GameState) {
@@ -473,10 +555,11 @@ function finishObjective(state: GameState) {
   r.step++;
   startObjective(state);
 }
+const objectiveBurrows = (state: GameState, tag: string) => state.zombies.filter(z => !z.dead && z.type === 'burrow' && (z as Zombie & { roadTag?: string }).roadTag === tag);
 export function objectiveText(state: GameState) {
   const o = current(state), run = currentRun(state);
   if (!o || !run) return '';
-  if (o.kind === 'clear') return `${o.text} (${Math.max(0, run.need - run.kills)} left)`;
+  if (o.kind === 'clear' || o.kind === 'burrows') return `${o.text} (${Math.max(0, run.need - run.kills)} left)`;
   if (o.kind === 'holdout') return !run.armed ? `Get to the position: ${o.text.replace(/^Hold /, 'hold ')}` : run.away ? `${o.text} — GET BACK TO THE POSITION (${Math.ceil(run.timer)}s)` : `${o.text} (${Math.ceil(run.timer)}s)`;
   if (o.kind === 'camp' && run.near) return `${o.text} — clear the area first`;
   if (o.kind === 'escort' || (o.kind === 'camp' && state.road!.allies.some(a => a.following))) {
@@ -504,13 +587,22 @@ function updateObjective(state: GameState, input: InputState, dt: number) {
       break;
     case 'reach': if (d < (o.r ?? 110)) finishObjective(state); break;
     case 'camp': {
-      const hostile = state.zombies.some(z => !z.dead && Math.hypot(z.x - p.x, z.y - p.y) < 240);
+      const hostile = state.zombies.some(z => !z.dead && !zombies.isInert(z) && Math.hypot(z.x - p.x, z.y - p.y) < 240);
       run.near = d < 130 && hostile;
       const together = r.allies.every(a => !a.following || Math.hypot(a.x - run.point.x, a.y - run.point.y) < 240);
       if (d < 130 && !hostile && together) finishObjective(state);
       break;
     }
     case 'pickup': if (r.collected.includes(o.item)) finishObjective(state); break;
+    case 'burrows': {
+      const left = objectiveBurrows(state, run.tag);
+      run.kills = run.need - left.length;
+      if (!left.length) { finishObjective(state); break; }
+      // the marker sits on the nearest burrow still standing
+      let best = left[0]; for (const b of left) if (Math.hypot(b.x - p.x, b.y - p.y) < Math.hypot(best.x - p.x, best.y - p.y)) best = b;
+      run.point = { x: best.x, y: best.y };
+      break;
+    }
     case 'clear': {
       const tagged = state.zombies.filter(z => !z.dead && (z as Zombie & { roadTag?: string }).roadTag === run.tag) as (Zombie & { memory?: number; seesPlayer?: boolean; losTimer?: number })[];
       if (run.kills >= run.need || !tagged.length) { finishObjective(state); break; }
@@ -542,7 +634,10 @@ function updateObjective(state: GameState, input: InputState, dt: number) {
       if (run.waveT <= 0 && run.timer > 2) {
         run.waveT = o.every;
         const types = o.types ?? missionOf(state).types;
-        for (let i = 0; i < scaled(state, o.count); i++) spawnAround(state, run.point, 520, 900, types, true, run.tag);
+        if (o.from) {
+          // the whole wave climbs out of one place, where you can watch it come
+          if (hive.liveBugs(state) + scaled(state, o.count) <= hive.SWARM_CAP) hive.column(state, placeOf(state, o.from, 'center', r.rng), scaled(state, o.count), types, { tag: run.tag, horde: true });
+        } else for (let i = 0; i < scaled(state, o.count); i++) spawnAround(state, run.point, 520, 900, types, true, run.tag);
       }
       if (run.timer <= 0) finishObjective(state);
       break;
@@ -555,13 +650,20 @@ function updateObjective(state: GameState, input: InputState, dt: number) {
         if (input.interactHeld || input.pressed.has('interact')) {
           run.hold += dt;
           state.search = { target: { name: o.label } as any, t: run.hold, total: o.hold ?? 0.3 };
-          if (run.hold >= (o.hold ?? 0.3)) { if (o.at === 'pumping') r.lights = true; finishObjective(state); }
+          if (run.hold >= (o.hold ?? 0.3)) { if (o.at === 'pumping' || o.at === 'dam') r.lights = true; finishObjective(state); }
         } else { run.hold = Math.max(0, run.hold - dt * 2); state.search = run.hold > 0 ? { target: { name: o.label } as any, t: run.hold, total: o.hold ?? 0.3 } : null; }
       } else { state.search = null; }
       break;
     }
     case 'boss': {
-      if (!run.bossId) {
+      if (!run.bossId && o.fixed) {
+        // already standing in its arena: it turns on you when you walk in, or when you shoot it
+        if (d < 1100) {
+          const at = freeNear(state, run.point, 44, missionRng(state, 500 + r.step), 200);
+          const z = bosses.spawnBossOf(state, o.boss, 0, at.x, at.y, o.hp, { maxR: 34, dmgMul: 0.85, kit: 1, lurk: true, drawR: 46 }) as Zombie & { roadTag?: string };
+          z.roadTag = run.tag; run.bossId = z.id;
+        }
+      } else if (!run.bossId) {
         if (d < 760) {
           const rng = missionRng(state, 500 + r.step);
           const b = buildingOf(state, o.at);
@@ -577,7 +679,12 @@ function updateObjective(state: GameState, input: InputState, dt: number) {
       } else {
         const z = state.zombies.find(z => z.id === run.bossId);
         if (!z || z.dead) finishObjective(state);
-        else run.point = { x: z.x, y: z.y };
+        else {
+          run.point = { x: z.x, y: z.y };
+          if (o.fixed && !z.announced && (d < 470 || z.hp < z.maxHp || z.state === 'chase')) { bosses.announce(state, z); z.state = 'chase'; z.target = { x: p.x, y: p.y }; (z as Zombie & { memory?: number }).memory = 99; }
+          // an engaged arena boss does not lose you behind a pillar
+          if (o.fixed && z.announced && z.state !== 'chase' && d < 1500) { z.state = 'chase'; z.target = { x: p.x, y: p.y }; (z as Zombie & { memory?: number }).memory = 12; }
+        }
       }
       break;
     }
@@ -599,6 +706,7 @@ function spawnAround(state: GameState, c: Vec, minD: number, maxD: number, types
     const x = c.x + Math.cos(a) * d, y = c.y + Math.sin(a) * d;
     if (x < sec.x + SECTOR_PAD || y < sec.y + SECTOR_PAD || x > sec.x + sec.w - SECTOR_PAD || y > sec.y + sec.h - SECTOR_PAD) continue;
     if (zombies.visible(state, x, y, 30) || !phys.isFree(state, x, y, 24)) continue;
+    if (r.world.hive && !isFloor(r.world.hive, x, y)) continue;   // solid rock has no colliders of its own
     const z = zombies.spawn(state, pickType(types, r.rng), x, y, chase) as Zombie & { roadTag?: string; memory?: number; seesPlayer?: boolean };
     if (tag) z.roadTag = tag;
     if (chase) { z.state = 'chase'; z.target = { x: state.player.x, y: state.player.y }; z.memory = 8; z.seesPlayer = true; }
@@ -614,6 +722,7 @@ function outOfSightNear(state: GameState, c: Vec, minD: number, maxD: number, ra
     const x = c.x + Math.cos(a) * d, y = c.y + Math.sin(a) * d;
     if (x < sec.x + SECTOR_PAD || y < sec.y + SECTOR_PAD || x > sec.x + sec.w - SECTOR_PAD || y > sec.y + sec.h - SECTOR_PAD) continue;
     if (zombies.visible(state, x, y, rad + 10) || !phys.isFree(state, x, y, rad + 6) || buildingAt(state, x, y)) continue;
+    if (r.world.hive && !isFloor(r.world.hive, x, y)) continue;
     return { x, y };
   }
   return null;
@@ -623,8 +732,9 @@ function ambient(state: GameState, dt: number) {
   r.ambientT -= dt;
   if (r.ambientT > 0) return;
   r.ambientT = 60 / (def.density * pressureOf(state));
-  const alive = state.zombies.reduce((n, z) => n + (z.dead || (z as Zombie & { roadTag?: string }).roadTag || z.boss ? 0 : 1), 0);
-  if (alive >= AMBIENT_CAP) return;
+  // the hive counts every live bug against its own cap (columns from the burrows are the main supply there)
+  const alive = r.world.hive ? hive.liveBugs(state) : state.zombies.reduce((n, z) => n + (z.dead || (z as Zombie & { roadTag?: string }).roadTag || z.boss ? 0 : 1), 0);
+  if (alive >= (r.world.hive ? Math.min(def.swarm?.cap ?? 30, hive.SWARM_CAP) : AMBIENT_CAP)) return;
   spawnAround(state, p, 620, 1050, def.types, false);
 }
 function packs(state: GameState) {
@@ -661,15 +771,19 @@ function rewardKills(state: GameState, actors: Zombie[]) {
     zz._roadScored = true;
     r.missionKills++; r.totals.kills++;
     if (run && zz.roadTag === run.tag) run.kills++;
+    // the hive: honey where a Honeypot bursts, a cave-in where a burrow falls, ichor from anything with six legs
+    const ichor = r.world.hive ? hive.onDeath(state, z) : [];
+    ichor.forEach((st, i) => { const d = dropAt(state, { x: z.x + (i ? 22 : 0), y: z.y + (i ? 14 : 0) }, st); if (!z.boss) d.life = 60; });
     if (bosses.isBoss(z)) {
       progression.addXP(state, 400 * XP_MUL);
-      const loot: Stack[] = [...bosses.trophyLoot(z.boss), { id: 'medkit', qty: 1 }];
+      const loot: Stack[] = [...bosses.trophyLoot(z.boss), { id: r.world.hive ? 'royal_jelly' : 'medkit', qty: 1 }];
       loot.forEach((st, i) => dropAt(state, { x: z.x + Math.cos(i * 2.1) * 34, y: z.y + Math.sin(i * 2.1) * 34 }, st));
       bosses.onBossDeath(state, z, def.bossHp ?? 1);
       state.player.sp++;
       continue;
     }
     progression.addXP(state, zombies.TYPES[z.type].xp * XP_MUL);
+    if (zombies.isInert(z)) continue;
     const roll = rand(state);
     if (roll < 0.045) {
       // Random standard ammo; mints remain a Plague Lord reward.
@@ -781,6 +895,11 @@ export function stepRoad(state: GameState, input: InputState, dt: number) {
   if (!state.player.dead) zombies.update(state, dt);
   if (!state.player.dead) bosses.update(state, dt, missionOf(state).bossHp ?? 1);
   rewardKills(state, actors);
+  if (r.world.hive) {
+    // burrows fall quiet while an arena boss is up: its own rally brings the adds
+    const o = current(state), def = missionOf(state), bossUp = o?.kind === 'boss' && !!currentRun(state)?.bossId;
+    hive.update(state, dt, bossUp ? null : def.swarm ?? null, def.types, pressureOf(state));
+  }
   if (state.player.dead || state.player.hp <= 0) { died(state); return; }
   pickups(state, dt);
   ambient(state, dt); packs(state); cull(state, dt);

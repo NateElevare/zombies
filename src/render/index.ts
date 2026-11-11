@@ -21,12 +21,12 @@ import type { View } from './common';
 import { StoryView } from './story-view';
 import { storyProject, storyUnproject, storyBounds, STORY_ZOOM, storyEffectOffset } from './story-projection';
 import { isAngledStory } from '../story-mode';
-import { CampaignRender } from './campaign';
 import { RoadRender } from './road';
+import { HiveRender } from './hive';
 
 class Renderer implements RendererLike {
-  private campaign: CampaignRender;
   private road: RoadRender;
+  private hive: HiveRender;
   private story: StoryView;
   private angled = false;
   private projectedView = {x:0,y:0,w:0,h:0,zoom:1};
@@ -63,8 +63,8 @@ class Renderer implements RendererLike {
     this.gadgets = new Gadgets(scene);
     this.bosses = new BossRender(scene, this.art);
     this.story = new StoryView(scene,this.art);
-    this.campaign = new CampaignRender(scene);
     this.road = new RoadRender(scene);
+    this.hive = new HiveRender(scene, this.art);
     this.light.setVisible(false);
     (window as any).__render = this;
     this.warmUp();
@@ -108,7 +108,7 @@ class Renderer implements RendererLike {
     this.light.setVisible(true);
   }
   detach() {
-    this.campaign.clear(); this.road.clear();
+    this.road.clear(); this.hive.clear();
     this.story.clear();
     this.state = null;
     this.ground.detach();
@@ -196,8 +196,8 @@ class Renderer implements RendererLike {
     this.actors.drawBullets(state, alpha, v,this.angled?storyEffectOffset(50).x:0,this.angled?storyEffectOffset(50).y:0);
     this.gadgets.draw(state, alpha, dt, v);
     this.bosses.draw(state, alpha, dt, v);
-    this.campaign.draw(state, v);
     this.road.draw(state, v, this.time);
+    this.hive.draw(state, v, this.time);
     const t4 = performance.now();
     this.fx.simRunning = state.screen === 'playing' && !state.paused && state.ui === null;
     this.fx.update(v, dt);

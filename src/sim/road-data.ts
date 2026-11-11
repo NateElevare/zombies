@@ -21,11 +21,13 @@ export type ObjectiveDef =
   | { kind: 'reach'; at: Place; text: string; r?: number; line?: Line }
   | { kind: 'pickup'; at: Place; item: string; qty?: number; text: string; line?: Line }
   | { kind: 'clear'; at: Place; count: number; types?: Weights; text: string; r?: number; indoor?: boolean; line?: Line }
-  | { kind: 'holdout'; at: Place; seconds: number; every: number; count: number; types?: Weights; text: string; line?: Line }
+  | { kind: 'holdout'; at: Place; seconds: number; every: number; count: number; types?: Weights; text: string; line?: Line; /** The Hive Below: every wave climbs out here, in plain sight, and never loses your trail */ from?: Place }
+  /** The Hive Below: collapse the burrows of this place (they are on the map from the start of the mission). */
+  | { kind: 'burrows'; at: Place; count: number; text: string; line?: Line }
   | { kind: 'interact'; at: Place; label: string; text: string; hold?: number; line?: Line; offset?: { x: number; y: number } }
   | { kind: 'rescue'; at: Place; text: string; line?: Line }
   | { kind: 'escort'; at: Place; text: string; r?: number; line?: Line }
-  | { kind: 'boss'; at: Place; boss: BossId; text: string; hp: number; line?: Line; /** a return match: 2x health, 2.5x damage */ second?: boolean; /** spawn in the open, out of sight, instead of inside the site's building */ outdoors?: boolean }
+  | { kind: 'boss'; at: Place; boss: BossId; text: string; hp: number; line?: Line; /** a return match: 2x health, 2.5x damage */ second?: boolean; /** spawn in the open, out of sight, instead of inside the site's building */ outdoors?: boolean; /** The Hive Below: it is already standing in its arena, waiting */ fixed?: boolean }
   | { kind: 'camp'; text: string; line?: Line };
 
 export interface CacheDef { at: Place; items: { id: string; qty?: number }[]; spread?: number }
@@ -44,6 +46,8 @@ export interface MissionDef {
   pressure?: number;
   /** Sequel checkpoints may run back along the route before returning to the ridge. */
   checkpoint?: SiteId | 'entry' | 'exit';
+  /** The Hive Below: columns sent from the burrows near the player (sim/hive.ts), and wanderers placed at the start. */
+  swarm?: import('./hive').SwarmDef; scouts?: number;
 }
 
 const WALKERS: Weights = { walker: 7, crawler: 2, runner: 1 };

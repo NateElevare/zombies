@@ -8,8 +8,9 @@ import type { GameState, Stack, Vec, Zombie, ZombieType } from './types';
 import * as zombies from './zombies';
 import * as player from './player';
 import * as pathing from './pathing';
+import * as hive from './hive';
 
-export type BossId = 'butcher' | 'broodmother' | 'howler' | 'juggernaut' | 'plague' | 'warden';
+export type BossId = 'butcher' | 'broodmother' | 'howler' | 'juggernaut' | 'plague' | 'warden' | 'marshal';
 export interface BossDef {
   name: string; title: string; base: ZombieType; r: number; hp: number; speed: number; damage: number;
   /** Identity and attack-warning colours for the renderer. */
@@ -24,9 +25,13 @@ export const BOSSES: Record<BossId, BossDef> = {
   plague:      { name: 'Plague Lord', title: 'Toxic aura, spit barrages, bursts on death', base: 'bloater', r: 38, hp: 4200, speed: 38, damage: 18, color: '#5e2f78', glow: '#d77cff', attacks: ['aura', 'spit', 'trail'] },
   // The Long Road's final boss: relentless pursuit, four stages (3/4, 1/2, 1/4 health). Not in the arcade rotation.
   warden:      { name: 'The Warden', title: 'Fort Ashgrove\'s last sentry', base: 'brute', r: 60, hp: 26000, speed: 42, damage: 52, color: '#4a2a2a', glow: '#ff7a3a', attacks: ['slam', 'rush', 'barrage', 'quake'] },
+  // The Hive Below: the soldier ant that seals the Warrens. Bait its charge into a wall. Not in the arcade rotation.
+  marshal:     { name: 'The Marshal', title: 'Charges, rallies the column, sprays acid', base: 'brute', r: 40, hp: 5000, speed: 52, damage: 30, color: '#8a5a22', glow: '#f0a93a', attacks: ['charge', 'rally', 'formic'] },
 };
-/** Arcade rotation (the Warden is story-only). */
-export const BOSS_IDS = (Object.keys(BOSSES) as BossId[]).filter(id => id !== 'warden');
+/** Bosses that belong to a story and never join the arcade rotation or the city lairs. */
+export const STORY_BOSSES: ReadonlySet<BossId> = new Set<BossId>(['warden', 'marshal']);
+/** Arcade rotation (the Warden and the hive's bosses are story-only). */
+export const BOSS_IDS = (Object.keys(BOSSES) as BossId[]).filter(id => !STORY_BOSSES.has(id));
 export const BOSS_EVERY = 10;
 export const isBossWave = (wave: number) => wave > 0 && wave % BOSS_EVERY === 0;
 /** Which boss appears on a boss wave (cycles through all five), and how many times the cycle has repeated. */
@@ -38,6 +43,7 @@ export const PLAGUE_AURA = 130;
 /** Each boss drops its own signature weapon (plus ammo for it). */
 export const BOSS_WEAPON: Record<BossId, string> = {
   butcher: 'butcher_cleaver', broodmother: 'brood_scattergun', howler: 'banshee_smg', juggernaut: 'rockbreaker', plague: 'cola_mints', warden: 'rockbreaker',
+  marshal: 'mandible_shears',
 };
 const TROPHY_AMMO: Record<string, [string, number]> = { brood_scattergun: ['ammo_12g', 24], banshee_smg: ['ammo_9mm', 135], rockbreaker: ['ammo_308', 18], cola_mints: ['mints', 6] };
 const TROPHY_MAG: Record<string, number> = { brood_scattergun: 8, banshee_smg: 45, rockbreaker: 6, cola_mints: 50 };
@@ -103,7 +109,7 @@ export function spawnBossOf(state: GameState, id: BossId, cycle: number, x: numb
   z.drawR = opts.drawR ?? (id === 'warden' ? d.r * 2.6 : d.r);
   z.act = ''; z.actT = 0; z.actA = 0; z.actX = 0; z.actY = 0; z.slamN = 0; z.auraT = 0; z.trailT = 0; z.hitPlayer = false;
   // stagger the first specials so the fight opens with a breather
-  z.cd = { charge: 4, brood: 3, acid: 2.5, scream: 4, leap: 7, slam: 4, boulder: 2.5, spit: 2.5, throw: 6, rain: 8, pounce: 9, quake: 7, miasma: 9 };
+  z.cd = { charge: 4, brood: 3, acid: 2.5, scream: 4, leap: 7, slam: 4, boulder: 2.5, spit: 2.5, throw: 6, rain: 8, pounce: 9, quake: 7, miasma: 9, rally: 7, formic: 2.5 };
   if (opts.lurk) return z;
   announce(state, z);
   z.state = 'chase'; z.target = { x: state.player.x, y: state.player.y }; z.memory = 99;
@@ -243,7 +249,25 @@ function think(state: GameState, z: BossZ, dt: number, hpMul: number) {
         break;
       }
       case 'stunned': if (z.actT >= 1.4) { z.act = ''; } break;          // slammed into a wall: free hits
-      case 'recover': if (z.actT >= (z.boss === 'warden' ? 0.65 : 0.35)) z.act = ''; break;
+      case 'recover':
+        if (z.actT >= (z.boss === 'warden' ? 0.65 : 0.35)) {
+          z.act = '';
+          // the Marshal in a rage charges twice in a row
+          if (z.boss === 'marshal' && z.leapN > 0 && dp > 90) {
+            z.leapN--; z.act = 'chargeWind'; z.actT = 0.2; z.actA = toP;
+            fx(state).tele.push({ kind: 'line', x: z.x, y: z.y, r: z.r, angle: toP, len: 470, t: 0, T: 0.7, color: d.glow });
+          }
+        }
+        break;
+      case 'formicWind':   // the Marshal rears and sprays: a 90 degree fan of acid that stays on the floor
+        if (z.actT < 0.4) z.actA = toP;
+        if (z.actT >= 0.7) {
+          const reach = Math.max(170, Math.min(400, dp));
+          for (let i = 0; i < 5; i++) { const a = z.actA + (i - 2) * Math.PI / 8; lob(state, z, 'acid', z.x + Math.cos(a) * reach, z.y + Math.sin(a) * reach, 0.45 + i * 0.05, 9 * m); }
+          sound(state, 'zombieAttack', z.x, z.y);
+          z.act = 'recover'; z.actT = 0;
+        }
+        break;
       case 'screamWind':
         if (z.actT >= 0.65) {
           ring(state, z.x, z.y, 340, 520, 16 * m, 130, d.glow, 30);
@@ -378,6 +402,18 @@ function think(state: GameState, z: BossZ, dt: number, hpMul: number) {
         ring(state, z.x, z.y, 300, 230, 10 * m, 50, d.glow, 40);
         for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3 + rand(state) * 0.4; lob(state, z, 'acid', p.x + Math.cos(a) * 125, p.y + Math.sin(a) * 125, 1.0 + i * 0.08, 10 * m); }
         sound(state, 'groan', z.x, z.y);
+      }
+      break;
+    case 'marshal':
+      if (z.cd.charge <= 0 && dp < 760 && dp > 110) {
+        z.act = 'chargeWind'; z.actT = 0; z.actA = toP; z.cd.charge = 6; z.leapN = enraged ? 1 : 0;
+        tele({ kind: 'line', x: z.x, y: z.y, r: z.r, angle: toP, len: 470, t: 0, T: 0.9, color: d.glow });
+      } else if (z.cd.rally <= 0) {
+        z.cd.rally = 12; hive.rally(state, z);
+        ring(state, z.x, z.y, 260, 520, 0.01, 0, d.glow, 22);   // the pheromone burst: a harmless ring you can see
+      } else if (z.cd.formic <= 0 && dp > 100 && dp < 560) {
+        z.act = 'formicWind'; z.actT = 0; z.actA = toP; z.cd.formic = 6.5; z.leapN = 0;
+        tele({ kind: 'line', x: z.x, y: z.y, r: 60, angle: toP, len: Math.max(170, Math.min(400, dp)), t: 0, T: 0.7, color: '#c8ff3a' });
       }
       break;
     case 'warden':

@@ -75,7 +75,7 @@ export class RoadUi {
     row.append(img, t); return row;
   }
   private renderCard(s: GameState) {
-    const r = s.road!, box = el('div', 'road-card'), missions = road.missionsOf(s), sequel = r.story === 'group-in-need';
+    const r = s.road!, box = el('div', 'road-card'), missions = road.missionsOf(s), sequel = r.story === 'group-in-need', hive = r.story === 'hive-below';
     this.card.replaceChildren(box);
     const go = (fn: () => void) => { fn(); this.cardSig = ''; };
     if (r.phase === 'briefing') {
@@ -100,15 +100,23 @@ export class RoadUi {
       const b = el('button', 'big-btn', nextM ? `CONTINUE · ${nextM.title.toUpperCase()}` : 'CONTINUE'); b.addEventListener('click', () => go(() => road.next(s))); box.append(b);
       const q = el('button', 'btn', 'QUIT TO TITLE'); q.addEventListener('click', () => { road.next(s); this.shell?.quitToTitle(true); }); box.append(q);
     } else {
-      box.append(el('div', 'rc-k rc-ok', `${road.storyTitle(r.story).toUpperCase()} · COMPLETE`));
-      box.append(el('h2', '', sequel ? 'Everyone is accounted for.' : 'You kept the promise.'));
-      const img = el('img', 'rc-vignette'); img.src = assetUrl('assets/campaign/ending.png'); img.alt = ''; box.append(img);
-      box.append(el('p', 'rc-tag', sequel ? 'Ada, Ben, Kit and Lewis are safe at North Ridge. The ground you cleared is home for four more.' : 'Four days. Nine sectors. All four of you made it to the convoy.'));
+      // The Hive Below is built in parts: this card closes the part that exists, and the save carries on when the next one lands
+      box.append(el('div', 'rc-k rc-ok', `${road.storyTitle(r.story).toUpperCase()} · ${hive ? 'PART ONE COMPLETE' : 'COMPLETE'}`));
+      box.append(el('h2', '', hive ? 'The first seal is broken.' : sequel ? 'Everyone is accounted for.' : 'You kept the promise.'));
+      if (!hive) { const img = el('img', 'rc-vignette'); img.src = assetUrl('assets/campaign/ending.png'); img.alt = ''; box.append(img); }
+      box.append(el('p', 'rc-tag', hive
+        ? 'The Marshal is dead and the Warrens are yours. Five more seals and the Queen are still below. The Granary is next: your checkpoint is kept, and Continue will pick up from here when it is built.'
+        : sequel ? 'Ada, Ben, Kit and Lewis are safe at North Ridge. The ground you cleared is home for four more.' : 'Four days. Nine sectors. All four of you made it to the convoy.'));
       const stats = el('div', 'rc-stats');
       for (const [k, v] of [['Total kills', String(r.totals.kills)], ['Deaths', String(r.totals.deaths)], ['Time', fmtTime(r.totals.time)], ['Level', String(s.player.level)]]) { const d = el('div'); d.append(el('b', '', v), el('span', '', k)); stats.append(d); }
       box.append(stats);
       const lines = el('div', 'rc-lines'); for (const l of missions[missions.length - 1].outro) lines.append(this.portraitLine(l.who, l.text, l.mood)); box.append(lines);
-      if (!sequel) {
+      if (sequel) {
+        const saved = road.hasRoadSave('hive-below');
+        const b = el('button', 'big-btn', saved ? 'CONTINUE THE HIVE BELOW' : 'PLAY THE HIVE BELOW');
+        b.addEventListener('click', () => saved ? this.shell?.continueRoad('hive-below') : this.shell?.newRoad(undefined, 'hive-below'));
+        box.append(el('p', 'rc-hint', 'Something has opened in the reservoir. Go down with your skills, level and equipment.'), b);
+      } else if (!hive) {
         const saved = road.hasRoadSave('group-in-need');
         const b = el('button', 'big-btn', saved ? 'CONTINUE A GROUP IN NEED' : 'PLAY A GROUP IN NEED');
         b.addEventListener('click', () => saved ? this.shell?.continueRoad('group-in-need') : this.shell?.newRoad(undefined, 'group-in-need'));

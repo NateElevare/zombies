@@ -8,9 +8,16 @@ export interface WeaponDef { name: string; class: WeaponClass; ammo: string | nu
   /** a reload uses ONE ammo item and fills the whole magazine (Cola & Mints: one mint per blast) */ reloadAll?: boolean;
   /** shots coat zombies in sticky acid foam (zombies.stick: slow + damage over time) */ sticky?: boolean;
   /** built-in perks (normally unlocked through tech): explosion radius, set targets on fire, heal by a share of melee damage */
-  explosive?: number; incendiary?: boolean; lifesteal?: number }
+  explosive?: number; incendiary?: boolean; lifesteal?: number;
+  /** The Hive Below: every hit adds a stack of corrosion (zombies.corrode: damage over time, no slow) */ corrode?: boolean;
+  /** melee: a kill carries the blow on to this many more bugs standing behind it */ cleave?: number }
 export interface WeaponStats extends WeaponDef { id: string; pierce: number; ricochet: number; burst: number; explosive: number; incendiary: boolean; crit: number; critMul: number; lifesteal: number; slug: boolean }
 export const WEAPONS: Record<string, WeaponDef> = {
+  // ---- The Hive Below: insect weapons. The guns run on ichor.
+  "formic_sprayer": { "name": "Formic Sprayer", "class": "smg", "ammo": "ichor", "damage": 7, "fireRate": 0.07, "magSize": 80, "reloadTime": 1.6, "spread": 0.13, "pellets": 1,
+    "bulletSpeed": 560, "range": 240, "auto": true, "noise": 240, "shake": 0.5, "sound": "fizz", "pierce": 1, "corrode": true },
+  "mandible_shears": { "name": "Mandible Shears", "class": "melee", "ammo": null, "damage": 80, "fireRate": 0.6, "magSize": 0, "reloadTime": 0, "spread": 0, "pellets": 1,
+    "bulletSpeed": 0, "range": 0, "auto": true, "noise": 120, "shake": 3, "sound": "swing", "melee": { "range": 84, "arc": 1.2, "knock": 120 }, "cleave": 2 },
   // ---- boss trophies (sim/bosses.ts BOSS_WEAPON)
   "butcher_cleaver": { "name": "Butcher's Cleaver", "class": "melee", "ammo": null, "damage": 95, "fireRate": 0.55, "magSize": 0, "reloadTime": 0, "spread": 0, "pellets": 1,
     "bulletSpeed": 0, "range": 0, "auto": true, "noise": 140, "shake": 3, "sound": "swing", "melee": { "range": 92, "arc": 2.5, "knock": 220 }, "lifesteal": 0.06 },
@@ -246,7 +253,10 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
 
   const equipped = inv.equippedWeapon;
   const ammoCount = inv.totalAmmo;
-  function hurtZombie(state: GameState, z: Zombie, amount: number, angle: number, opts: { source?: string; burn?: boolean; explosion?: boolean; crit?: boolean; melee?: boolean; knock?: number }) { zombies.damage(state, z, amount, angle, opts); }
+  function hurtZombie(state: GameState, z: Zombie, amount: number, angle: number, opts: { source?: string; burn?: boolean; explosion?: boolean; crit?: boolean; melee?: boolean; knock?: number }) {
+    // royal jelly: 20% more damage dealt while it lasts
+    zombies.damage(state, z, (state.player?.jelly ?? 0) > 0 ? amount * 1.2 : amount, angle, opts);
+  }
   function addCombatTimer(state: GameState, t: number) { if (state.player) state.player.combatTimer = Math.max(state.player.combatTimer || 0, t); }
 
   function noise(state: GameState, x: number, y: number, radius: number) {
@@ -281,6 +291,8 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
     if (b.incendiary && !z.dead) { igniteZombie(z); }
     if (b.sticky && !z.dead) zombies.stick(state, z);
     if (b.sticky) emit(state, { t: 'bulletHit', x: b.x, y: b.y, angle: b.angle, surface: 'flesh', sticky: true });
+    if (b.corrode && !z.dead) zombies.corrode(state, z);
+    if (b.corrode) emit(state, { t: 'bulletHit', x: b.x, y: b.y, angle: b.angle, surface: 'flesh', acid: true });
     if (b.explosive > 0) explode(state, b.x, b.y, b.explosive, b.damage * 0.6, z);
   }
 
@@ -367,15 +379,15 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
         x: p.x, y: p.y, prevX: p.x, prevY: p.y, weapon: stack.id, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, angle: a, damage: ws.damage,
         life: ws.range / sp, r: 3, pierce: ws.pierce, ricochet: ws.ricochet, explosive: ws.explosive,
         incendiary: ws.incendiary, hit: ws.pierce > 0 || ws.ricochet > 0 ? new Set() : null, dead: false,
-        sticky: ws.sticky || undefined,
-        crit: ws.crit, color: ws.sticky ? '#8a4a22' : ws.incendiary ? '#ff8a1e' : ws.explosive ? '#ff5a3e' : ws.crit > 0.2 ? '#ffe14a' : '#ffe9a8',
+        sticky: ws.sticky || undefined, corrode: ws.corrode || undefined,
+        crit: ws.crit, color: ws.corrode ? '#b7e04a' : ws.sticky ? '#8a4a22' : ws.incendiary ? '#ff8a1e' : ws.explosive ? '#ff5a3e' : ws.crit > 0.2 ? '#ffe14a' : '#ffe9a8',
       };
       stepBullet(state, b, (p.r + 18) / sp);
       if (!b.dead) { b.prevX = b.x; b.prevY = b.y; state.bullets.push(b); }
     }
     p.lastShotT = state.time;
     // a soda spray has no muzzle flash, smoke or casings: the foam blobs are the effect
-    if (!ws.sticky) emit(state, { t: 'shot', x: mx, y: my, angle: p.angle, weapon: stack.id, cls: weaponClass(stack.id) });
+    if (!ws.sticky && !ws.corrode) emit(state, { t: 'shot', x: mx, y: my, angle: p.angle, weapon: stack.id, cls: weaponClass(stack.id) });
     state.shake = Math.max(state.shake || 0, ws.shake || 0);
     sound(state, ws.sound);
     noise(state, p.x, p.y, ws.noise);
@@ -394,6 +406,7 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
     addCombatTimer(state, 6);
     const reach = ws.melee.range + p.r;
     let hitAny = false;
+    const struck = ws.cleave ? new Set<Zombie>() : null, felled: Zombie[] = [];
     for (const z of state.zombies) {
       if (z.dead) continue;
       const dx = z.x - p.x, dy = z.y - p.y, d = Math.hypot(dx, dy);
@@ -410,12 +423,21 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
       const ang = Math.atan2(dy, dx);
       hurtZombie(state, z, dmg, ang, { source: 'player', melee: true, knock: ws.melee.knock, crit });
       hitAny = true;
+      if (struck) { struck.add(z); if (z.dead) felled.push(z); }
       const knock = ws.melee.knock * 0.12 * zombies.knockMul(z);
       if (!z.dead && knock > 0) {
         const nx = z.x + Math.cos(ang) * knock, ny = z.y + Math.sin(ang) * knock;
         if (phys.isFree(state, nx, ny, z.r)) { z.x = nx; z.y = ny; }
       }
       if (ws.lifesteal > 0) p.hp = Math.min(p.maxHp, p.hp + dmg * ws.lifesteal);
+    }
+    // Mandible Shears: each kill cuts through to the nearest bugs behind it (beyond the normal reach)
+    if (struck && ws.cleave) for (const dead of felled) {
+      const far = Math.hypot(dead.x - p.x, dead.y - p.y), line = Math.atan2(dead.y - p.y, dead.x - p.x);
+      const behind = state.zombies.filter(z => !z.dead && !struck.has(z) && Math.hypot(z.x - dead.x, z.y - dead.y) < 150 + z.r
+        && Math.hypot(z.x - p.x, z.y - p.y) > far - 10 && Math.abs(Math.atan2(Math.sin(Math.atan2(z.y - p.y, z.x - p.x) - line), Math.cos(Math.atan2(z.y - p.y, z.x - p.x) - line))) < 0.5)
+        .sort((a, b) => Math.hypot(a.x - dead.x, a.y - dead.y) - Math.hypot(b.x - dead.x, b.y - dead.y)).slice(0, ws.cleave);
+      for (const z of behind) { struck.add(z); hurtZombie(state, z, ws.damage, Math.atan2(z.y - p.y, z.x - p.x), { source: 'player', melee: true, knock: ws.melee.knock }); }
     }
     // swing at a fence or salvageable world object in the arc (nearest one only)
     let fence: Solid | null = null, fd = Infinity, fx = 0, fy = 0;

@@ -4,6 +4,7 @@ import {readFileSync,existsSync} from 'node:fs';
 import {join} from 'node:path';
 import {canvas,packAtlas,contactSheet,savePng,writeFile,type Canvas,type Frame} from '../lib/core';
 import {HIVE_ENEMY_SEQUENCES,HIVE_BOSS_SEQUENCES,HIVE_QUEEN_COURT_SEQUENCES} from '../../src/hive-art';
+import {hiveProps} from './props';
 type Job={id:string;name:string;kind:string;file:string;imported_frame_px?:number;in_game_radius?:number;atlas_length_px?:number;flies?:boolean;build_step:number};
 const root=process.cwd(),out=join(root,'public/assets');
 const jobs:Job[]=JSON.parse(readFileSync(join(root,'art/source/hive-pixel/prompts.json'),'utf8')).assets;
@@ -68,6 +69,12 @@ for(const job of jobs){
   }
  }
 }
+// Code-drawn props the painted sheets do not cover (art/hive/props.ts): burrow mouths, egg clusters, seals, the rift, honey.
+const props=hiveProps(),propFrames:Frame[]=[];
+for(const a of props.anims){for(const f of a.frames){add('hive_props',f.name,f.canvas);propFrames.push(f);}manifest.anims.push({key:a.key,atlas:'hive_props',frames:a.frames.map(f=>f.name),frameRate:a.frameRate,repeat:a.repeat});manifest.sprites[a.key]={atlas:'hive_props',origin:[.5,.5]};}
+for(const f of props.sprites){add('hive_props',f.name,f.canvas);propFrames.push(f);manifest.sprites[f.name]={atlas:'hive_props',origin:[.5,.5]};}
+manifest.props={frames:propFrames.length,fixtures:{burrow:{frameSize:192,radius:30},egg:{frameSize:128,radius:18}}};
+contactSheet(join(root,'art/preview/hive-props.png'),propFrames,8,'#30352e');
 if(manifest.missing.length&&!partial)throw Error(`Missing ${manifest.missing.length} sources: ${manifest.missing.join(', ')}`);
 for(const[key,frames]of groups){packAtlas(key,frames);manifest.atlases.push(key);}
 writeFile(join(out,'hive-art.json'),JSON.stringify(manifest));

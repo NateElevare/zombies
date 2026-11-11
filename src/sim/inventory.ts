@@ -168,13 +168,14 @@ export function use(state: GameState, index: number) {
   if (effect.water) p.water = Math.min(100, Math.max(0, p.water || 0) + effect.water);
   if (effect.stamina) p.stamina = Math.min(p.maxStamina || 100, Math.max(0, p.stamina || 0) + effect.stamina);
   if (effect.stopBleed) p.bleeding = 0;
+  if (effect.boost) p.jelly = Math.max(p.jelly ?? 0, effect.boost);
   if (--stack.qty <= 0) inv.slots[index] = null;
   sound(state, effect.heal ? 'pickup' : 'eat'); return true;
 }
 export function quickHeal(state: GameState) {
   const p = state.player;
   if (!p || !validInv(p.inv) || (p.hp >= p.maxHp && !p.bleeding)) return false;
-  for (const id of ['medkit', 'bandage', 'painkillers']) {
+  for (const id of ['medkit', 'royal_jelly', 'bandage', 'painkillers']) {
     if (p.hp >= p.maxHp && id !== 'bandage') continue;
     const index = p.inv.slots.findIndex(s => s?.id === id); if (index >= 0) return use(state, index);
   }

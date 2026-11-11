@@ -25,3 +25,17 @@ Held frames are `weapon_<id>` in `hive_weapons`. Origins use the brief's quarter
 The checkout contained the Hive plan and concept art, but no Hive enemy/weapon gameplay definitions when this pack was authored. These assets and animations are loaded and ready for that implementation; this delivery does not add spawning, attacks, damage, weapon statistics, or a playable Hive campaign. In-world grip/size tuning should be checked when those entities are implemented. AI-generated poses have been checked as sprite sheets, but their gameplay timing still needs that playtest.
 
 Validation: `npx vitest run tests/hive-art.test.ts` checks source coverage, all animation references, actual PNG transparency/padding, frame dimensions, and weapon/icon metadata. `npm run build` checks the game integration.
+
+## Code-drawn props (added with step 1 of the build)
+
+The gameplay needed a few things the brief did not ask for. `art/hive/props.ts` draws them in code, in the same pixel
+style, and `npm run art:hive` packs them into a sixth atlas, `hive_props` (32 frames, 9 animations; the pack is now
+504 frames and 132 animations):
+
+- `hive_burrow_0_walk|special|death|corpse` (192 px frames): a burrow mouth, erupting, caving in, rubble.
+- `hive_egg_0_walk|special|death|corpse` (128 px frames): an egg cluster, wobbling, bursting, shells.
+- `hive_rift_0..3` (256 px), `hive_seal_0` and `hive_seal_1` (192 px, sealed and withered), `hive_honey_0` (160 px),
+  `hive_lump_0..2` (48 px, near-white so the renderer tints them to each cell's glow).
+
+Burrow and egg use the enemy naming, so the zombie renderer draws them like any creature. To replace any of these
+with painted art, deliver frames under the same names and drop the matching function from `props.ts`.

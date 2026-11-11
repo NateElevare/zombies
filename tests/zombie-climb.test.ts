@@ -43,7 +43,7 @@ describe('window climbing artwork',()=>{
     const anims=JSON.parse(readFileSync('public/assets/anims.json','utf8')).filter((a:{atlas:string})=>a.atlas==='zombie_climb');
     expect(manifest.atlases).toContain('zombie_climb');expect(anims).toHaveLength(13);expect(Object.keys(atlas.frames)).toHaveLength(52);
     const image=await loadImage('public/assets/zombie_climb.png');
-    for(const type of Object.keys(zombies.VARIANTS) as ZombieType[])for(let v=0;v<zombies.VARIANTS[type];v++){
+    for(const type of (Object.keys(zombies.VARIANTS) as ZombieType[]).filter(t=>!zombies.isHiveType(t)))for(let v=0;v<zombies.VARIANTS[type];v++){
       const key=`zombie_${type}_${v}_climb`,seq=anims.find((a:{key:string})=>a.key===key),size=['brute','bloater'].includes(type)?192:128;
       expect(seq.frames).toHaveLength(4);const hashes=new Set();
       for(const name of seq.frames){

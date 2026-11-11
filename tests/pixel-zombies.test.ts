@@ -3,12 +3,13 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { loadPixelZombieFrames } from '../art/characters/pixel-zombies';
 import { ZTYPES, type ZType } from '../art/characters/zombies';
-import { VARIANTS } from '../src/sim/zombies';
+import { VARIANTS, isHiveType } from '../src/sim/zombies';
 
 describe('overhead pixel zombie assets', () => {
   it('covers every simulated variant and animation with padded, distinct raster poses', async () => {
     let total = 0;
-    for (const type of Object.keys(VARIANTS) as ZType[]) {
+    // the hive's creatures have painted sheets of their own (tests/hive-art.test.ts)
+    for (const type of (Object.keys(VARIANTS) as (keyof typeof VARIANTS)[]).filter(t => !isHiveType(t)) as ZType[]) {
       expect(ZTYPES[type].variants).toBe(VARIANTS[type]);
       for (let v = 0; v < VARIANTS[type]; v++) {
         const frames = await loadPixelZombieFrames(type, v);

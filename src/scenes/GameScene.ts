@@ -74,8 +74,8 @@ export class GameScene extends Phaser.Scene {
       const state = newArcade(); state.player.character = characterId(character); this.start(state);
     },
     newRoad: (character = preferredCharacter(), story = 'long-road') => {
-      const s = story === 'group-in-need' ? road.newGroupInNeed() : road.newRoad(characterId(character));
-      if (!s) throw new Error('Complete The Long Road to start A group in need.');
+      const s = story === 'group-in-need' ? road.newGroupInNeed() : story === 'hive-below' ? road.newHiveBelow() : road.newRoad(characterId(character));
+      if (!s) throw new Error(story === 'hive-below' ? 'Complete A group in need to start The Hive Below.' : 'Complete The Long Road to start A group in need.');
       this.start(s);
     },
     continueRoad: (story = 'long-road') => { const s = road.continueRoad(story); if (!s) return false; this.start(s); return true; },
