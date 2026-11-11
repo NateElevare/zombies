@@ -3,6 +3,7 @@
 import type { GameState } from '../sim/types';
 import * as road from '../sim/road';
 import * as bosses from '../sim/bosses';
+import * as kit from '../sim/hive-kit';
 import { CAST } from '../sim/road-data';
 import { el } from './dom';
 import { assetUrl } from '../asset-url';
@@ -50,6 +51,8 @@ export class RoadUi {
     const st = r.subtitle, showSub = playing && s.ui === null && !!st;
     this.sub.classList.toggle('hidden', !showSub);
     this.sub.classList.toggle('raised', showSub && !!bosses.engagedBoss(s));   // keep clear of the boss health bar
+    // The Hive Below: a camp has a prompt to read (rest, the lockbox) while someone is still talking: the line drops below it
+    this.sub.classList.toggle('lowered', showSub && r.story === 'hive-below' && (!!s.interact || !!s.search) && !bosses.engagedBoss(s));
     if (showSub && st) {
       const k = `${st.who}|${st.text}`;
       if (this.sub.dataset.k !== k) {
@@ -84,6 +87,12 @@ export class RoadUi {
       box.append(el('h2', '', m.title));
       box.append(el('p', 'rc-tag', m.tagline));
       const lines = el('div', 'rc-lines'); for (const l of m.intro) lines.append(this.portraitLine(l.who, l.text, l.mood)); box.append(lines);
+      if (m.handOver && r.lockbox) {
+        // The Hive Below: what went down the rope with you, and what is waiting
+        const n = kit.stored(r.lockbox), kitLine = el('p', 'rc-kit', `You carry: ${kit.carried(s)}. `);
+        kitLine.append(el('span', '', `The other ${n} stack${n === 1 ? '' : 's'} stay with Mara until the rift is shut. Down here you fight with what the hive gives you.`));
+        box.append(el('div', 'rc-k', 'DOWN THE ROPE'), kitLine);
+      }
       const obj = el('ol', 'rc-obj'); for (const o of m.objectives) obj.append(el('li', '', o.text)); box.append(el('div', 'rc-k', 'OBJECTIVES'), obj);
       box.append(el('p', 'rc-hint', `${keybinds.text('inventory', true)} backpack & gear · ${keybinds.text('heal', true)} quick heal · ${keybinds.text('tech', true)} skills · ${keybinds.text('map', true)} map · ${keybinds.text('interact', true)} use · ${keybinds.text('flashlight', true)} flashlight · walk over supplies to pick them up`));
       const b = el('button', 'big-btn', 'MOVE OUT'); b.addEventListener('click', () => go(() => road.begin(s))); box.append(b);
@@ -100,12 +109,12 @@ export class RoadUi {
       const b = el('button', 'big-btn', nextM ? `CONTINUE · ${nextM.title.toUpperCase()}` : 'CONTINUE'); b.addEventListener('click', () => go(() => road.next(s))); box.append(b);
       const q = el('button', 'btn', 'QUIT TO TITLE'); q.addEventListener('click', () => { road.next(s); this.shell?.quitToTitle(true); }); box.append(q);
     } else {
-      // The Hive Below is built in parts: this card closes the part that exists, and the save carries on when the next one lands
-      box.append(el('div', 'rc-k rc-ok', `${road.storyTitle(r.story).toUpperCase()} · ${hive ? 'PART ONE COMPLETE' : 'COMPLETE'}`));
-      box.append(el('h2', '', hive ? 'The first seal is broken.' : sequel ? 'Everyone is accounted for.' : 'You kept the promise.'));
+      // the ending of a story
+      box.append(el('div', 'rc-k rc-ok', `${road.storyTitle(r.story).toUpperCase()} · COMPLETE`));
+      box.append(el('h2', '', hive ? 'It is just mud.' : sequel ? 'Everyone is accounted for.' : 'You kept the promise.'));
       if (!hive) { const img = el('img', 'rc-vignette'); img.src = assetUrl('assets/campaign/ending.png'); img.alt = ''; box.append(img); }
       box.append(el('p', 'rc-tag', hive
-        ? 'The Marshal is dead and the Warrens are yours. Five more seals and the Queen are still below. The Granary is next: your checkpoint is kept, and Continue will pick up from here when it is built.'
+        ? 'Six seals, seven cells, one Queen. The rift is shut and North Ridge has its reservoir bed back. You keep everything you carried out, the Queen\'s Decree included.'
         : sequel ? 'Ada, Ben, Kit and Lewis are safe at North Ridge. The ground you cleared is home for four more.' : 'Four days. Nine sectors. All four of you made it to the convoy.'));
       const stats = el('div', 'rc-stats');
       for (const [k, v] of [['Total kills', String(r.totals.kills)], ['Deaths', String(r.totals.deaths)], ['Time', fmtTime(r.totals.time)], ['Level', String(s.player.level)]]) { const d = el('div'); d.append(el('b', '', v), el('span', '', k)); stats.append(d); }

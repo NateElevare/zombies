@@ -3,6 +3,8 @@
 // Runtime state lives on state.arcade.run (arcade is never saved). Called from arcade.ts; never touches survival.
 import { emit, phys, rand, sound, toast } from './core';
 import * as zombies from './zombies';
+import * as progression from './progression';
+import { bankProgress } from './augments';
 import type {
   ArcadeRun, Bullet, FirePool, GadgetId, GadgetState, GameState, Lob, PassiveId, UpgradeCard, Vec, Zombie, ZombieType,
 } from './types';
@@ -54,7 +56,8 @@ export const PASSIVES: Record<PassiveId, PassiveDef> = {
 export const GADGET_IDS = Object.keys(GADGETS) as GadgetId[];
 export const PASSIVE_IDS = Object.keys(PASSIVES) as PassiveId[];
 /** XP per kill, by zombie type. */
-export const SHARD_XP: Record<ZombieType, number> = { walker: 1, runner: 2, crawler: 2, bloater: 4, brute: 6, drone: 1, honeypot: 3, grub: 1, burrow: 4, egg: 1 };
+export const SHARD_XP: Record<ZombieType, number> = { walker: 1, runner: 2, crawler: 2, bloater: 4, brute: 6, drone: 1, honeypot: 3, grub: 1, burrow: 4, egg: 1,
+  hopper: 1, shrieker: 3, stinger: 2, spitter: 3, shieldback: 6, lurker: 5, dustwing: 2, skitterer: 2 };
 
 // Per-level tables (index = level - 1). Evolved values are separate.
 const T = {
@@ -92,7 +95,7 @@ export function mods(run: ArcadeRun) {
     reload: (1 - 0.08 * passiveLevel(run, 'mag')) * (1 - (a?.reload ?? 0)),
     maxHp: 20 * passiveLevel(run, 'kevlar') + (a?.hp ?? 0),
     magnet: 90 * (1 + 0.35 * passiveLevel(run, 'magnet')) * (1 + (a?.magnet ?? 0)),
-    dur: 1 + 0.15 * passiveLevel(run, 'fuel'),
+    dur: (1 + 0.15 * passiveLevel(run, 'fuel')) * (1 + (a?.duration ?? 0)),
   };
 }
 type Mods = ReturnType<typeof mods>;
@@ -381,7 +384,7 @@ function collect(state: GameState, run: ArcadeRun, m: Mods, dt: number) {
   if (!got) return;
   run.xp += got * (1 + (run.aug?.xp ?? 0));
   sound(state, 'pickup', p.x, p.y, 0.3);
-  while (run.xp >= xpNeed(run.level)) { run.xp -= xpNeed(run.level); run.level++; run.pending++; }
+  while (run.xp >= xpNeed(run.level)) { run.xp -= xpNeed(run.level); run.level++; run.pending++; p.hp=Math.min(p.maxHp,p.hp+(run.aug?.levelHeal||0)); }
   if (run.pending > 0 && !run.offer) openPicker(state, run);
 }
 function openPicker(state: GameState, run: ArcadeRun) {
@@ -400,10 +403,10 @@ export function evolvable(run: ArcadeRun): GadgetId[] {
 export function candidates(run: ArcadeRun): UpgradeCard[] {
   const out: UpgradeCard[] = evolvable(run).map((id) => ({ kind: 'evolve', id, level: MAX_LEVEL }));
   for (const g of run.gadgets) if (g.level < MAX_LEVEL) out.push({ kind: 'gadget', id: g.id, level: g.level + 1 });
-  if (run.gadgets.length < MAX_GADGETS) for (const id of GADGET_IDS) if (!gadget(run, id)) out.push({ kind: 'gadget', id, level: 1 });
+  if (run.gadgets.length < MAX_GADGETS + (run.aug?.gadgetSlots || 0)) for (const id of GADGET_IDS) if (!gadget(run, id)) out.push({ kind: 'gadget', id, level: 1 });
   if (!run.gadgets.length) return out;   // first pick is always a gadget
   for (const p of run.passives) if (p.level < MAX_LEVEL) out.push({ kind: 'passive', id: p.id, level: p.level + 1 });
-  if (run.passives.length < MAX_PASSIVES) for (const id of PASSIVE_IDS) if (!passiveLevel(run, id)) out.push({ kind: 'passive', id, level: 1 });
+  if (run.passives.length < MAX_PASSIVES + (run.aug?.passiveSlots || 0)) for (const id of PASSIVE_IDS) if (!passiveLevel(run, id)) out.push({ kind: 'passive', id, level: 1 });
   return out;
 }
 export function makeOffer(state: GameState): UpgradeCard[] {
@@ -425,7 +428,7 @@ export function makeOffer(state: GameState): UpgradeCard[] {
   if (offer.length < 3) offer.push({ kind: 'heal', id: 'heal', level: 0 });
   return offer;
 }
-export function goldValue(state: GameState) { return 250 * Math.max(1, state.arcade?.wave ?? 1); }
+export function goldValue(state: GameState) { return Math.round(250 * Math.max(1, state.arcade?.wave ?? 1) * (1+(state.arcade?.run?.aug?.salvage||0))); }
 
 function apply(state: GameState, run: ArcadeRun, c: UpgradeCard) {
   const p = state.player;
@@ -446,6 +449,7 @@ function apply(state: GameState, run: ArcadeRun, c: UpgradeCard) {
     state.shake = Math.max(state.shake || 0, 5);
   } else if (c.kind === 'gold') {
     const v = goldValue(state); state.arcade!.score += v; run.gold += v;
+    bankProgress(state);
     toast(state, `+${v} SCORE`, '#ffcf4a');
   } else {
     p.hp = Math.min(p.maxHp, p.hp + p.maxHp * 0.5);
@@ -487,17 +491,17 @@ export function freePicks(state: GameState, n: number) {
 export function grantXp(state: GameState, amount: number) {
   const run = runOf(state); if (!run) return;
   run.xp += amount;
-  while (run.xp >= xpNeed(run.level)) { run.xp -= xpNeed(run.level); run.level++; run.pending++; }
+  while (run.xp >= xpNeed(run.level)) { run.xp -= xpNeed(run.level); run.level++; run.pending++; state.player.hp=Math.min(state.player.maxHp,state.player.hp+(run.aug?.levelHeal||0)); }
   if (run.pending > 0 && !run.offer && state.screen === 'playing') openPicker(state, run);
 }
 
 // ------------------------------------------------------------------ per-tick hooks (called from stepArcade)
-/** After player.update: arcade max HP from Kevlar (survival tech sync is disabled in arcade; there is no tech here). */
+/** Keep permanent skills, augments and this run's Kevlar on the same HP calculation. */
 export function syncPlayer(state: GameState) {
   const run = runOf(state); if (!run) return;
   const p = state.player as GameState['player'] & { syncT?: number };
   p.syncT = 1e9;
-  p.maxHp = 100 + mods(run).maxHp;
+  p.maxHp = progression.playerMods(state).maxHp;
 }
 
 const scaledBullets = new WeakSet<Bullet>();

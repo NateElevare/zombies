@@ -18,17 +18,17 @@ export type Place = SiteId | 'camp' | 'entry' | 'prevCamp';
 export type Weights = Partial<Record<ZombieType, number>>;
 
 export type ObjectiveDef =
-  | { kind: 'reach'; at: Place; text: string; r?: number; line?: Line }
+  | { kind: 'reach'; at: Place; text: string; r?: number; line?: Line; /** The Hive Below: seconds to get there, or the mission restarts (the run back to the surface) */ limit?: number }
   | { kind: 'pickup'; at: Place; item: string; qty?: number; text: string; line?: Line }
   | { kind: 'clear'; at: Place; count: number; types?: Weights; text: string; r?: number; indoor?: boolean; line?: Line }
-  | { kind: 'holdout'; at: Place; seconds: number; every: number; count: number; types?: Weights; text: string; line?: Line; /** The Hive Below: every wave climbs out here, in plain sight, and never loses your trail */ from?: Place }
+  | { kind: 'holdout'; at: Place; seconds: number; every: number; count: number; types?: Weights; text: string; line?: Line; /** The Hive Below: every wave climbs out here, in plain sight, and never loses your trail */ from?: Place; /** The Hive Below: Ada, Ben, Kit and Lewis hold the position with you */ squad?: boolean }
   /** The Hive Below: collapse the burrows of this place (they are on the map from the start of the mission). */
-  | { kind: 'burrows'; at: Place; count: number; text: string; line?: Line }
+  | { kind: 'burrows'; at: Place; count: number; text: string; line?: Line; /** what stands there instead of burrow mouths: brood combs (hatch Stingers), silk cocoons (supplies or a Lurker), corpse heaps (hatch Grubs) */ fixture?: 'comb' | 'cocoon' | 'heap' }
   | { kind: 'interact'; at: Place; label: string; text: string; hold?: number; line?: Line; offset?: { x: number; y: number } }
   | { kind: 'rescue'; at: Place; text: string; line?: Line }
   | { kind: 'escort'; at: Place; text: string; r?: number; line?: Line }
   | { kind: 'boss'; at: Place; boss: BossId; text: string; hp: number; line?: Line; /** a return match: 2x health, 2.5x damage */ second?: boolean; /** spawn in the open, out of sight, instead of inside the site's building */ outdoors?: boolean; /** The Hive Below: it is already standing in its arena, waiting */ fixed?: boolean }
-  | { kind: 'camp'; text: string; line?: Line };
+  | { kind: 'camp'; text: string; line?: Line; /** hold E at the camp to finish (the label of the prompt): time to sort your kit first */ rest?: string };
 
 export interface CacheDef { at: Place; items: { id: string; qty?: number }[]; spread?: number }
 export interface MissionDef {
@@ -48,6 +48,22 @@ export interface MissionDef {
   checkpoint?: SiteId | 'entry' | 'exit';
   /** The Hive Below: columns sent from the burrows near the player (sim/hive.ts), and wanderers placed at the start. */
   swarm?: import('./hive').SwarmDef; scouts?: number;
+  /** The Hive Below: health and damage multipliers for everything in this mission (default hive.TOUGH). */
+  tough?: import('./hive').Toughness;
+  /** The Hive Below: you start this mission with your belt only (sim/hive-kit.ts); the rest waits in the lockbox */
+  handOver?: boolean;
+  /** The Hive Below: the checkpoint camp of this mission is at this site, not at the cell's door */
+  campSite?: SiteId;
+  /** The Hive Below: the mission starts at this site instead of the last camp (the way back up to the Breach) */
+  startAt?: SiteId;
+  /** The Hive Below: the last mission is in daylight (sim/game.ts darkness) */
+  dawn?: boolean;
+  /** The Hive Below: the lockbox with everything you handed over is at this mission's camp (the very end) */
+  lockbox?: boolean;
+  /** The Hive Below: what the cell itself does to you (sim/hive-bugs.ts hazards) */
+  hazard?: import('./hive-bugs').Hazard;
+  /** The Hive Below: Lurkers standing against the walls of the cell from the start */
+  lurkers?: number;
 }
 
 const WALKERS: Weights = { walker: 7, crawler: 2, runner: 1 };

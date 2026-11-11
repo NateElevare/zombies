@@ -12,6 +12,7 @@ import { BOSSES, type BossId } from '../sim/bosses';
 import { bossFrameSize, bossPrefix } from '../boss-art';
 import { isHiveType } from '../sim/zombies';
 import { hiveDesignR, hivePrefix } from './hive';
+import { hiveMaterial, hiveMaterialZone } from './hive-materials';
 
 // ---------------------------------------------------------------- particles
 const enum Layer { Floor, Lit, Glow }
@@ -70,7 +71,7 @@ const GIB = [0x5a0a0a, 0x7a1612, 0x40080a, 0x6a2a1e];
 const ICHOR = [0xb7e04a, 0x8fb52a, 0xd4ef89, 0x6f8f1f], CHITIN = [0x5a3a1c, 0x7a5226, 0x3a2410, 0x8fb52a];
 const DEBRIS = [0x3a3632, 0x4e4842, 0x2a2622, 0x5a4a3a];
 
-interface Dying { on: boolean; spr: Phaser.GameObjects.Image; t: number; frames: string[] | null; atlas: string; corpse: string | null; x: number; y: number; ang: number; sc: number; dur: number }
+interface Dying { on: boolean; spr: Phaser.GameObjects.Image; t: number; frames: string[] | null; atlas: string; corpse: string | null; x: number; y: number; ang: number; sc: number; dur: number; collapse?: boolean }
 
 export class Fx {
   private scene: Phaser.Scene;
@@ -271,7 +272,7 @@ export class Fx {
         if (ev.amount >= 2 || this.rnd() < 0.35) this.bloodPool(ev.x + Math.cos(ev.angle) * 10, ev.y + Math.sin(ev.angle) * 10, 0.45 + Math.min(1.1, ev.amount * 0.12), ev.angle);
         break;
       }
-      case 'zombieKilled': this.killed(ev.x, ev.y, ev.angle, ev.type, ev.variant, ev.boss, ev.radius); break;
+      case 'zombieKilled': this.killed(ev.x, ev.y, ev.angle, ev.type, ev.variant, ev.boss, ev.radius, state, ev.conduit); break;
       case 'explosion': this.explosion(ev.x, ev.y, ev.radius || 120); break;
       case 'playerHurt': this.shake += 5 + Math.min(9, ev.amount * 0.35); this.post.onHurt(ev.amount); break;
       case 'structureDestroyed': {
@@ -297,7 +298,7 @@ export class Fx {
     else d.img.setTexture(TX.drop).setScale(size).setTint(0x4a0808).setRotation(this.rnd() * 6.28);
     d.a = 0.9; d.img.setAlpha(0.9);
   }
-  private killed(x: number, y: number, ang: number, type: ZombieType, variant: number, boss?: BossId, radius?: number) {
+  private killed(x: number, y: number, ang: number, type: ZombieType, variant: number, boss?: BossId, radius?: number, state?: GameState, conduit = false) {
     const s = this.art.scale;
     const t = TYPES[type] || TYPES.walker;
     const design: Record<string, number> = { walker: 15, runner: 13, crawler: 13, brute: 24, bloater: 20 };
@@ -315,8 +316,17 @@ export class Fx {
     d.on = true; d.t = 0; d.x = x; d.y = y; d.ang = ang; d.sc = sc;
     d.frames = this.art.seq(pre + 'death');
     d.corpse = bossFrames ? pre + 'death_2' : this.art.has(pre + 'corpse_0') ? pre + 'corpse_0' : null;
+    d.collapse = false;
+    if (fixture && state?.road?.world.hive) {
+      const z = hiveMaterialZone(state.road.world.hive, x, y), live = conduit ? 'hive_queen_conduit_damaged' : hiveMaterial(z, type), rubble = conduit ? 'hive_queen_conduit_destroyed' : hiveMaterial(z, 'wall_1');
+      if (this.art.has(live) && this.art.has(rubble)) {
+        const b = this.art.manifest.hiveEnvironment.frames[live].bounds;
+        d.sc = (radius || t.r) * 3 / Math.max(b.w, b.h);
+        d.frames = [live, live, rubble, rubble]; d.corpse = rubble; d.collapse = true;
+      }
+    }
     d.dur = d.frames ? d.frames.length / (bossFrames ? 6 : bug ? 10 : 12) : 0.4;
-    if (d.frames) { d.atlas = this.art.atlasOf(d.frames[0])!; d.spr.setTexture(d.atlas, d.frames[0]).setScale(sc).clearTint(); }
+    if (d.frames) { d.atlas = this.art.atlasOf(d.frames[0])!; d.spr.setTexture(d.atlas, d.frames[0]).setScale(d.sc).clearTint(); }
     else d.spr.setTexture(TX.ring).setScale(t.r / 52).setTint(0x5a6a48);
     d.spr.setVisible(true).setPosition(x, y).setRotation(ang).setAlpha(1);
     if (fixture) return;   // a burrow caves in and an egg cluster bursts: their own effect ('hive' events), no gore
@@ -444,6 +454,7 @@ export class Fx {
     else if (d.frames) c.img.setTexture(d.atlas, d.frames[d.frames.length - 1]).setScale(d.sc).setRotation(d.ang);
     else c.img.setTexture(TX.ring).setScale(d.spr.scaleX).setRotation(d.ang).setTint(0x3a4030);
     c.a = 1;
+    if (d.collapse) { c.img.setScale(d.sc * .7).setTint(0x68605a); c.a = .8; }
   }
 
   // ---------------------------------------------------------------- per frame
@@ -509,6 +520,7 @@ export class Fx {
         const f = d.frames[Math.min(d.frames.length - 1, Math.floor((d.t / d.dur) * d.frames.length))];
         if (d.spr.frame.name !== f) d.spr.setFrame(f);
       } else d.spr.setScale(d.spr.scaleX * (1 - dt * 0.3));
+      if (d.collapse) d.spr.setScale(d.sc * (1 - .3 * d.t / d.dur)).setTint(0x9a8b79);
     }
     // decal lifetimes only advance while the game is running (not in menus)
     const ageDt = this.simRunning ? dt : 0;

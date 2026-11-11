@@ -3,7 +3,7 @@
 // Everything is drawn at lerp(prev, cur, alpha) with shortest-arc angle interpolation.
 import * as Phaser from 'phaser';
 import type { GameState, Zombie, WeaponClass } from '../sim/types';
-import { weaponClass } from '../sim/combat';
+import { weaponClass, playerWeaponVisual } from '../sim/combat';
 import { lookOf } from '../sim/items';
 import { weaponStats } from '../sim/progression';
 import { darkness } from '../sim/game';
@@ -11,6 +11,9 @@ import { NumKind } from './vfx-numbers';
 import { TYPES, isHiveType } from '../sim/zombies';
 import { ALARM_TIME, GRUB_GROWS, HATCH_TIME, type Bug } from '../sim/hive';
 import { hiveDesignR, hivePrefix } from './hive';
+import { hiveMaterial, hiveMaterialZone } from './hive-materials';
+import { isQueenConduit, queenConduitFrame } from '../hive-conduits';
+import type { HBug } from '../sim/hive-bugs';
 import { characterFrame } from '../characters';
 import type { Art } from './art';
 import { TX } from './art';
@@ -178,8 +181,7 @@ export class Actors {
     this.pLegs.setVisible(hasLegs).setPosition(x, y).setRotation(this.legAngle).setScale(s); // art has a full stride (figureScale 1.3 baked in)
 
     // torso pose
-    const stack = p.inv.equip[p.active];
-    const id = stack ? stack.id : null;
+    const id = playerWeaponVisual(p);
     const cls: WeaponClass = id ? weaponClass(id) : 'unarmed';
     const pose = POSE[cls] || 'unarmed';
     let seqKey = `player_torso_${pose}_idle`, u = 0;
@@ -312,7 +314,7 @@ export class Actors {
       const climbing = state.mode === 'road' && z.windowClimb && v.climb ? z.windowClimb : null;
       const ang = climbing ? (climbing.axis === 'x' ? (climbing.direction > 0 ? 0 : Math.PI) : climbing.direction > 0 ? Math.PI / 2 : -Math.PI / 2) : angleLerp(z.prevAngle, z.angle, alpha);
       const t = TYPES[z.type] || TYPES.walker;
-      const sc = s * z.r / (v.designR || DESIGN_R[z.type] || 15);
+      let sc = s * z.r / (v.designR || DESIGN_R[z.type] || 15);
       const spd = Math.hypot(z.vx, z.vy);
       const fps = v.fps || (art.manifest.characterInfo?.zombies?.[z.type]?.walkFrameRate) || 8;
       const fixture = z.type === 'burrow' || z.type === 'egg', bug = z as Bug;
@@ -333,6 +335,19 @@ export class Actors {
         else if (z.type === 'honeypot') { if (spd <= 2) f = sp[Math.floor(state.time * 4 + v.phase) % sp.length]; }      // standing: the honey sloshes
         else if (z.type === 'grub') { if ((bug.age ?? 0) > GRUB_GROWS - 1.2) f = at(((bug.age ?? 0) - (GRUB_GROWS - 1.2)) / 1.2); }   // about to grow up
         else if (z.type === 'drone') { if ((bug.alarm ?? 0) > ALARM_TIME - 0.5 && !z.horde) f = at((ALARM_TIME - (bug.alarm ?? 0)) / 0.5); }   // it has just been marked: antennae up
+        // the cells beyond the Warrens: sim/hive-bugs.ts says how far through its own moment the creature is (a leap, a scream, a spray, a charge, a lunge)
+        else if (typeof (bug as HBug).sp === 'number' && (bug as HBug).sp! >= 0) f = at((bug as HBug).sp!);
+      }
+      // Fixtures share each cell's authored wall material. Size against painted bounds so
+      // a large source canvas never makes a burrow or egg nursery larger than its hit area.
+      if (fixture && state.road?.world.hive) {
+        const hf = isQueenConduit(z) ? queenConduitFrame(z, state.time) : hiveMaterial(hiveMaterialZone(state.road.world.hive, z.x, z.y), z.type);
+        if (art.has(hf)) {
+          f = hf;
+          const b = art.manifest.hiveEnvironment.frames[hf].bounds;
+          const pulse = z.type === 'egg' && (bug.hatchT ?? 0) > 0 ? 1 + .035 * Math.sin(state.time * 24) : z.type === 'burrow' && (bug.eruptT ?? 99) < .7 ? 1 + .025 * Math.sin(state.time * 30) : 1;
+          sc = z.r * 3 / Math.max(b.w, b.h) * pulse;
+        }
       }
       const spr = v.spr;
       // hit pop: a quick squash-and-stretch on impact
@@ -341,7 +356,11 @@ export class Actors {
       else spr.setScale((z.r / 52) * pop);
       // shamble: tiny lateral body sway on top of the frames
       const wob = f && !climbing && !fixture ? Math.sin(v.phase * 0.8) * 0.05 : 0;
-      spr.setPosition(x, y).setRotation(ang + wob);
+      // a Hopper in mid-leap and anything on the wing are drawn off the floor; a Lurker against the rock is almost not there
+      const up = bug ? Number((z as HBug).lift) || 0 : 0, seen = typeof (z as HBug).alpha === 'number' ? Math.max(0, Math.min(1, (z as HBug).alpha!)) : 1;
+      if (up > 0 && f) spr.setScale(spr.scaleX * (1 + 0.28 * up));
+      spr.setPosition(x, y - up * 22).setRotation(ang + wob).setAlpha(seen);
+      v.shadow.setAlpha(0.5 * seen);
       if (fixture) { spr.setDepth(D.floorObj); v.shadow.setVisible(false); } else if (spr.depth !== D.zombie) { spr.setDepth(D.zombie); v.shadow.setVisible(true); }
       if (v.hitT > 0.09) spr.setTintMode(Phaser.TintModes.FILL).setTint(0xffffff);
       else if (v.hitT > 0) spr.setTintMode(Phaser.TintModes.MULTIPLY).setTint(0xff7a70);
@@ -356,7 +375,7 @@ export class Actors {
       } else if (v.flash.visible) v.flash.setVisible(false);
       v.shadow.setPosition(x + 3, y + 4).setScale((z.r * 2.7) / 128);
       // health bar once damaged (as in the prototype): dark backing, red->yellow->green fill
-      if (z.hp < z.maxHp && z.hp > 0) {
+      if ((isQueenConduit(z) || z.hp < z.maxHp) && z.hp > 0) {
         const f = Math.max(0, Math.min(1, z.hp / z.maxHp)), bw = Math.max(26, z.r * 2.2), bh = 4;
         const bx = x - bw / 2, by = y - z.r - 14;
         hb.fillStyle(0x000000, 0.7).fillRect(bx - 1, by - 1, bw + 2, bh + 2);

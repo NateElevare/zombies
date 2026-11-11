@@ -23,10 +23,12 @@ import { storyProject, storyUnproject, storyBounds, STORY_ZOOM, storyEffectOffse
 import { isAngledStory } from '../story-mode';
 import { RoadRender } from './road';
 import { HiveRender } from './hive';
+import { HiveArmsRender } from './hive-arms';
 
 class Renderer implements RendererLike {
   private road: RoadRender;
   private hive: HiveRender;
+  private hiveArms: HiveArmsRender;
   private story: StoryView;
   private angled = false;
   private projectedView = {x:0,y:0,w:0,h:0,zoom:1};
@@ -65,6 +67,7 @@ class Renderer implements RendererLike {
     this.story = new StoryView(scene,this.art);
     this.road = new RoadRender(scene);
     this.hive = new HiveRender(scene, this.art);
+    this.hiveArms = new HiveArmsRender(scene);
     this.light.setVisible(false);
     (window as any).__render = this;
     this.warmUp();
@@ -108,7 +111,7 @@ class Renderer implements RendererLike {
     this.light.setVisible(true);
   }
   detach() {
-    this.road.clear(); this.hive.clear();
+    this.road.clear(); this.hive.clear(); this.hiveArms.clear();
     this.story.clear();
     this.state = null;
     this.ground.detach();
@@ -198,6 +201,7 @@ class Renderer implements RendererLike {
     this.bosses.draw(state, alpha, dt, v);
     this.road.draw(state, v, this.time);
     this.hive.draw(state, v, this.time);
+    this.hiveArms.draw(state, v, this.time);
     const t4 = performance.now();
     this.fx.simRunning = state.screen === 'playing' && !state.paused && state.ui === null;
     this.fx.update(v, dt);

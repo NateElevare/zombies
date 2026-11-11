@@ -390,9 +390,9 @@ Numbers worth knowing when playing it (all in `src/sim/hive.ts` and `hive-data.t
 
 | What | Value | Where |
 |---|---|---|
-| Live bugs the hive will keep at most | 120 (`SWARM_CAP`) | `hive.ts` |
+| Live bugs the hive will keep at most | 240 (`SWARM_CAP`; 120 until Nate's second play) | `hive.ts` |
 | Warrens: bugs the burrows keep up, seconds between columns, column size | 60, 20 s (13 s at the story's pressure of 1.5), 8 to 14 | mission `swarm` in `hive-data.ts` |
-| Breach hold-out | 60 s, a wave of 7 every 6 s, from the rift | `hive-data.ts` |
+| Breach hold-out | 60 s, a wave of 28 every 6 s, from the rift (7 until Nate's second play) | `hive-data.ts` |
 | Burrow health, egg cluster health | 260, 45 | `zombies.ts` `TYPES` |
 | Honey pool | radius 62 px, 7 s, half speed for you and for bugs | `hive.ts` |
 | Corrosion (Sprayer) | up to 6 stacks, 2 damage per stack twice a second, 4 s | `zombies.ts` |
@@ -415,3 +415,224 @@ Tests: `tests/hive.test.ts` (map connectivity and seals, the unlock and carry-ov
 missions, each swarm behaviour, the Marshal's moves, both weapons, the cost of 200 bugs) and `tests/hive-art.test.ts`.
 
 Not done yet: steps 2 to 4. Nothing in the Warrens has been balanced by play, only by arithmetic.
+
+### 2026-11-11, after Nate's first play: backpack room
+
+- Ammunition and healing items stack three times as high (9mm and 5.56 to 720, 12 gauge 360, .357 and .308 540, ichor 1,200,
+  mints 120; bandages and painkillers 60, medkits and royal jelly 30). `src/sim/items.ts`.
+- A checkpoint saved under the old limits is folded together when it loads (`inventory.compact`, called from
+  `road.ts` `restorePlayer`), so a full backpack gets its room back on Continue without losing anything.
+- The inventory screen has tabs over the backpack: ALL, WEAPONS & GEAR, AMMO, HEALING (and OTHER when something fits
+  none of them). They are views of the one backpack, not extra space. `src/ui/overlays.ts` `backpack()`.
+
+### 2026-11-11, after Nate's first play: fewer drops from kills
+
+Nate found the drops in the hive far too high. The two earlier stories were not changed (4.5% ammunition and 2% a
+bandage per kill, as before); the hive had added ichor on 30% of kills on top of that. Now, per bug killed: 3% ichor
+(12 to 20), 1.5% ordinary ammunition, 0.7% a bandage, and a kill pays out one thing at most (`ICHOR_DROP`, `AMMO_DROP`,
+`BANDAGE_DROP` in `src/sim/hive.ts`). Egg clusters: 25% ichor, 8% royal jelly. Burrows (24 to 36 ichor) and bosses are
+unchanged. This departs from the plan's "the more they swarm, the more you can shoot": the Sprayer now lives on
+collapsed burrows, the hive's crates and the camps rather than on kills.
+
+### 2026-11-11, after Nate's first play: tougher bugs
+
+You arrive with upgraded weapons, skills and a lot of ammunition, so everything in the hive now has **1.5 times the
+health and 1.3 times the damage** of its base numbers: Drone 36 health and 9 a bite, Honeypot 113 and 13, Grub 18 and 5,
+burrow 390, the Marshal 7,500 with every attack 30% harder. Egg clusters stay at 45. One dial: `TOUGH` in
+`src/sim/hive.ts`; a mission can set its own with `tough` in `hive-data.ts` (later cells will want more).
+
+### 2026-11-11, after Nate's first play: a skill tree for the insect weapons
+
+The K screen has an eighth tree in The Hive Below, **Hive Weapons** (nine perks, skill points only), and the other modes
+never show it. It upgrades every weapon marked `tree: 'hive'` in `src/sim/combat.ts` (the Formic Sprayer and the
+Mandible Shears today; the nine weapons of steps 2 to 4 join it), **on top of the tree of the weapon's class**: the
+Sprayer still takes the SMG tree and the Shears the Melee tree (Nate's choice after trying it).
+
+| Perk | What it does | Cost | Needs |
+|---|---|---|---|
+| Ripe Ichor I | +15% damage with insect weapons | 1 | |
+| Swollen Tank | Formic Sprayer: +30 to a tank | 1 | Ripe Ichor I |
+| Stronger Acid | Corrosion burns 50% harder | 1 | Ripe Ichor I |
+| Longer Jaws | Mandible Shears: reach +15%, arc +25% | 1 | Ripe Ichor I |
+| Ripe Ichor II | +20% damage | 1 | Swollen Tank |
+| Deep Burn | Corrosion stacks 3 higher and lasts 2 s longer | 2 | Stronger Acid |
+| Clean Through | Shears cut through to 2 more bugs, knockback +50% | 2 | Longer Jaws |
+| Harvester | Ichor from kills twice as often; burrows and eggs give half again as much | 3 | Ripe Ichor II, Deep Burn |
+| Queen's Venom | +25% damage, 10% chance of double damage | 3 | Deep Burn, Clean Through |
+
+The tree is data in `src/sim/progression.ts` (`"id": "hive"`); `perkSum` reads the perks that act outside the weapon's
+own numbers (corrosion in `zombies.ts`, ichor in `hive.ts`).
+
+### 2026-11-11, after Nate's second play: down the rope with your belt, and the lockbox
+
+The weapons carried over from the first two stories still trivialised the hive, so the old kit now stays on the
+surface for one mission and comes back as a choice.
+
+**The hand-over.** The way into the hive is a rope, and Mara needs the long guns to hold the dam. When the Warrens
+start (`handOver: true` on the mission in `src/sim/hive-data.ts`), `handOver()` in `src/sim/hive-kit.ts` leaves you:
+
+- whatever is equipped except the primary: the sidearm (with its level), the melee weapon, helmet, vest and backpack
+- **300 rounds** for that sidearm (if you have fewer, Mara makes up the difference)
+- **half your bandages**, rounded your way
+- your level, skill points and skills, and anything that came out of the hive (ichor, royal jelly, insect weapons)
+
+Everything else goes into the lockbox: the primary with the rounds in its magazine, every other weapon, all other
+ammunition, medkits, painkillers, spare armour, and whatever was still lying on the reservoir bed. An empty holster is
+filled from the pack, or with a pistol if there is none.
+
+**Choosing your belt.** The Breach now ends with a held key at the camp ("Hand over the long guns and rest"), not the
+moment you walk in. Mara says what the rope takes and a banner repeats it, so there is time to open the inventory and
+put the handgun and the melee weapon you want on your belt. The Warrens' briefing card lists what you carry.
+
+**The Warrens with a handgun.** The supply crates hold rounds for the sidearm (`ammo_sidearm` in a cache means
+"whatever the handgun fires", counted in pistol magazines), the nooks hold no guns and no other calibre, and a kill
+that drops ammunition drops it for the sidearm. The Formic Sprayer goes straight into the empty primary slot when you
+pick it up. Toughness and the swarm are unchanged: this is meant to be the struggle.
+
+**The lockbox.** When the Marshal dies and the camp at the seal is made, the lockbox comes down the rope (banner,
+steel box beside the tent, label). E opens it as a two-way transfer with your equipment shown beside the backpack:
+click to move a stack across, right-click a stored weapon or armour to put it on, click something you wear to take it
+off. The camp then waits for a held key ("Rest at the camp") so you can sort first. From then on the lockbox is at the
+camp you set out from and at each camp you make, and what you leave in it stays there. It is part of the checkpoint
+(`PlayerSnapshot.lockbox`), so a restart puts both the belt and the box back as they were, and it is in the save.
+
+A save that is already inside the Warrens is stripped the same way the next time it loads. A save that finished the
+Warrens before this existed gets the box with everything in it at the start of the next mission.
+
+Dials: `SIDEARM_ROUNDS` and `LOCKBOX_SLOTS` in `hive-kit.ts`; `handOver` and the `rest` label of a camp objective in
+`hive-data.ts`. Not measured: how hard the Warrens are with an unskilled handgun. On paper a base pistol has enough
+rounds for the scouts, the three burrows and the Marshal (with the Sprayer), but not for standing near live burrows;
+if it is too much, lower `swarm` or set `tough` on the Warrens.
+
+### 2026-11-11, after Nate's second play: the opening fight is four times the size
+
+The hold-out at the dam was underwhelming with a full kit, and it is now the last fight with everything you own, so it
+sends **28 Drones every 6 seconds instead of 7**: about 280 in the minute, one unbroken column out of the rift (a
+column climbs out at one bug every 0.18 s, so a wave of 28 takes five of the six seconds). Still 60 seconds. The cap of
+240 alive (`SWARM_CAP`, doubled the same day at Nate's request) holds a wave back when you fall behind, so a weaker kit is pressed, not buried. Whatever is
+still alive when the minute ends has to be killed before you can rest at the camp. One number: `count` on the
+hold-out in `hive-data.ts`.
+
+### Steps 2 to 4, built 2026-11-11: the six cells beyond the Warrens, the Queen and the way back up
+
+Nate played the Breach and the Warrens twice and asked for the rest in one go. The campaign is now ten missions:
+The Water Is Gone, Follow the Column, **The Choir** (Granary, Famine), **Paper Walls** (Paper Hive, Matriarch Vespa),
+**Pressure** (Boiling Galleries, Goliath), **Lights Out** (Lantern Deep, the Prioress), **What They Keep** (Rot Cellar,
+the Carrion Lord), **Six Seals** (Royal Cell), **The Queen**, **Daylight**. A save that finished the Warrens carries on
+with the Granary.
+
+**Where things are.**
+
+| What | File |
+|---|---|
+| Missions, dialogue, supplies, per-cell toughness and swarm | `src/sim/hive-data.ts` |
+| The eight new insects, venom and dust on you, the two cell hazards | `src/sim/hive-bugs.ts` |
+| The nine new weapons | `src/sim/hive-arms.ts` (numbers in `combat.ts` WEAPONS, items in `items.ts`) |
+| The six new bosses | `src/sim/hive-bosses.ts` (numbers in `bosses.ts` BOSSES) |
+| Mission stops, fixture spots, vents, Lurker spots, measured off the carved map | `src/sim/hive-sites.ts` |
+| Lures, fly clouds and thrown things on screen | `src/render/hive-arms.ts` |
+| Tests | `tests/hive-cells.test.ts` (38), and the ten-mission playthrough in `tests/hive.test.ts` |
+
+The map builder (`hive-world.ts`) was not changed: another tool is repainting the cave and its shape at the moment, so
+everything new measures the map instead of editing it.
+
+**Insects** (numbers as in the table above; all take the cell's toughness).
+
+| Insect | What it does in the game |
+|---|---|
+| Hopper | Leaps 130 to 290 px to land beside you, half a second in the air, every 2.5 s. Can be shot in the air. |
+| Shrieker | Hangs back at 400 px. A 1.2 s wind-up (marked), then every bug within 900 px comes for you 25% faster for 6 s. |
+| Stinger | On the wing: honey does not slow it. Each sting is a venom stack, 3 a second for 4 s, up to three. |
+| Spitter | Plants its feet inside 240 px, shows the cone for 0.6 s, cannot turn, sprays, leaves a 2 s puddle. |
+| Shieldback | Shots to its front do 20%. Fire, blasts, the Mandible Shears and four stacks of corrosion ignore the plate. Charges in a marked line at 300. |
+| Lurker | Stands against the rock at 10% opacity and does not move until your beam is on it or you are within 170 px. Lunges at 320; a miss leaves it open for 1.5 s. |
+| Dustwing | Comes to your lamp from 900 px. Lamp off: it loses you in 2 s. A bite, or dying within 120 px, dusts the lamp: beam 40% shorter for 6 s. |
+| Skitterer | Runs sideways out of your beam. One in three gets back up after 2 s at half health, once, unless it burned, was blown apart or died to acid. |
+| Grub | Now grows into an adult of the cell it is in (it was always a Drone). |
+
+**Weapons.** All take the Hive tree and the tree of their class. The heavier guns cost more than one ichor a round
+(`ammoPer`).
+
+| Weapon | Slot, source | In the game |
+|---|---|---|
+| Locust Repeater | Primary, Famine | 14 damage, 40 a drum. Each hit hops to two more bugs within 140 px at 60%. |
+| Needler | Primary, found in the Paper Hive | 60 damage, range 1,100, through three bugs, 30 venom over 4 s each. 4 ichor a needle, 8 a magazine. |
+| The Vespiary | Sidearm, Vespa | Homing hornets, 12 damage. Holds 24, breeds 2 a second while holstered, never reloads. |
+| Bombardier | Primary, found in the Galleries | Nine pellets out to 260 px, sets alight, shoves back. 8 ichor a shot, 5 shots. |
+| Hornbreaker | Melee, Goliath | 110 damage, 1 s. Every swing sends a shock line 300 px forward: half damage and 1.1 s flat on their backs. |
+| Lure Lantern | Sidearm, found in the Lantern Deep | Lobbed. Every ordinary bug within 500 px goes for it for 6 s (and does not bite you on the way), then 120 damage. 15 ichor a lure, carries 6. |
+| Mantis Scythes | Melee, the Prioress | 48 damage, 0.26 s, wide. Steps you forward 22 px, double damage from behind, 4% of damage back as health. |
+| Carrion Hive | Primary, the Carrion Lord | Lobbed pod: a cloud 105 px wide for 6 s at 25 a second; what dies in it bursts for 30 on its neighbours. 25 ichor a pod, 3 pods. |
+| Queen's Decree | Sidearm, the Queen | A dart. Bugs within 450 px attack the marked bug for 6 s. A marked boss takes 25% more damage. 10 ichor a dart. |
+| Carapace Vest | Body, a crate in the Galleries | 33% (Military Vest 30%). |
+
+**Bosses.** Every special is marked on the floor before it lands, and every one rages below half health.
+
+| Boss | Fight |
+|---|---|
+| Famine, 4,500 | Skyfall: leaps out of sight (cannot be hit), a marked circle, a shockwave, then stuck for 1.2 s. Swarm front: a marked lane across the cavern, and six Hoppers. Rage: three leaps in a row. |
+| Matriarch Vespa, 5,200 | Strafing run down a marked lane firing stingers sideways. Three venom globs. Hatch: three comb cells that release four Stingers each after 5 s unless destroyed; she hovers still for 2.6 s. Rage: she lands and adds a dash. |
+| Goliath, 7,500 | Front does 15%. Ram: a miss buries the horn in the rock, stuck 2.5 s, double damage. A scalding cone behind it if you stand there. A line of six eruptions. Rage: stuck only 1.6 s. |
+| The Prioress, 5,000 | Fades to 6% outside your beam. Two dashes in a row, the second aimed at where you are now (three in a rage), then 1.2 s tired. A 200 degree reap inside 115 px. Four Dustwings every 15 s. |
+| The Carrion Lord, 6,000 | Toxic aura inside 135 px. Infest: three heaps (five in a rage) that burst into three Grubs each after 5 s unless destroyed. Bile: a puddle that grows to 150 px. Buzz dash: three zig-zag legs. |
+| The Queen, 40,000 | 1 the Court: cannot be hurt until the four conduits round the room are down; lobs egg bombs, sends the guard. 2 the Brood: lays each cell's bugs in turn, acid rain. 3 Unbound: charge, leap, scream; the rift pulls you toward the middle. 4 the Anchor: back on the anchor, takes 150%, the roof comes down. No stage can be skipped by one big hit. |
+
+**Missions.** Every camp from the Warrens on has the lockbox and ends with a held key. Toughness rises cell by cell:
+health x1.6, 1.7, 1.8, 1.9, 2.0, 2.1 (damage x1.35 to 1.6); the Queen's own mission is x1.5 so she has 60,000.
+Swarm caps: Granary 110, Paper Hive 100, Galleries 120, Lantern Deep 70, Rot Cellar 130, Royal Cell 150, and the two
+big hold-outs run to the global 240.
+
+- Objective burrows now work anywhere, and can be other fixtures: brood combs (hatch Stingers), silk cocoons (supplies
+  or a Lurker, never open on their own), corpse heaps (hatch Grubs). `fixture` on a `burrows` objective.
+- Ada, Ben, Kit and Lewis stand with you in three hold-outs (`squad`): the Granary pillar, the antechamber, the dam.
+- Hazards (`hazard` on a mission): the Granary's locust lanes (a marked strip, 1.5 s, then it sweeps), the Galleries'
+  steam vents (five-second clock, 1.2 s warning, scald bugs as badly as you).
+- The Lantern Deep starts with twelve Lurkers against the rock (`lurkers`).
+- Daylight: you come up at the rift at first light, 45 seconds to reach the dam (`limit` on a `reach`), a last
+  hold-out with everyone on the wall, and the breaker fires Eli's charge: the rift shuts and everything left dies.
+
+**Not built, on purpose, and why.** These are parts of the plan that change the cave itself, and the cave is being
+repainted by another tool right now, so they would have collided with that work:
+
+- Granary: fungus rows as low cover, and Famine eating them.
+- Paper Hive: paper walls bullets pass through and fire burns, pits and bridges. (The brood combs are in.)
+- Boiling Galleries: rolling boulders. Goliath's pillars shattering in a rage (it is stuck for less time instead).
+- Rot Cellar: water that halves your speed.
+- The flashlight flicker when a Shrieker screams.
+- The shortcut shaft is told, not walked: Daylight starts with you already out of it.
+
+**Not measured.** Balance of every new fight (nothing here has been played by a person yet), and frame rate with 240
+bugs on a real GPU. The sim costs 1.2 ms a tick at 240.
+
+### 2026-11-11, after Nate's third play: the lockbox comes back once, at the very end
+
+Nate: the lockbox should not come down after every mission; the whole hive is meant to be fought with the new guns.
+This replaces the lockbox rules written above (it was at every camp from the Warrens on).
+
+- Everything handed over at the rift **stays with Mara for all nine missions that follow**. No camp of a cell has the
+  lockbox. It is handed back once: at the camp on the dam wall in Daylight, after the breaker has shut the rift
+  (`lockbox: true` on that mission in `hive-data.ts`; `kitAway()` and `lockboxSpots()` in `road.ts`). You take what you
+  want, sit down, and the campaign ends with it on you; the rest stays in the box in the save.
+- Camps still end with a held key, so you can pick up the crates and spend skill points first.
+- **While the kit is away, static supplies are ichor** (Nate asked for this the same evening: the crates were still
+  giving .357 and 5.56). Every mission crate and every nook holds ichor and things that heal, never bullets and never a
+  city gun. The one exception is the first crate of the Warrens, before you have an insect gun: two boxes for the
+  handgun. A kill that drops ammunition (1.5%) still drops it for the handgun: the one in the holster, or the one in
+  the pack once an insect sidearm has taken the holster.
+- **Older checkpoints.** A save from when the lockbox came to every camp may have a rifle back in your hands. On the
+  next mission start `kit.sendBack()` returns city long guns, and ammunition nothing you carry can fire, to the box.
+  Bandages, medkits, handguns, blades and everything of the hive are left alone, and nothing is lost.
+- Ichor is now the main ammunition for eight missions, and kill drops are still at the reduced rate Nate asked for
+  (3% a kill). The crates carry the difference. Not measured in play: if ichor runs dry, raise `ICHOR_DROP` in
+  `hive.ts` or the crate amounts in `hive-data.ts`.
+
+Also: **the Vespiary** read as out of ammunition. It needs none. It now breeds in your hand too (1 a second once you
+have stopped firing for a second; 2 a second holstered), the counter reads "n / ∞", and the HUD says BREEDING while it
+refills.
+
+Also: **the Queen had far too much health.** Nate spent thousands of rounds and had her at half. She had 40,000 times
+the mission's 1.5, so 60,000; she now has **24,000 and no multiplier**. The first quarter is the four conduits, so
+there are 18,000 to shoot through, and the last 6,000 go at 150%. Two crates of 300 ichor wait at the antechamber
+camp where the mission starts. One number each: `hp` of `queen` in `bosses.ts`, `tough.hp` of the mission in
+`hive-data.ts`. The other bosses were not changed (7,200 to 13,500 with their cells' multipliers): none of them has
+been reported, and they have not been fought with insect guns only yet.

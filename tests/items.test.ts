@@ -3,7 +3,10 @@ import { ITEMS, RECIPES, RARITY_COLORS } from '../src/sim/items';
 describe('item catalogue', () => {
   it('retains equipment, consumable and stack rules', () => {
     expect(ITEMS.pistol).toMatchObject({ type: 'weapon', slot: 'secondary', stack: 1 });
-    expect(ITEMS.ammo_9mm.stack).toBe(240);
+    expect(ITEMS.ammo_9mm.stack).toBe(720);
+    // ammunition and healing items stack three times as high as they first did
+    expect(Object.fromEntries(Object.values(ITEMS).filter(i => i.type === 'ammo').map(i => [i.id, i.stack]))).toEqual({ ichor: 1200, mints: 120, ammo_9mm: 720, ammo_357: 540, ammo_12g: 360, ammo_556: 720, ammo_308: 540 });
+    expect(Object.fromEntries(Object.values(ITEMS).filter(i => i.use?.heal).map(i => [i.id, i.stack]))).toEqual({ royal_jelly: 30, bandage: 60, medkit: 30, painkillers: 60 });
     expect(ITEMS.military_backpack.slots).toBe(12);
     expect(ITEMS.military_vest.armor).toBe(0.30);
     expect(ITEMS.bandage.use).toMatchObject({ heal: 15, stopBleed: true });

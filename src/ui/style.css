@@ -407,6 +407,8 @@ ul.cost li { display: flex; justify-content: space-between; padding: 0.25em 0.5e
 .offline-note { color: var(--dim); font-size: 0.95em; font-style: italic; }
 .acc-form { display: flex; flex-direction: column; gap: 0.45em; }
 .tabs.mini { flex: none; } .tabs.mini .tab { padding: 0.3em 0.8em; font-size: 0.75em; }
+/* backpack tabs (overlays.ts backpack()): views of the one backpack */
+.bag-tabs { margin-bottom: 0.5em; } .bag-tabs .tab { padding: 0.3em 0.6em; letter-spacing: 0.08em; } .bag-tabs .badge { margin-left: 0.4em; }
 .field { pointer-events: auto; user-select: text; -webkit-user-select: text; padding: 0.5em 0.7em; font-size: 0.95em; color: #eee; background: rgba(0,0,0,0.55); border: 1px solid #3f4239; border-radius: 0.2em; outline: none; font-family: var(--body); }
 .field:focus { border-color: #8c2a22; box-shadow: 0 0 0.6em rgba(196,45,34,0.3); }
 .form-err { color: #ff8a7a; font-size: 0.9em; }
@@ -557,6 +559,7 @@ ul.cost li { display: flex; justify-content: space-between; padding: 0.25em 0.5e
 /* ---- arcade boss health bar (hud.ts) */
 .hud-boss { position: absolute; left: 50%; bottom: 7.5em; transform: translateX(-50%); width: min(40em, 70vw); pointer-events: none; animation: fadein 0.4s ease-out; }
 .hb-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25em; }
+.hb-objective { margin-top: .55em; padding: .4em .7em; text-align: center; font-weight: 700; font-size: .9em; letter-spacing: .08em; color: #ffdb8d; background: rgba(16,12,21,.88); border: 1px solid #806341; text-shadow: 0 1px 2px #000; }
 .hb-name { font-family: var(--display); font-weight: 700; font-size: 1.5em; letter-spacing: 0.25em; color: #fff; text-shadow: 0 0 0.5em var(--bc, #f55), 0 2px 3px #000; }
 .hb-t { font-size: 0.8em; letter-spacing: 0.08em; color: #c8c6ba; text-shadow: 0 1px 2px #000; }
 .hb-bar { height: 0.9em; background: rgba(0,0,0,0.75); border: 1px solid #000; box-shadow: 0 0 0 1px rgba(255,255,255,0.12); }
@@ -564,6 +567,13 @@ ul.cost li { display: flex; justify-content: space-between; padding: 0.25em 0.5e
 .hud-boss.enraged .hb-bar i { background: linear-gradient(#ffb04a, #d0401a); animation: pulse 0.7s infinite; }
 
 /* ---- arcade augments (augments.ts) */
+.arcade-skill-note { display:flex; align-items:center; justify-content:space-between; gap:1em; color:#d5bddf; font-size:.8em; }
+.arcade-skill-note .btn { flex:none; }
+.aug-loadout, .aug-filters { display:flex; flex-wrap:wrap; align-items:center; gap:.5em; margin:.8em 0; }
+.aug-loadout { padding:.8em; border:1px solid #3a2c48; background:#19131e; }
+.aug-loadout strong { width:100%; font-size:.8em; color:#d7a9ef; letter-spacing:.1em; }
+.aug-tree.filtered { grid-template-columns:minmax(0,1fr); max-width:42em; }
+.techtop { flex-wrap:wrap; }
 .aug-open { margin-top: 0.6em; width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.6em; color: #d77cff; border-color: #5e2f78; }
 .aug-chip { font-size: 0.8em; padding: 0.05em 0.5em; color: #1a0d22; background: #d77cff; letter-spacing: 0.05em; }
 .augs { position: fixed; inset: 0; z-index: 40; pointer-events: auto; display: flex; align-items: center; justify-content: center; padding: 2vh 2vw;

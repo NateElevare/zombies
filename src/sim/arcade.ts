@@ -10,12 +10,14 @@ import { randomAmmoDrop } from './loot';
 import * as upgrades from './upgrades';
 import * as bosses from './bosses';
 import * as augments from './augments';
+import * as progression from './progression';
 
 const ARENA = { x: 6800, y: 7200, w: 2400, h: 1600 };
 const BORDER = 40, VIEW_RADIUS = 700, BEST_KEY = 'deadzone_arcade_best';
 const WEAPON_DROPS = ['shotgun', 'smg', 'revolver', 'bat', 'machete'];   // Cola & Mints is a boss trophy
 const WEAPON_DROPS_LATE = [...WEAPON_DROPS, 'assault_rifle', 'hunting_rifle'];
-const POINTS: Record<ZombieType, number> = { walker: 10, runner: 15, brute: 30, crawler: 12, bloater: 25, drone: 6, honeypot: 18, grub: 3, burrow: 30, egg: 8 };
+const POINTS: Record<ZombieType, number> = { walker: 10, runner: 15, brute: 30, crawler: 12, bloater: 25, drone: 6, honeypot: 18, grub: 3, burrow: 30, egg: 8,
+  hopper: 7, shrieker: 20, stinger: 10, spitter: 22, shieldback: 45, lurker: 35, dustwing: 10, skitterer: 9 };
 const gates = [0.2, 0.5, 0.8].flatMap(t => [
   { x: ARENA.x + ARENA.w * t, y: ARENA.y + 80, horizontal: true },
   { x: ARENA.x + ARENA.w * t, y: ARENA.y + ARENA.h - 80, horizontal: true },
@@ -84,7 +86,7 @@ function beginWave(state: GameState) {
   a.wave++; a.toSpawn = 6 + (a.wave - 1) * 4; a.spawnTimer = 0; a.intermission = 0;
   bosses.clearFx(state);
   if (a.wave === KNOCK_RES_WAVE + 1) toast(state, 'The dead are getting harder to push around', '#ffb43a');
-  // every 10th wave: a boss plus a lighter escort
+  // every 5th wave: a boss plus a lighter escort
   a.bossDue = bosses.isBossWave(a.wave);
   if (a.bossDue) a.toSpawn = Math.ceil(a.toSpawn * 0.5);
   toast(state, a.bossDue ? `WAVE ${a.wave}: BOSS WAVE` : `WAVE ${a.wave}`, a.bossDue ? '#ff6a4a' : undefined); sound(state, 'waveStart');
@@ -114,7 +116,11 @@ function waves(state: GameState, dt: number) {
   }
   const alive = state.zombies.filter(z => !z.dead).length;
   if (a.bossDue) spawnBossAtGate(state);
-  if (a.toSpawn === 0 && alive === 0 && !a.bossDue) { a.intermission = 5; toast(state, `WAVE ${a.wave} CLEARED`); return; }
+  if (a.toSpawn === 0 && alive === 0 && !a.bossDue) {
+    a.intermission = 5;
+    state.player.hp=Math.min(state.player.maxHp,state.player.hp+(a.run?.aug?.waveHeal||0));
+    toast(state, `WAVE ${a.wave} CLEARED`); return;
+  }
   a.spawnTimer = Math.max(0, a.spawnTimer - dt);
   if (a.toSpawn <= 0 || a.spawnTimer > 0 || alive >= 60) return;
   const type = chooseType(state), r = zombies.TYPES[type].r;
@@ -155,7 +161,8 @@ function spawnBossAtGate(state: GameState) {
 function augmentTick(state: GameState, dt: number) {
   const a = state.arcade!, aug = a.run?.aug, p = state.player;
   if (!aug || p.dead) return;
-  if (aug.regen > 0 && p.hp < p.maxHp) p.hp = Math.min(p.maxHp, p.hp + aug.regen * dt);
+  const regen=aug.regen+progression.playerMods(state).regen;
+  if (regen > 0 && p.hp < p.maxHp) p.hp = Math.min(p.maxHp, p.hp + regen * dt);
   if (a.reviveNova) {
     a.reviveNova = false;
     for (const z of state.zombies) {
@@ -198,6 +205,7 @@ function rewardKills(state: GameState, actors: Zombie[]) {
   for (const z of actors) {
     if (!z.dead || z._arcadeScored) continue;
     z._arcadeScored = true;
+    if (!state.player.dead) state.player.hp=Math.min(state.player.maxHp,state.player.hp+(a.run?.aug?.killHeal||0));
     if (bosses.isBoss(z)) { bossLoot(state, z); continue; }
     a.score += POINTS[z.type] * Math.max(1, a.wave);
     upgrades.dropXp(state, z);
@@ -223,10 +231,10 @@ function pickups(state: GameState, dt: number) {
     drop.life -= dt;
     const stack = drop.inv.slots[0];
     if (drop.life <= 0 || !stack) return false;
-    if (drop.kind !== 'loot' || Math.hypot(p.x - drop.x, p.y - drop.y) > p.r + drop.r || !phys.canReach(state, p.x, p.y, drop)) return true;
+    if (drop.kind !== 'loot' || Math.hypot(p.x - drop.x, p.y - drop.y) > p.r + drop.r + (state.arcade?.run?.aug?.supply||0) || !phys.canReach(state, p.x, p.y, drop)) return true;
     const item = ITEMS[stack.id];
     if (item?.type === 'consumable' && item.use?.heal) {
-      p.hp = Math.min(p.maxHp, p.hp + item.use.heal * stack.qty);
+      p.hp = Math.min(p.maxHp, p.hp + item.use.heal * stack.qty * (1+(state.arcade?.run?.aug?.healing||0)));
     } else if (item?.type === 'ammo') {
       const left = inv.add(p.inv, stack.id, stack.qty);
       if (left === stack.qty) return true;
@@ -294,8 +302,9 @@ function died(state: GameState) {
   state.screen = 'dead'; state.stats.deaths++;
   state.interact = null; state.search = null;
   saveBest(state);
-  const cores = augments.bankRun(state);
-  toast(state, `GAME OVER - SCORE ${state.arcade!.score}` + (cores ? ` · +${cores} CORES` : '')); sound(state, 'gameOver');
+  augments.bankRun(state);
+  const cores = state.arcade!.coresEarned ?? 0;
+  toast(state, `GAME OVER - SCORE ${state.arcade!.score}` + (cores ? ` · ${cores} CORES EARNED` : '')); sound(state, 'gameOver');
 }
 
 export function newArcade(seed?: number, aug: augments.AugBonus = augments.bonuses(augments.load())): GameState {
@@ -319,6 +328,16 @@ export function newArcade(seed?: number, aug: augments.AugBonus = augments.bonus
     inv.add(p.inv, def.ammo!, Math.round(def.magSize * 3 * (1 + 0.5 * aug.ammo)));
   }
   if (aug.kit >= 2) { state.arcade.armory!.push(p.inv.equip.melee!); p.inv.equip.melee = { id: 'bat', qty: 1 }; }
+  progression.restoreArcadeSkills(state);
+  inv.recalcSize(state);
+  for (const st of [p.inv.equip.primary,p.inv.equip.secondary,p.inv.equip.melee,...state.arcade.armory!]) {
+    if (!st) continue;
+    if (aug.quality) st.lvl=1+aug.quality;
+    const stats=progression.weaponStats(state,st.id,st.lvl);
+    if (stats.magSize) st.mag=stats.magSize;
+  }
+  if (aug.starter) run.gadgets.push({id:aug.starter,level:1,evolved:false,cd:.6,cd2:1,angle:0,prevAngle:0});
+  p.hp=p.maxHp=progression.playerMods(state).maxHp;
   beginWave(state); snapshotInterp(state);
   if (aug.headstart > 0) upgrades.freePicks(state, aug.headstart);
   return state;
@@ -346,5 +365,6 @@ export function stepArcade(state: GameState, input: InputState, dt: number): voi
   rewardKills(state, actors);
   if (state.player.dead) died(state);
   else { pickups(state, dt); upgrades.pickups(state, dt); waves(state, dt); }
+  augments.bankProgress(state);
   state.shake = state.shake > 0.1 ? state.shake * Math.exp(-10 * dt) : 0;
 }

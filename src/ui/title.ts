@@ -170,7 +170,7 @@ export class Title {
       });
       surv.appendChild(c);
       const m = missions[save.mission];
-      surv.appendChild(el('div', 'cont-sub', save.done ? (hive ? 'First part complete · ' : 'Campaign complete · ') + save.totals.kills + ' kills' : `Mission ${save.mission + 1} / ${missions.length} · ${m.title} · Lv ${save.snapshot.level}`));
+      surv.appendChild(el('div', 'cont-sub', save.done ? 'Campaign complete · ' + save.totals.kills + ' kills' : `Mission ${save.mission + 1} / ${missions.length} · ${m.title} · Lv ${save.snapshot.level}`));
     }
     if (hive ? !road.canStartHiveBelow() : sequel && !road.canStartGroupInNeed()) {
       surv.appendChild(el('p', 'cont-sub', hive

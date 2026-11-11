@@ -6,6 +6,7 @@ import { WORLD, CELL, Grid, phys } from './core';
 import { gen, finalizeVisuals } from './world';
 import type { GameState, Rect, Vec } from './types';
 import type { RoadWorld, Sector, Gate } from './road-world';
+import { hiveShape, hiveBoundaryZone } from './hive-shape';
 
 export const TILE = 80, N = WORLD.w / TILE;
 const HEX = 36.25, CX = 100, CY = 100, D = Math.sqrt(3) * HEX, INNER = 0.93;
@@ -229,14 +230,6 @@ export function build(state: GameState): RoadWorld {
     for (const c of chambers) { const p = { x: c.x * TILE, y: c.y * TILE }; if (eggs[z].length < 6 && Math.hypot(p.x - nursery.x, p.y - nursery.y) > 5 * TILE && Math.hypot(p.x - trail.x, p.y - trail.y) > 4 * TILE && Math.hypot(p.x - cache.x, p.y - cache.y) > 4 * TILE && rnd() < 0.6) eggs[z].push(p); }
   }
 
-  // ---- solids: every rock tile that touches floor, merged into rows; and the floor itself as flat decor rows
-  const solidAt = (x: number, y: number) => { if (!inb(x, y) || grid[I(x, y)]) return false; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (inb(x + dx, y + dy) && grid[I(x + dx, y + dy)]) return true; return false; };
-  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
-    if (!solidAt(x, y)) continue; let x1 = x; while (x1 + 1 < N && solidAt(x1 + 1, y)) x1++;
-    phys.addSolid(state, { x: x * TILE, y: y * TILE, w: (x1 - x + 1) * TILE, h: TILE, kind: 'wall', sub: 'rock', solid: true, blocksSight: true, blocksBullets: true, campaignArt: true, hive: true } as never);
-    x = x1;
-  }
-
   // ---- sectors (0 = the Breach, 1..7 = cells), gates (the seals) and the camp at each exit
   const bbox = (z: number): Rect => { let x0 = N, y0 = N, x1 = 0, y1 = 0; for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if ((zone[I(x, y)] || 0) === z && (z !== 8 || grid[I(x, y)])) { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); } return { x: (x0 - 2) * TILE, y: (y0 - 2) * TILE, w: (x1 - x0 + 5) * TILE, h: (y1 - y0 + 5) * TILE }; };
   const P = (v: Vec): Vec => ({ x: v.x * TILE, y: v.y * TILE });
@@ -276,6 +269,16 @@ export function build(state: GameState): RoadWorld {
   for (let s = 0; s <= 7; s++) { const r = world.sectors[s].rect; state.pois.push({ x: s === 0 ? info.breach.x : centers[s].x * TILE, y: s === 0 ? info.breach.y - 520 : centers[s].y * TILE - (s === 7 ? 1200 : 0), name: ZONE_NAMES[zoneOfSector(s)], kind: 'district' }); void r; }
   world.hive = info;
 
+  // Every Hive sector shares its fine boundary with the painted floor and walls.
+  // Unassigned exterior rock and the concrete dam retain their authored footprint.
+  const addWall=(r:Rect)=>phys.addSolid(state,{...r,kind:'wall',sub:'rock',solid:true,blocksSight:true,blocksBullets:true,campaignArt:true,hive:true} as never);
+  const solidAt=(x:number,y:number)=>{if(!inb(x,y)||hiveBoundaryZone(info,x,y)>0||grid[I(x,y)])return false;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)if(inb(x+dx,y+dy)&&grid[I(x+dx,y+dy)])return true;return false;};
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+    if(!solidAt(x,y))continue;let end=x+1;while(end<N&&solidAt(end,y))end++;
+    addWall({x:x*TILE,y:y*TILE,w:(end-x)*TILE,h:TILE});x=end-1;
+  }
+  for(let area=1;area<=8;area++)for(const r of hiveShape(info,area).walls)addWall(r);
+
   // ---- shared lookups the rest of the sim expects from any world
   const M: Record<string, unknown> = { gen: state.seed, dcols: Math.ceil(WORLD.w / gen.DCELL), drows: Math.ceil(WORLD.h / gen.DCELL), inters: [] };
   M.dgrid = new Uint8Array((M.dcols as number) * (M.drows as number)).fill(gen.DCODE.industrial);
@@ -292,9 +295,11 @@ export const hiveOf = (state: GameState): HiveInfo | null => state.road?.world.h
 /** True when (x,y) in px is carved floor. */
 export function isFloor(h: HiveInfo, x: number, y: number) {
   const tx = Math.floor(x / h.tile), ty = Math.floor(y / h.tile);
+  const area=hiveBoundaryZone(h,tx,ty);
+  if(area>0)return hiveShape(h,area).isFloor(x,y);
   return tx >= 0 && ty >= 0 && tx < h.n && ty < h.n && h.floor[ty * h.n + tx] === 1;
 }
 export function zoneAt(h: HiveInfo, x: number, y: number) {
   const tx = Math.floor(x / h.tile), ty = Math.floor(y / h.tile);
-  return tx >= 0 && ty >= 0 && tx < h.n && ty < h.n ? h.zone[ty * h.n + tx] : 0;
+  return hiveBoundaryZone(h,tx,ty);
 }

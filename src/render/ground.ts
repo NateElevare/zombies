@@ -14,6 +14,8 @@ import { TX } from './art';
 import { D, hash2, rng, hexColor, type View } from './common';
 import { doorSide } from './worldobjs';
 import { ZONE_FLOOR, type HiveInfo } from '../sim/hive-world';
+import { hiveShape } from '../sim/hive-shape';
+import { hiveMaterial, hiveMaterialZone, hiveWallRibbons, hiveResinAnchor } from './hive-materials';
 
 export const CH = 1024;
 const MAXCH = 20;
@@ -67,6 +69,7 @@ export class Ground {
   private qstamp = 1;
   private tick = 0;
   private g: Phaser.GameObjects.Graphics;
+  private warrensScratch?: Phaser.Textures.DynamicTexture;
   private nextId = 0;
   private tmpItems: Item[] = [];
   private tmpSolids: Solid[] = [];
@@ -109,6 +112,7 @@ export class Ground {
     for (const c of this.free) { c.img.destroy(); c.dt.destroy(); }
     this.free.length = 0;
     this.g.destroy();
+    this.warrensScratch?.destroy();
   }
 
   // ---------------------------------------------------------------- index
@@ -258,7 +262,11 @@ export class Ground {
         const sx0 = Math.max(x0, bx), sy0 = Math.max(y0, by), sx1 = Math.min(x1, bx + B), sy1 = Math.min(y1, by + B);
         if (sx1 <= sx0 || sy1 <= sy0) continue;
         const fr = frames[hash2(bx / B, by / B, seed) % frames.length], atlas = this.art.atlasOf(fr)!;
-        this.dt.repeat(atlas, fr, sx0 - ox, sy0 - oy, sx1 - sx0, sy1 - sy0, { tileScaleX: s, tileScaleY: s, tilePositionX: sx0 / s, tilePositionY: sy0 / s, alpha } as any);
+        // Mirror authored Hive floors at each 256px boundary. The same source edge meets
+        // itself, removing hand-painted tile seams without changing any source pixels.
+        const hiveFloor = fr.startsWith('hive_env_') && fr.endsWith('_floor');
+        const scaleX = hiveFloor && ((bx / B) & 1) ? -s : s, scaleY = hiveFloor && ((by / B) & 1) ? -s : s;
+        this.dt.repeat(atlas, fr, sx0 - ox, sy0 - oy, sx1 - sx0, sy1 - sy0, { tileScaleX: scaleX, tileScaleY: scaleY, tilePositionX: sx0 / scaleX, tilePositionY: sy0 / scaleY, alpha } as any);
       }
     } else this.dt.fill(col, alpha, x0 - ox, y0 - oy, x1 - x0, y1 - y0);
   }
@@ -276,10 +284,18 @@ export class Ground {
     const x0 = Math.max(x, this.ox), y0 = Math.max(y, this.oy), x1 = Math.min(x + w, this.ox + CH), y1 = Math.min(y + h, this.oy + CH);
     if (x1 > x0 && y1 > y0 && alpha > 0) this.dt.fill(col, alpha, x0 - this.ox, y0 - this.oy, x1 - x0, y1 - y0);
   }
-  /** The Hive Below: solid rock with the cave carved out of it (sim/hive-world.ts). Each cell has its own floor
-   *  colour; the walls get a lit rim and lumps so the tile edges read as dug earth; the dam is poured concrete. */
+  /** The Hive Below: authored floors and shell wall caps per biome, baked into the existing chunk cache.
+   *  The original material pass remains a fallback if the environment atlas is unavailable. */
   private *paintHive(c: Chunk, h: HiveInfo): Generator<void, void, void> {
+    // Fractional camera zoom must not blend the edge of a cached chunk with transparent
+    // pixels outside it; nearest sampling also preserves the painted pixel finish.
+    c.dt.setFilter(Phaser.Textures.FilterMode.NEAREST);
     const T = h.tile, n = h.n, ox = this.ox, oy = this.oy;
+    const painted = !!this.art.atlasOf(hiveMaterial(1, 'wall_0'));
+    const ribbons = this.art.has('hive_warrens_ribbon_0');
+    const areas=Array.from({length:8},(_,i)=>({z:i+1,shape:hiveShape(h,i+1)})).filter(({shape})=>{
+      const b=shape.bounds;return b.w>0&&b.h>0&&b.x<ox+CH+150&&b.y<oy+CH+150&&b.x+b.w>ox-150&&b.y+b.h>oy-150;
+    });
     const tx0 = Math.max(0, Math.floor(ox / T) - 1), ty0 = Math.max(0, Math.floor(oy / T) - 1), tx1 = Math.min(n - 1, Math.floor((ox + CH) / T) + 1), ty1 = Math.min(n - 1, Math.floor((oy + CH) / T) + 1);
     const F = (x: number, y: number) => x >= 0 && y >= 0 && x < n && y < n && h.floor[y * n + x] === 1;
     const Z = (x: number, y: number) => h.zone[y * n + x] || 8;
@@ -290,34 +306,34 @@ export class Ground {
     this.wash(0x070504, 0.8, ox, oy, CH, CH);
     this.dt.render();
     yield; this.ctx(c);
-    // 2. the floor: earth texture washed with the cell's colour, one run of tiles at a time
-    for (let ty = ty0; ty <= ty1; ty++) for (let tx = tx0; tx <= tx1; tx++) {
-      if (!F(tx, ty)) continue;
-      const z = Z(tx, ty); let x1 = tx; while (x1 < tx1 && F(x1 + 1, ty) && Z(x1 + 1, ty) === z) x1++;
-      const w = (x1 - tx + 1) * T;
-      this.tileRect(['dirt', 'gravel'], hash2(tx, ty, 9), tx * T, ty * T, w, T, floorCol(z));
-      this.wash(floorCol(z), 0.56, tx * T, ty * T, w, T);
-      tx = x1;
-    }
-    this.dt.render();
+    // The same curved floor footprint drives drawing, movement and shots in every sector.
+    for(const {z,shape} of areas)for(const r of shape.floors){
+      if(r.x>=ox+CH||r.y>=oy+CH||r.x+r.w<=ox||r.y+r.h<=oy)continue;
+      this.tileRect(painted?[`hive_floor_${z}`]:['dirt','gravel'],91+z,r.x,r.y,r.w,r.h,floorCol(z));
+      if(!painted)this.wash(floorCol(z),.56,r.x,r.y,r.w,r.h);
+      else if(ribbons&&z===1)this.wash(0x66635e,.22,r.x,r.y,r.w,r.h);
+    }    this.dt.render();
     yield; this.ctx(c);
     // 3. shading and edges
     const dam = h.dam;
     this.vector((g) => {
       // the bugs' trail: a faint line of slime along the way they walk
       const inChunk = (k: number) => { const x = k % n, y = (k / n) | 0; return x >= tx0 && x <= tx1 && y >= ty0 && y <= ty1; };
-      g.fillStyle(0xb7e04a, 0.2);
       for (let i = 0; i + 1 < h.route.length; i++) {
         const a = h.route[i], b = h.route[i + 1]; if (!inChunk(a)) continue;
         const ax = (a % n + 0.5) * T, ay = (((a / n) | 0) + 0.5) * T, bx = (b % n + 0.5) * T, by = (((b / n) | 0) + 0.5) * T, hs = hash2(a, i, 21);
         const jx = ((hs & 15) - 7) * 1.4, jy = (((hs >>> 4) & 15) - 7) * 1.4, horiz = Math.abs(bx - ax) > Math.abs(by - ay);
-        g.fillEllipse((ax + bx) / 2 + jx, (ay + by) / 2 + jy, horiz ? 34 : 9, horiz ? 9 : 34, 10);
+        const subtle = ribbons && h.zone[a] === 1;
+        g.fillStyle(subtle ? 0x96965d : 0xb7e04a, subtle ? .15 : .2);
+        g.fillEllipse((ax + bx) / 2 + jx, (ay + by) / 2 + jy, horiz ? 34 : (subtle ? 4 : 9), horiz ? (subtle ? 4 : 9) : 34, 10);
         if (hs & 64) g.fillEllipse(ax + jy, ay + jx, 7, 7, 8);
       }
       // big soft blotches break up the tiling (damp patches, trodden ground)
-      const B = rng(hash2(c.cx, c.cy, 311));
-      for (let k = 0; k < 26; k++) {
-        const bx = ox + B() * CH, by = oy + B() * CH, dark = B() < 0.6;
+      // World-anchored patches are redrawn on both sides of a chunk border; a local
+      // random ellipse would otherwise be visibly sliced off at that border.
+      for (let py = Math.floor((oy - 220) / 256); py <= Math.floor((oy + CH + 220) / 256); py++) for (let px = Math.floor((ox - 220) / 256); px <= Math.floor((ox + CH + 220) / 256); px++) {
+        const B = rng(hash2(px, py, 311));
+        const bx = (px + .2 + B() * .6) * 256, by = (py + .2 + B() * .6) * 256, dark = B() < .6;
         if (!F(Math.floor(bx / T), Math.floor(by / T))) continue;
         g.fillStyle(dark ? 0x000000 : 0xfff2d8, dark ? 0.09 : 0.03);
         g.fillEllipse(bx, by, 90 + B() * 240, 60 + B() * 150, 14);
@@ -329,17 +345,10 @@ export class Ground {
         if (((hs >>> 6) & 7) < 3) { g.fillStyle(0x000000, 0.28); g.fillEllipse(x + 10 + ((hs >>> 9) % 60), y + 10 + ((hs >>> 15) % 60), 5 + ((hs >>> 21) & 7), 4 + ((hs >>> 24) & 3), 8); }
         if (((hs >>> 11) & 7) < 2) { g.fillStyle(0xfff2d8, 0.08); g.fillEllipse(x + 8 + ((hs >>> 13) % 64), y + 8 + ((hs >>> 19) % 64), 4 + ((hs >>> 5) & 3), 3, 8); }
         if (z === 8 && ((hs >>> 17) & 15) === 0) { g.fillStyle(0x10181c, 0.5); g.fillEllipse(x + 40, y + 40, 60 + (hs & 31), 34 + ((hs >>> 5) & 15), 14); g.fillStyle(0x8fa4b0, 0.1); g.fillEllipse(x + 34, y + 36, 26, 8, 10); }
-        // the wall throws a soft shadow onto the floor beside it
-        for (const [dx, dy] of [[0, -1], [0, 1], [-1, 0], [1, 0]] as const) {
-          if (F(tx + dx, ty + dy)) continue;
-          for (const [depth, a] of [[30, 0.16], [16, 0.2]] as const) {
-            g.fillStyle(0x000000, a);
-            if (dy < 0) g.fillRect(x, y, T, depth); else if (dy > 0) g.fillRect(x, y + T - depth, T, depth); else if (dx < 0) g.fillRect(x, y, depth, T); else g.fillRect(x + T - depth, y, depth, T);
-          }
-        }
       }
       // the walls: a lit rim of dug earth on every rock tile that borders the cave, lumpy so the grid does not show
       for (let ty = ty0; ty <= ty1; ty++) for (let tx = tx0; tx <= tx1; tx++) {
+        if (painted) continue;
         if (F(tx, ty)) continue;
         const x = tx * T, y = ty * T, R = rng(hash2(tx, ty, 131));
         if (tx >= dam.x / T && tx < (dam.x + dam.w) / T && ty >= dam.y / T && ty < (dam.y + dam.h) / T) continue;   // the dam is drawn below
@@ -379,11 +388,69 @@ export class Ground {
       }
     });
     yield; this.ctx(c);
+    if(painted)for(const {z,shape} of areas) {
+      const sections=hiveWallRibbons(h,z).filter(p=>p.x>ox-150&&p.y>oy-150&&p.x<ox+CH+150&&p.y<oy+CH+150);
+      this.vector(g=>{
+        for(let i=1;i<sections.length;i++){
+          const a=sections[i-1],b=sections[i];if(Math.hypot(b.x-a.x,b.y-a.y)>65)continue;
+          for(const [width,alpha] of [[34,.05],[22,.07],[10,.1]]){
+            g.lineStyle(width,0x000000,alpha);
+            g.lineBetween(a.x-Math.sin(a.angle)*34,a.y+Math.cos(a.angle)*34,b.x-Math.sin(b.angle)*34,b.y+Math.cos(b.angle)*34);
+          }
+        }
+      });
+      // Flat wear and small fragments provide the concept's irregular material detail,
+      // with clear central floor and denser debris beside the wall.
+      for (let ty=ty0;ty<=ty1;ty++) for(let tx=tx0;tx<=tx1;tx++) {
+        if(z!==1||!ribbons||!F(tx,ty)||Z(tx,ty)!==1)continue;
+        const hs=hash2(tx,ty,539),border=!F(tx-1,ty)||!F(tx+1,ty)||!F(tx,ty-1)||!F(tx,ty+1);
+        if(hs% (border?5:7))continue;
+        const f=border?'hive_warrens_fragments':'hive_warrens_wear',a=this.art.atlasOf(f)!;
+        const b=this.art.manifest.hiveEnvironment.frames[f].bounds;
+        this.dt.stamp(a,f,(tx+.5)*T-ox,(ty+.5)*T-oy,{scale:(border?42:110+(hs>>>8)%55)/Math.max(b.w,b.h),rotation:((hs>>>4)%8)*Math.PI/4,alpha:border?.6:.48} as any);
+      }
+      this.dt.render(); yield; this.ctx(c);
+      if(sections.length) {
+        const wall=this.warrensScratch??(this.warrensScratch=this.scene.textures.addDynamicTexture('rz_warrens_wall',CH,CH)!);
+        wall.clear();
+        for(const p of sections) {
+          const f=z===1&&ribbons?`hive_warrens_ribbon_${hash2(p.index,0,91)%3}`:hiveMaterial(z,`wall_${hash2(p.index,z,91)%2}`),b=this.art.manifest.hiveEnvironment.frames[f].bounds;
+          const hs=hash2(p.index,0,403),depth=68+(hs%13),length=108+((hs>>>4)%21);
+          wall.stamp(this.art.atlasOf(f)!,f,p.x-ox,p.y-oy,{scaleX:length/b.w,scaleY:depth/b.h,rotation:p.angle} as any);
+        }
+        wall.render();
+        // Clip against the same fine curved footprint used by movement and shots.
+        // Small overlap hides the fine collision steps without hiding a passage.
+        const mask=this.g;mask.clear().setPosition(-ox,-oy).fillStyle(0xffffff,1);
+        for(let ty=ty0;ty<=ty1;ty++)for(let tx=tx0;tx<=tx1;tx++) {
+          const tileZone=Z(tx,ty);
+          if(tileZone!==z && h.zone[ty*n+tx]!==0) {mask.fillRect(tx*T,ty*T,T,T);continue;}
+        }
+        mask.fillRect(dam.x,dam.y,dam.w,dam.h);
+        for(const r of shape.interiors){
+          if(r.x>=ox+CH+10||r.y>=oy+CH+10||r.x+r.w<=ox-10||r.y+r.h<=oy-10)continue;
+          mask.fillRect(r.x,r.y,r.w,r.h);
+        }
+        wall.erase(mask).render();
+        this.dt.stamp('rz_warrens_wall',undefined,0,0,{originX:0,originY:0});this.dt.render();
+      }
+      yield; this.ctx(c);
+    }
     // 4. the lumps of resin and fungus that light the place, in each cell's own colour
     const lump = this.art.atlasOf('hive_lump_0');
     if (lump) {
       for (const gl of h.glows) {
-        if (gl.kind !== 'wall' || gl.x < ox - 40 || gl.y < oy - 40 || gl.x > ox + CH + 40 || gl.y > oy + CH + 40) continue;
+        if (gl.kind !== 'wall' || gl.x < ox - 100 || gl.y < oy - 100 || gl.x > ox + CH + 100 || gl.y > oy + CH + 100) continue;
+        if (painted) {
+          const z = hiveMaterialZone(h, gl.x, gl.y), fine = ribbons && z===1;
+          const f = fine ? 'hive_warrens_resin' : hiveMaterial(z, 'glow'), a = this.art.atlasOf(f);
+          if (a) {
+            const b = this.art.manifest.hiveEnvironment.frames[f].bounds;
+            const p=hiveResinAnchor(h,gl.x,gl.y);
+            this.dt.stamp(a, f, p.x - ox, p.y - oy, { scale: (fine ? 42 : z === 5 ? 30 : 46) / Math.max(b.w, b.h), rotation:p.angle } as any);
+            continue;
+          }
+        }
         const hs = hash2(gl.x, gl.y, 5);
         for (let k = 0; k < 3; k++) {
           const a = ((hs >>> (k * 5)) & 31) / 31 * Math.PI * 2, d = k ? 12 + ((hs >>> (k * 3)) & 7) * 2 : 0;
@@ -401,6 +468,7 @@ export class Ground {
     const ox = (this.ox = c.cx * CH), oy = (this.oy = c.cy * CH);
     const dt = (this.dt = c.dt);
     dt.clear();
+    dt.setFilter(Phaser.Textures.FilterMode.LINEAR);
     const hive = state.road?.world.hive;
     if (hive) { yield* this.paintHive(c, hive); return; }
     // 1. district terrain per 256 cell
@@ -893,3 +961,4 @@ function runs(cross: [number, number][], a0: number, a1: number, pad: number) {
   return out.filter((p) => p[1] > p[0]);
 }
 export { TX };
+

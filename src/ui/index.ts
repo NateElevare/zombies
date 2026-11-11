@@ -18,10 +18,11 @@ import { RoadUi } from './road';
 const OPENERS = new Set<string>(['inventory', 'tech', 'craft', 'map']);
 /** Overlay opened by this key (from the rebindable controls), if any. */
 const openerFor = (code: string): UiName | undefined => { const a = keybinds.action(code, 'play'); return a && OPENERS.has(a) ? a as UiName : undefined; };
-const SURVIVAL_ONLY = ['inventory', 'craft', 'tech', 'map', 'workbench', 'stash', 'loot'];
-/** Overlays a mode cannot open: arcade has none of the survival screens, the Long Road keeps the tech tree and the map. */
+const SURVIVAL_ONLY = ['inventory', 'craft', 'map', 'workbench', 'stash', 'loot'];
+/** Arcade keeps permanent tech and its armory; story modes keep their own progression. */
 const ROAD_LOCKED = ['craft', 'workbench', 'stash', 'loot'];
-const locked = (s: GameState, name: UiName | null) => !!name && (s.mode === 'arcade' ? SURVIVAL_ONLY : s.mode === 'road' ? ROAD_LOCKED : []).includes(name);
+// (the one transfer screen a story has is the lockbox of The Hive Below, opened by the sim: sim/road.ts)
+const locked = (s: GameState, name: UiName | null) => !!name && (s.mode === 'arcade' ? SURVIVAL_ONLY : s.mode === 'road' ? ROAD_LOCKED : []).includes(name) && !(name === 'loot' && !!s.road?.lockbox);
 type Target = Container | Drop | Structure | null;
 
 export function createUi(): UiLike {

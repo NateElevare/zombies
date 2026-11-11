@@ -164,7 +164,7 @@ export function damage(state: GameState, amount: number, angle: number) {
   if (!p || p.dead || p.invuln > 0 || state.dev?.god || !Number.isFinite(amount) || amount <= 0) return;
   const m = progression.playerMods(state);
   const dmg = Math.max(0.5, amount * (1 - Math.min(0.75, m.armor || 0)) * (1 - Math.min(0.9, m.dmgReduction || 0)) * (1 - Math.min(0.5, state.arcade?.run?.aug?.dr ?? 0)));
-  p.hp -= dmg; p.invuln = 0.35; state.shake = Math.max(state.shake, 8);
+  p.hp -= dmg; p.invuln = 0.35 + (state.mode==='arcade' ? state.arcade?.run?.aug?.grace||0 : 0); state.shake = Math.max(state.shake, 8);
   emit(state, { t: 'blood', x: p.x, y: p.y, angle, amount: 6 }); sound(state, 'playerHurt');
   if (state.mode === 'survival' && dmg >= 8 && rand(state) < 0.25 * (1 - Math.min(0.9, m.bleedResist || 0))) p.bleeding = Math.max(p.bleeding, 1);
   emit(state, { t: 'playerHurt', amount: dmg, angle });

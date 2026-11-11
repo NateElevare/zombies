@@ -3,7 +3,7 @@ import type { Player } from '../sim/types';
 import type { Actor } from '../angle-lab/world';
 import { characterVisual,spriteFacing } from '../angle-lab/sprite-set';
 import { characterId } from '../characters';
-import { WEAPONS } from '../sim/combat';
+import { WEAPONS, playerWeaponVisual } from '../sim/combat';
 import { lookOf } from '../sim/items';
 import { storyProject,STORY_CAMERA } from './story-projection';
 import { depth } from '../angle-lab/math';
@@ -35,7 +35,7 @@ export class StoryCharacter {
     const cycle=legName.replace(/_\d+$/,'');
     if(this.art.frames[cycle+'_7'])legName=cycle+'_'+Math.floor(a.phase)%8;
     show(this.legs,legName,d);
-    const id=p.inv.equip[p.active]?.id||'unarmed',weapon=WEAPONS[id],melee=weapon?.class==='melee',unarmed=id==='unarmed',long=!!weapon&&!['handgun','melee','unarmed'].includes(weapon.class)&&id!=='cola_mints';
+    const id=playerWeaponVisual(p),weapon=WEAPONS[id],melee=weapon?.class==='melee',unarmed=id==='unarmed',long=!!weapon&&!['handgun','melee','unarmed'].includes(weapon.class)&&id!=='cola_mints';
     let pose=unarmed?0:melee?2:id==='cola_mints'?10:long?7:5;
     const progress=a.actionLength?1-a.actionTime/a.actionLength:0;
     if(p.reloadTimer>0)pose=id==='cola_mints'?11:9;

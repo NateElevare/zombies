@@ -1,0 +1,62 @@
+{
+  "mode": "built-in image_gen",
+  "outputs": [
+    {
+      "key": "warrens",
+      "generated": "C:\\Users\\nphil\\.codex\\generated_images\\01a1bd80-bff0-7160-a7b1-99ae2395d9cf\\exec-ad1bde8a-a987-4a0b-a818-45002f59c5e5.png",
+      "file": "art/source/hive-environment/warrens.png"
+    },
+    {
+      "key": "granary",
+      "generated": "C:\\Users\\nphil\\.codex\\generated_images\\01a1bd80-bff0-7160-a7b1-99ae2395d9cf\\exec-50a87d0e-1d81-4ed1-a10f-0fe2062a6116.png",
+      "file": "art/source/hive-environment/granary.png"
+    },
+    {
+      "key": "paper",
+      "generated": "C:\\Users\\nphil\\.codex\\generated_images\\01a1bd80-bff0-7160-a7b1-99ae2395d9cf\\exec-bafd506b-4075-4bf8-ab93-955be9cae286.png",
+      "file": "art/source/hive-environment/paper.png"
+    },
+    {
+      "key": "boiling",
+      "generated": "C:\\Users\\nphil\\.codex\\generated_images\\01a1bd80-bff0-7160-a7b1-99ae2395d9cf\\exec-2d467cb1-950d-4bb1-92b7-5e95cf924056.png",
+      "file": "art/source/hive-environment/boiling.png"
+    },
+    {
+      "key": "lantern",
+      "generated": "C:\\Users\\nphil\\.codex\\generated_images\\01a1bd80-bff0-7160-a7b1-99ae2395d9cf\\exec-07aa7b3c-b861-4c78-aabd-bbb2951e58e3.png",
+      "file": "art/source/hive-environment/lantern.png"
+    },
+    {
+      "key": "rot",
+      "generated": "C:\\Users\\nphil\\.codex\\generated_images\\01a1bd80-bff0-7160-a7b1-99ae2395d9cf\\exec-e5d2d1b2-e152-406c-912a-7a4b9170b74d.png",
+      "file": "art/source/hive-environment/rot.png"
+    },
+    {
+      "key": "royal",
+      "generated": "C:\\Users\\nphil\\.codex\\generated_images\\01a1bd80-bff0-7160-a7b1-99ae2395d9cf\\exec-f7fe5ae6-515c-4ff4-8f11-b924db8f6e2c.png",
+      "file": "art/source/hive-environment/royal.png"
+    },
+    {
+      "key": "breach",
+      "generated": "C:\\Users\\nphil\\.codex\\generated_images\\01a1bd80-bff0-7160-a7b1-99ae2395d9cf\\exec-02b1d2ae-0aae-4998-ba6e-47571bc7baa9.png",
+      "file": "art/source/hive-environment/breach.png"
+    },
+    {
+      "key": "floors",
+      "generated": "C:\\Users\\nphil\\.codex\\generated_images\\01a1bd80-bff0-7160-a7b1-99ae2395d9cf\\exec-917f9238-a7d4-498d-8fb9-4d85d67f5e8e.png",
+      "file": "art/source/hive-environment/floors.png"
+    }
+  ],
+  "revisions": [
+    {
+      "key": "paper",
+      "reference": "art/source/hive-environment/paper-v1.png",
+      "prompt": "Edit this production sprite sheet. Keep the EXACT 3-column x 2-row layout, six sprite positions, top-down camera, transparent background, gutters, pixel-art finish and sizes. Change the MATERIAL of every shell surface: replace the rusty red-brown hard carapace with desaturated straw-grey WASP PAPER, built of torn layered fibrous thin paper sheets and clear SMALL HEXAGONAL COMB recesses. Walls must unmistakably look like a wasp paper nest with thin dry ragged edges, muted pale tan and grey-ochre, not rusty metal or red ant shells. Burrow rim is torn paper comb. Eggs remain ivory but their nest is paper fibers. Amber resin changes to pale muted yellow wax in the two bottom-right objects. Preserve dark openings and outlined painted pixel style. Top two wall clusters are dense filled square paper-comb wall caps, not holes. This is a materially different Paper Hive biome. No lettering, no floor, no added objects, genuine transparent alpha."
+    },
+    {
+      "key": "boiling",
+      "reference": "art/source/hive-environment/boiling-v1.png",
+      "prompt": "Edit this production sprite sheet. Keep the EXACT 3-column x 2-row layout, six sprite positions, top-down camera, transparent background, gutters, pixel-art finish and sizes. Change the MATERIAL of every shell surface to scorched CHARCOAL-BLACK and dark slate beetle armor plates, with powdery grey ash and cracked pale mineral deposits. Eliminate the rust-red and brown plate surfaces: they must be visibly dark grey and black, matte, burnt and thick. Keep amber cavities but change the resin highlights to tiny burnt-orange ember fissures, low intensity, not lava or large flames. Grey ash-stained eggs in the bottom-left. Preserve all silhouettes, dark burrow opening and layered chitin forms. Production art for the Boiling Galleries, a scorched volcanic hive biome. No text, no floor, no added objects, genuine transparent alpha."
+    }
+  ]
+}

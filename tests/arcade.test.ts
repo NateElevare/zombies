@@ -5,6 +5,7 @@ import * as arcade from '../src/sim/arcade';
 import { SIM_DT, phys } from '../src/sim/core';
 import { WEAPONS } from '../src/sim/combat';
 import * as zombies from '../src/sim/zombies';
+import { isBossWave } from '../src/sim/bosses';
 import * as player from '../src/sim/player';
 import * as inv from '../src/sim/inventory';
 import { respawn } from '../src/sim/game';
@@ -84,11 +85,12 @@ describe('arcade', () => {
     const s = newArcade(10), a = s.arcade!;
     let previousInterval = Infinity;
     for (let wave = 1; wave <= 9; wave++) {
-      expect(a.wave).toBe(wave); expect(a.toSpawn).toBe(6 + (wave - 1) * 4);
-      expect(s.events).toContainEqual(expect.objectContaining({ t: 'toast', msg: `WAVE ${wave}` }));
+      const bossWave = isBossWave(wave), escort = Math.ceil((6 + (wave - 1) * 4) * (bossWave ? .5 : 1));
+      expect(a.wave).toBe(wave); expect(a.toSpawn).toBe(escort);
+      expect(s.events).toContainEqual(expect.objectContaining({ t: 'toast', msg: `WAVE ${wave}` + (bossWave ? ': BOSS WAVE' : '') }));
       stepArcade(s, idle, SIM_DT);
       expect(a.spawnTimer).toBeLessThan(previousInterval); previousInterval = a.spawnTimer;
-      const first = s.zombies[0];
+      const first = s.zombies.find(z => !z.boss)!;
       expect(first.maxHp).toBe(Math.round(zombies.TYPES[first.type].hp * waveHp(wave)));
       expect(first.speed).toBeCloseTo(zombies.TYPES[first.type].speed * waveSpeed(wave));
       let spawned = 0;
@@ -96,11 +98,12 @@ describe('arcade', () => {
         for (const z of s.zombies) if (!z.dead) { spawned++; zombies.damage(s, z, 9999, 0); }
         step(s, idle);
       }
-      expect(spawned).toBe(6 + (wave - 1) * 4); expect(a.intermission).toBe(5);
+      expect(spawned).toBe(escort + Number(bossWave)); expect(a.intermission).toBe(5);
       ticks(s, 299); expect(a.wave).toBe(wave);
       ticks(s, 1); expect(a.wave).toBe(wave + 1);
     }
-    expect(s.events.filter(e => e.t === 'sound' && e.name === 'waveStart')).toHaveLength(10);
+    // Boss arrivals also play waveStart; count actual wave announcements instead.
+    expect(s.events.filter(e => e.t === 'toast' && /^WAVE \d+(: BOSS WAVE)?$/.test(e.msg))).toHaveLength(10);
   });
 
   it('gives zombies knockback resistance after wave 40 so late runs cannot stun-lock the arena', () => {

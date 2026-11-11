@@ -15,7 +15,11 @@ export type SiteId =
   | 'haven' | 'havenYard' | 'pharmacy' | 'school' | 'gas' | 'overpass' | 'toll' | 'precinct' | 'dispatch'
   | 'hospital' | 'depot' | 'railcut' | 'pumping' | 'ranger' | 'clearing' | 'fort' | 'motorpool' | 'relay' | 'reservoir'
   // The Hive Below (sim/hive-world.ts)
-  | 'dam' | 'rift' | 'trail' | 'nursery' | 'cache' | 'parade';
+  | 'dam' | 'rift' | 'trail' | 'nursery' | 'cache' | 'parade'
+  // the cells beyond the Warrens (sim/hive-sites.ts)
+  | 'g_cross' | 'g_choir' | 'g_pillar' | 'g_arena' | 'p_combs' | 'p_cache' | 'p_atrium' | 'p_arena'
+  | 'b_vents' | 'b_cache' | 'b_gallery' | 'b_arena' | 'l_dark' | 'l_cache' | 'l_cocoons' | 'l_arena'
+  | 'r_cellar' | 'r_heaps' | 'r_arena' | 'q_ring' | 'q_ante' | 'q_throne';
 
 export interface Gate extends Rect { id: number; from: number; to: number; dir: 'h' | 'v'; open: boolean; }
 export interface Sector { id: number; col: number; row: number; rect: Rect; district: District; name: string; entry: Vec; exit: Vec; }

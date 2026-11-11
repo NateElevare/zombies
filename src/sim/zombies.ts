@@ -8,6 +8,8 @@ import * as player from './player';
 import * as progression from './progression';
 import * as loot from './loot';
 import * as pathing from './pathing';
+import * as hiveBugs from './hive-bugs';
+import { isQueenConduit } from '../hive-conduits';
 
 /** Story-mode spawn density: scales indoor packs, the outdoor trickle, horde size and the population cap. */
 export const SPAWN_SCALE = 0.5;
@@ -22,13 +24,24 @@ export const TYPES = {
   drone: { r: 13, hp: 24, speed: 82, damage: 7, xp: 6, color: '#c98a3a' },
   honeypot: { r: 19, hp: 75, speed: 45, damage: 10, xp: 18, color: '#e0a83a' },
   grub: { r: 8, hp: 12, speed: 95, damage: 4, xp: 3, color: '#d8cfa8' },
+  // the cells beyond the Warrens (behaviours in sim/hive-bugs.ts)
+  hopper: { r: 11, hp: 18, speed: 105, damage: 6, xp: 7, color: '#9fb54a' },
+  shrieker: { r: 14, hp: 45, speed: 55, damage: 6, xp: 20, color: '#7fae8a' },
+  stinger: { r: 12, hp: 28, speed: 120, damage: 8, xp: 10, color: '#e0c23a' },
+  spitter: { r: 17, hp: 65, speed: 50, damage: 16, xp: 22, color: '#d0703a' },
+  shieldback: { r: 23, hp: 230, speed: 44, damage: 28, xp: 45, color: '#6a4a30' },
+  lurker: { r: 16, hp: 95, speed: 60, damage: 32, xp: 35, color: '#5a9a6a' },
+  dustwing: { r: 13, hp: 30, speed: 95, damage: 5, xp: 10, color: '#b0a890' },
+  skitterer: { r: 10, hp: 22, speed: 145, damage: 5, xp: 9, color: '#6a3a2a' },
   // inert: a burrow mouth and an egg cluster. No AI, no attack, nothing pushes them; they are shot, cut or burned.
   burrow: { r: 30, hp: 260, speed: 0, damage: 0, xp: 30, color: '#3a2a1c' },
   egg: { r: 18, hp: 45, speed: 0, damage: 0, xp: 8, color: '#cfd8a0' }
 };
-export const VARIANTS: Record<ZombieType, number> = { walker: 4, runner: 3, brute: 2, crawler: 2, bloater: 2, drone: 1, honeypot: 1, grub: 1, burrow: 1, egg: 1 };
+export const VARIANTS: Record<ZombieType, number> = { walker: 4, runner: 3, brute: 2, crawler: 2, bloater: 2, drone: 1, honeypot: 1, grub: 1, burrow: 1, egg: 1,
+  hopper: 1, shrieker: 1, stinger: 1, spitter: 1, shieldback: 1, lurker: 1, dustwing: 1, skitterer: 1 };
+const CITY_TYPES = new Set<ZombieType>(['walker', 'runner', 'brute', 'crawler', 'bloater']);
 /** The Hive Below's creatures (and its two fixtures). */
-export const isHiveType = (t: ZombieType) => t === 'drone' || t === 'honeypot' || t === 'grub' || t === 'burrow' || t === 'egg';
+export const isHiveType = (t: ZombieType) => !CITY_TYPES.has(t);
 /** A burrow mouth or an egg cluster: a target, not a creature. */
 export const isInert = (z: Zombie) => z.type === 'burrow' || z.type === 'egg';
 interface AiZombie extends Zombie {
@@ -502,17 +515,18 @@ export function update(state: GameState, dt: number) {
     if (z.pursuit > 0) z.pursuit = z.state === 'idle' || z.state === 'wander' ? 0 : Math.max(0, z.pursuit - dt);
     const distance = Math.hypot(p.x - z.x, p.y - z.y);
     if (distance < 380) near = true;
-    if (z.losTimer <= 0) {
+    const lured = Number(z.lureT) > 0;   // The Hive Below: it is after a lure or a marked bug, not you (sim/hive-arms.ts)
+    if (z.losTimer <= 0 && !lured) {
       const range = isNight ? (p.flashlight ? 430 : 220) : 350;
       z.seesPlayer = !p.dead && p.hp > 0 && distance < range && sight(state, z.x, z.y, p.x, p.y);
       z.losTimer = 0.20 + random(state) * 0.1;
       if (z.seesPlayer) { z.target = { x: p.x, y: p.y }; z.memory = 4; z.state = 'chase'; }
       else if (z.state === 'chase' && !z.horde) z.state = 'investigate';
     }
-    if (z.horde) {
+    if (z.horde && !lured) {
       z.target = home ? { x: home.x + home.w / 2, y: home.y + home.h / 2 } : { x: p.x, y: p.y };
       if (z.state !== 'attackStructure') z.state = 'chase';
-    } else if (z.state === 'investigate' && z.memory <= 0) { z.target = null; z.state = 'idle'; z.decisionTimer = 0; }
+    } else if (!lured && z.state === 'investigate' && z.memory <= 0) { z.target = null; z.state = 'idle'; z.decisionTimer = 0; }
     if (z.state === 'attackStructure') {
       const s = state.structures.find(s => s.id === z.attackTarget && !s.dead);
       // Stop hacking at a wall once the shared path finds a way around it (e.g. someone else broke through).
@@ -541,7 +555,9 @@ export function update(state: GameState, dt: number) {
   for (const z of (state.zombies as AiZombie[])) {
     if (z.dead || z.inert || p.dead || p.hp <= 0 || z.attackCooldown > 0) continue;
     if (Math.hypot(p.x - z.x, p.y - z.y) <= p.r + z.r + 2 && sight(state, z.x, z.y, p.x, p.y)) {
+      if (Number(z.lureT) > 0) continue;   // busy with a lure
       if (player.damage) player.damage(state, z.damage, Math.atan2(p.y - z.y, p.x - z.x));
+      if (isHiveType(z.type)) hiveBugs.onBite(state, z);
       z.attackCooldown = z.type === 'crawler' ? 0.65 : 0.9;
     z.attackT = 0; emit(state, { t: 'zombieAttack', id: z.id, x: z.x, y: z.y });
     }
@@ -606,8 +622,9 @@ function stickyTick(state: GameState, z: AiZombie, dt: number) {
 export const CORRODE_MAX = 6, CORRODE_TIME = 4;
 export function corrode(state: GameState, zombie: Zombie) {
   const z = zombie as AiZombie;
-  z.corro = CORRODE_TIME;
-  z.corroStacks = Math.min(CORRODE_MAX, (Number(z.corroStacks) || 0) + 1);
+  // Hive Weapons perks: Deep Burn stacks higher and lasts longer
+  z.corro = CORRODE_TIME + progression.perkSum(state, 'corrodeTime');
+  z.corroStacks = Math.min(CORRODE_MAX + progression.perkSum(state, 'corrodeMax'), (Number(z.corroStacks) || 0) + 1);
   if (z.corroT === undefined || Number(z.corroT) <= 0) z.corroT = 0.5;
 }
 function corrodeTick(state: GameState, z: AiZombie, dt: number) {
@@ -616,7 +633,7 @@ function corrodeTick(state: GameState, z: AiZombie, dt: number) {
   z.corroT = Number(z.corroT) - dt;
   if (Number(z.corroT) <= 0) {
     z.corroT = 0.5;
-    damage(state, z, 2 * (Number(z.corroStacks) || 1), NaN, { burn: true, source: 'acid' });
+    damage(state, z, 2 * (1 + progression.perkSum(state, 'corrodeDmg')) * (Number(z.corroStacks) || 1), NaN, { burn: true, source: 'acid' });   // Stronger Acid
   }
   if (Number(z.corro) <= 0) { z.corro = 0; z.corroStacks = 0; }
 }
@@ -628,6 +645,7 @@ export function damage(state: GameState, zombie: Zombie, amount: number, angle: 
   const z = zombie as AiZombie;
   if (!z || z.dead || !Number.isFinite(amount) || amount <= 0) return;
   if (z.boss) amount *= 1 + (state.arcade?.run?.aug?.boss ?? 0);   // Giant Slayer augment
+  if (state.road?.world.hive) { amount = hiveBugs.armour(state, z, amount, angle, opts); if (!(amount > 0)) return; }
   z.hp = Math.max(0, z.hp - amount); z.hitFlash = 0.12;
   emit(state, { t: 'zombieHurt', id: z.id, x: z.x, y: z.y, angle });
   // SIM-A's legacy bullet path identifies hits with source:'player' and a crit flag.
@@ -656,6 +674,6 @@ export function damage(state: GameState, zombie: Zombie, amount: number, angle: 
   }
   if (z.type !== 'burrow') blood(state, z.x, z.y, 12, angle, bug);
   if (state.player && Math.hypot(z.x - state.player.x, z.y - state.player.y) < 700) sound(state, 'zombieDie');
-  emit(state, { t: 'zombieKilled', id: z.id, x: z.x, y: z.y, type: z.type, variant: z.variant, angle: z.angle, ...(z.boss ? { boss: z.boss as import('./bosses').BossId, radius: Number((z as { drawR?: number }).drawR) || z.r } : {}) });
+  emit(state, { t: 'zombieKilled', id: z.id, x: z.x, y: z.y, type: z.type, variant: z.variant, angle: z.angle, ...(z.boss ? { boss: z.boss as import('./bosses').BossId, radius: Number((z as { drawR?: number }).drawR) || z.r } : {}), ...(isQueenConduit(z) ? { conduit: true, radius: z.r } : {}) });
   if (z.type === 'bloater') explode(state, z);
 }

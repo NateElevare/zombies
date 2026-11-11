@@ -20,6 +20,8 @@ import { getVfxEnabled } from './vfx-post';
 import { storyEffectOffset } from './story-projection';
 import { isAngledStory } from '../story-mode';
 import * as road from '../sim/road';
+import { hiveMaterialZone, hiveResinAnchor } from './hive-materials';
+import { isQueenConduit } from '../hive-conduits';
 
 const LS = 0.5;                // lightmap resolution relative to the screen
 const M = 10;                  // lightmap margin (px) so the blur never samples outside the texture
@@ -107,7 +109,11 @@ export class Lighting {
     const p = state.player;
 
     // ---- ambient: outdoors follows the day/night cycle; building interiors are always dim
-    const d0 = darkness(state);
+    const hiveMap=state.road?.world.hive;
+    const warrens=!!hiveMap&&hiveMaterialZone(hiveMap,px,py)===1;
+    // The approved Warrens painting reads by reflected resin light as well as the
+    // flashlight. This is a visual treatment only; other areas retain their darkness.
+    const d0 = warrens ? .42 : darkness(state);
     const inside = p && !p.dead ? !!world.buildingAt(state, p.x, p.y) : false;
     this.indoor += ((inside ? 1 : 0) - this.indoor) * (1 - Math.exp(-4 * realDt));
     const dIn = Math.min(0.95, Math.max(0.64, d0 + 0.08));
@@ -139,7 +145,7 @@ export class Lighting {
       const reach=isAngledStory(state)?12:6;
       const ox = px + Math.cos(aim) * reach+lift.x, oy = py + Math.sin(aim) * reach+lift.y;
       this.lastFlashOrigin.x=ox;this.lastFlashOrigin.y=oy;
-      const s = (RANGE * k) / CONE_W;
+      const s = (RANGE * k * (p.beamMul ?? 1)) / CONE_W;   // moth dust shortens the beam (sim/hive-bugs.ts)
       const f = this.fdt;
       f.fill(0x000000, 1);
       f.stamp(TX.cone, undefined, lx(ox), ly(oy), { originX: 0, originY: 0.5, rotation: aim, scale: s, tint: 0xfff0d8, alpha: fl * coneK, blendMode: Phaser.BlendModes.ADD });
@@ -181,6 +187,7 @@ export class Lighting {
     // the floodlights on the dam once the breaker is thrown, the rift, and the honey.
     const hive = state.road?.world.hive;
     if (hive && state.road) {
+      for (const z of state.zombies) if (!z.dead && isQueenConduit(z)) soft(z.x, z.y, 165, 0xffcc78, .65 + .08 * Math.sin(time * 3));
       const lit = state.road.lights;
       // a camp's lamp burns once the camp is made: every checkpoint behind you, and this one while you are making it
       const r = state.road, camping = r.phase !== 'play' || road.current(state)?.kind === 'camp';
@@ -188,7 +195,9 @@ export class Lighting {
         if (gl.kind === 'flood' && !lit) continue;
         if (gl.kind === 'camp' && !(gl.camp! < r.mission || (gl.camp === r.mission && camping))) continue;
         const breathe = gl.kind === 'wall' ? 0.88 + 0.12 * Math.sin(time * 1.3 + gl.x * 0.011 + gl.y * 0.007) : gl.kind === 'flood' ? 1 : 0.92 + 0.08 * Math.sin(time * 2.1 + gl.x);
-        soft(gl.x, gl.y, gl.r, gl.col, gl.i * breathe);
+        const inset=gl.kind==='wall'&&hiveMaterialZone(hive,gl.x,gl.y)===1;
+        const at=gl.kind==='wall'?hiveResinAnchor(hive,gl.x,gl.y):gl;
+        soft(at.x, at.y, gl.r, gl.col, gl.i * breathe * (inset ? .65 : 1));
         if (gl.kind === 'flood') soft(gl.x, gl.y + 280, 760, gl.col, 0.3);   // thrown down across the bed
       }
       for (const q of state.road.hiveRt?.pools ?? []) soft(q.x, q.y, q.r * 2.4, 0xffb840, 0.4 * Math.min(1, q.life));

@@ -82,3 +82,4 @@ if(lineup.length)contactSheet(join(root,'art/preview/hive-enemy-lineup.png'),lin
 if(bosses.length)contactSheet(join(root,'art/preview/hive-boss-lineup.png'),bosses,4,'#30352e');
 if(items.length)contactSheet(join(root,'art/preview/hive-items.png'),items,6,'#30352e');
 console.log(`Hive pack: ${manifest.sources.length}/44 sources, ${Object.keys(manifest.frames).length} frames, ${manifest.anims.length} animations, ${manifest.atlases.length} atlases.`);
+await import('./environment');

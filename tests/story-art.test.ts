@@ -43,7 +43,7 @@ describe('Story art runtime coverage',()=>{
   it('supports every skin, weapon and wearable combination in all source directions',()=>{
     for(const skin of CHARACTERS)for(const d of dirs){for(let pose=0;pose<12;pose++)has(`story_torso_${skin.id}_${d}_${pose}`);for(let f=0;f<4;f++)has(`story_death_${skin.id}_${d}_${f}`);}
     for(const id of Object.keys(WEAPONS).filter(id=>id!=='unarmed'&&!hiveItem(id)))for(const d of dirs)has(`story_weapon_${lookOf(id)}_${d}`);
-    for(const item of Object.values(ITEMS).filter(i=>i.type==='armor'||i.type==='backpack'))for(const d of dirs)has(`story_gear_${item.id}_${d}`);
+    for(const item of Object.values(ITEMS).filter(i=>(i.type==='armor'||i.type==='backpack')&&!hiveItem(i.id)))for(const d of dirs)has(`story_gear_${item.id}_${d}`);   // the hive's vest is worn only in its own overhead story
     for(const d of dirs)for(const [pose,n]of Object.entries({idle:2,walk:8,run:8,strafe_left:8,strafe_right:8,backpedal:8}))for(let i=0;i<n;i++)has(`story_legs_${d}_${pose}_${i}`);
     expect(art.locomotion).toMatchObject({version:2,frames:8,hip:{x:128,y:134}});
   });

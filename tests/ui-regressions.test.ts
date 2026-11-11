@@ -207,9 +207,12 @@ describe('reviewed shell and UI regressions', () => {
   });
   it('blocks survival shortcuts in arcade while keeping pause available (bug 4)', async () => {
     const scene = sceneFixture(); scene.api.newArcade(); const state = scene.state!;
-    for (const code of ['KeyK', 'KeyC', 'Tab', 'KeyN']) {
+    for (const code of ['KeyC', 'Tab', 'KeyN']) {
       await win.fire('keydown', { code }); expect(state.ui).toBeNull();
     }
+    await win.fire('keydown', { code:'KeyK' }); expect(state.ui).toBe('tech');
+    expect(root.all().some(n=>n.textContent==='ARCADE SKILLS')).toBe(true);
+    await win.fire('keydown', { code:'KeyK' }); expect(state.ui).toBeNull();
     // I opens the arcade armory instead of the survival inventory, and closes it again
     await win.fire('keydown', { code: 'KeyI' }); expect(state.ui).toBe('armory');
     await win.fire('keydown', { code: 'KeyI' }); expect(state.ui).toBeNull();
@@ -218,7 +221,7 @@ describe('reviewed shell and UI regressions', () => {
     state.mode = 'survival';
     await win.fire('keydown', { code: 'KeyI' }); expect(state.ui).toBe('inventory');
   });
-  it.each(['inventory', 'craft', 'tech', 'map', 'workbench', 'stash', 'loot'] as UiName[])('rejects survival-only %s events in arcade (bug 4)', name => {
+  it.each(['inventory', 'craft', 'map', 'workbench', 'stash', 'loot'] as UiName[])('rejects survival-only %s events in arcade (bug 4)', name => {
     const scene = sceneFixture(); scene.api.newArcade(); const state = scene.state!;
     scene.ui.onEvent({ t: 'openUi', ui: name }, state);
     expect(state.ui).toBeNull();

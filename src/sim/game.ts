@@ -21,6 +21,7 @@ export function darkness(state: GameState) {
   const hive = state.road?.world.hive;
   if (hive && state.player) {
     const b = hive.breach, e = Math.hypot((state.player.x - b.x) / b.rx, (state.player.y - b.y) / b.ry);
+    if (state.road!.dawn) return 0.2 + 0.68 * smooth((e - 0.95) / 0.55);   // the last mission: first light over the reservoir bed
     return 0.8 + 0.08 * smooth((e - 0.95) / 0.55);
   }
   const t = state.clock.t;
@@ -132,7 +133,7 @@ export function respawn(state: GameState) {
   if (bed) pos = { x: bed.x + bed.w / 2, y: bed.y + bed.h / 2 + 30 };
   p.x = pos.x; p.y = pos.y; phys.collideCircle(state, p);
   p.hp = Math.min(60, p.maxHp); p.food = p.water = 60; p.stamina = p.maxStamina;
-  p.dead = false; p.invuln = 2; p.bleeding = 0; p.reloadTimer = p.swingTimer = p.fireCooldown = 0;
+  p.dead = false; p.invuln = 2; p.bleeding = 0; p.reloadTimer = p.swingTimer = p.meleeCooldown = p.fireCooldown = 0;
   p.burstQueue = 0; p.sprinting = false; p.vx = p.vy = 0;
   state.search = null; state.interact = null;
   state.zombies = state.zombies.filter(z => !z.dead && Math.hypot(z.x - p.x, z.y - p.y) >= 500);

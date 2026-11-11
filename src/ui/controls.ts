@@ -8,21 +8,21 @@ const weapons = () => [k('slot1'), k('slot2'), k('slot3')].join(' ');
 /** Short list for the in-game first-play hints. */
 export function hintRows(): [string, string][] {
   return [
-    [keybinds.moveText(), 'move'], [k('sprint'), 'sprint'], ['CLICK', 'shoot'], [k('interact'), 'search / interact'], [k('inventory'), 'inventory'],
+    [keybinds.moveText(), 'move'], [k('sprint'), 'sprint'], ['LEFT CLICK', 'fire / swing'], ['RIGHT CLICK', 'quick melee'], [k('interact'), 'search / interact'], [k('inventory'), 'inventory'],
     [k('craft'), 'craft'], [k('tech'), 'tech tree'], [k('build'), 'build'], [k('map'), 'map'], [k('heal'), 'heal'], [k('flashlight'), 'flashlight'],
   ];
 }
 /** Full list for the title screen. */
 export function controlRows(): [string, string][] {
   return [
-    [keybinds.moveText(), 'Move'], [k('sprint'), 'Sprint'], ['MOUSE', 'Aim'], ['CLICK', 'Fire / swing'], [k('reload'), 'Reload'], [weapons(), 'Weapons'],
+    [keybinds.moveText(), 'Move'], [k('sprint'), 'Sprint'], ['MOUSE', 'Aim'], ['LEFT CLICK', 'Fire / swing'], ['RIGHT CLICK', 'Quick melee (keeps gun selected)'], [k('reload'), 'Reload'], [weapons(), 'Weapons'],
     [k('interact'), 'Search / interact (hold)'], [k('heal'), 'Quick heal'], [k('flashlight'), 'Flashlight'], [k('build'), 'Build mode'],
     [k('inventory'), 'Inventory'], [k('craft'), 'Crafting'], [k('tech'), 'Tech tree'], [keybinds.text('map'), 'Map'], ['ESC', 'Pause / close'], [k('mute'), 'Mute'],
   ];
 }
 /** One-line summary (pause screen). */
 export function controlsLine() {
-  return `${keybinds.moveText()} move · ${k('sprint')} sprint · ${k('reload')} reload · ${weapons()} weapons · ${k('interact')} interact · ${k('heal')} heal · ` +
+  return `${keybinds.moveText()} move · ${k('sprint')} sprint · RIGHT CLICK quick melee · ${k('reload')} reload · ${weapons()} weapons · ${k('interact')} interact · ${k('heal')} heal · ` +
     `${k('flashlight')} flashlight · ${k('inventory')} inventory · ${k('tech')} tech · ${k('craft')} craft · ${k('build')} build · ${k('map')} map · ${k('mute')} mute`;
 }
 /** Build-mode key strip (HTML). */

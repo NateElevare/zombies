@@ -51,20 +51,30 @@ describe('inventory', () => {
 
   it('stacks to capacity, reports leftovers, and removes atomically', () => {
     const i = inv.create(2);
-    expect(inv.add(i, 'ammo_9mm', 500)).toBe(20);
-    expect(i.slots.map(s => s?.qty)).toEqual([240, 240]);
-    expect(inv.remove(i, 'ammo_9mm', 481)).toBe(false);
-    expect(inv.count(i, 'ammo_9mm')).toBe(480);
-    expect(inv.remove(i, 'ammo_9mm', 260)).toBe(true);
-    expect(i.slots).toEqual([null, { id: 'ammo_9mm', qty: 220 }]);
+    expect(inv.add(i, 'ammo_9mm', 1500)).toBe(60);
+    expect(i.slots.map(s => s?.qty)).toEqual([720, 720]);
+    expect(inv.remove(i, 'ammo_9mm', 1441)).toBe(false);
+    expect(inv.count(i, 'ammo_9mm')).toBe(1440);
+    expect(inv.remove(i, 'ammo_9mm', 780)).toBe(true);
+    expect(i.slots).toEqual([null, { id: 'ammo_9mm', qty: 660 }]);
     expect(inv.add(i, 'scrap', -1)).toBe(-1);
     expect(inv.add(i, 'no_item', 2)).toBe(2);
   });
+  it('compacts old stacks up to the stack limit and frees the slots that empty', () => {
+    // a backpack saved when 9mm stacked to 240 and bandages to 20
+    const i = inv.create(8);
+    i.slots = [{ id: 'ammo_9mm', qty: 240 }, { id: 'bandage', qty: 20 }, { id: 'ammo_9mm', qty: 240 }, { id: 'pistol', qty: 1, mag: 5 }, { id: 'ammo_9mm', qty: 240 }, { id: 'ammo_9mm', qty: 130 }, { id: 'bandage', qty: 7 }, { id: 'pistol', qty: 1, mag: 9 }];
+    inv.compact(i);
+    expect(i.slots).toEqual([{ id: 'ammo_9mm', qty: 720 }, { id: 'bandage', qty: 27 }, null, { id: 'pistol', qty: 1, mag: 5 }, null, { id: 'ammo_9mm', qty: 130 }, null, { id: 'pistol', qty: 1, mag: 9 }]);
+    expect(inv.count(i, 'ammo_9mm')).toBe(850);
+    inv.compact(i);   // nothing left to fold
+    expect(i.slots.filter(Boolean)).toHaveLength(5);
+  });
   it('keeps distinct stack metadata and moves partial quantities', () => {
     const a = inv.create(2), b = inv.create(1);
-    inv.add(a, 'ammo_9mm', 20); inv.add(b, 'ammo_9mm', 230);
+    inv.add(a, 'ammo_9mm', 20); inv.add(b, 'ammo_9mm', 710);
     expect(inv.moveSlot(a, 0, b)).toBe(true);
-    expect(a.slots[0]?.qty).toBe(10); expect(b.slots[0]?.qty).toBe(240);
+    expect(a.slots[0]?.qty).toBe(10); expect(b.slots[0]?.qty).toBe(720);
     expect(inv.moveSlot(a, 0, b)).toBe(false);
     inv.add(a, 'pistol', 1, { mag: 7 });
     expect(inv.moveSlot(a, 1, b, 0)).toBe(true);

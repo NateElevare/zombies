@@ -94,16 +94,22 @@ export interface Player extends Vec, Interp {
   food: number; water: number; invuln: number; dead: boolean;
   inv: PlayerInventory; active: WeaponSlot;
   fireCooldown: number; reloadTimer: number; reloadTotal: number; swingTimer: number; swingTotal: number;
+  /** Quick melee has its own recovery so it can interrupt a gun's fire cooldown. */
+  meleeCooldown?: number;
+  /** Weapon captured for the current swing; active gun selection stays unchanged. */
+  swingWeapon?: string;
   lastShotT: number;                          // state.time of last shot (renderer: recoil pose / muzzle)
   xp: number; level: number; sp: number; tech: Record<string, true>;
   spawn: Vec; sprinting: boolean; flashlight: boolean; bleeding: number;
   burstQueue?: number; combatTimer?: number;
   /** The Hive Below: movement multiplier while standing in honey (sim/hive.ts sets it every tick) */ slowMul?: number;
+  /** The Hive Below: reach of the flashlight beam, 1 = full (moth dust shortens it: sim/hive-bugs.ts) */ beamMul?: number;
   /** seconds of royal jelly left: +20% damage dealt */ jelly?: number;
 }
 export type ZombieType = 'walker' | 'runner' | 'brute' | 'crawler' | 'bloater'
   // The Hive Below (sim/hive.ts): giant dead insects, and two things that only sit there to be destroyed
-  | 'drone' | 'honeypot' | 'grub' | 'burrow' | 'egg';
+  | 'drone' | 'honeypot' | 'grub' | 'burrow' | 'egg'
+  | 'hopper' | 'shrieker' | 'stinger' | 'spitter' | 'shieldback' | 'lurker' | 'dustwing' | 'skitterer';
 export type ZombieState = 'idle' | 'wander' | 'investigate' | 'chase' | 'attackStructure';
 export interface Zombie extends Vec, Interp {
   id: string; r: number; type: ZombieType;
@@ -139,7 +145,7 @@ export type SimEvent =
   /** The Hive Below: honey bursting, a burrow sending a column or caving in, eggs hatching (render + audio cue) */
   | { t: 'hive'; kind: 'honey' | 'erupt' | 'collapse' | 'hatch' | 'rally'; x: number; y: number }
   | { t: 'zombieHurt'; id: string; x: number; y: number; angle: number }
-  | { t: 'zombieKilled'; id: string; x: number; y: number; angle: number; type: ZombieType; variant: number; boss?: import('./bosses').BossId; radius?: number }
+  | { t: 'zombieKilled'; id: string; x: number; y: number; angle: number; type: ZombieType; variant: number; boss?: import('./bosses').BossId; radius?: number; conduit?: boolean }
   | { t: 'zombieAttack'; id: string; x: number; y: number }
   | { t: 'explosion'; x: number; y: number; radius: number }
   | { t: 'playerHurt'; amount: number; angle: number }
@@ -179,7 +185,7 @@ export interface InputState {
   aimX: number; aimY: number;     // aim point in WORLD coordinates
   fire: boolean;                  // primary button held
   firePressed: boolean;           // primary pressed since last tick (latched by shell until consumed by a tick)
-  altPressed: boolean;            // secondary button pressed since last tick (build mode cancel)
+  altPressed: boolean;            // right-click: quick melee in combat, cancel in build mode
   sprint: boolean;
   interactHeld: boolean;          // E held (container search)
   pressed: Set<Action>;           // edge-triggered actions since last tick
@@ -224,7 +230,7 @@ export interface GameState {
   /** story-mode boss attack hazards (arcade keeps its own in arcade.bfx) */
   bossFx?: import('./bosses').BossFx;
   arcade?: { wave: number; score: number; toSpawn: number; spawnTimer: number; intermission: number; best: number; run?: ArcadeRun; /** weapons picked up but not equipped (choose them in the armory) */ armory?: Stack[]; /** boss attack hazards */ bfx?: import('./bosses').BossFx; /** this wave's boss has not spawned yet */ bossDue?: boolean;
-    bossKills?: number; reviveNova?: boolean; /** cores for this run were added to the augment bank */ coresBanked?: boolean; coresEarned?: number };
+    bossKills?: number; reviveNova?: boolean; /** final settlement completed on death/quit */ coresBanked?: boolean; /** cumulative cores deposited during this run, including those already spent */ coresEarned?: number };
   [k: string]: unknown;           // module-private runtime bags (e.g. _zombies, _world); must be non-essential for save
 }
 

@@ -1,0 +1,14 @@
+{
+  "prompt": "Use case: stylized-concept. Production sprite sheet for the Queen's destructible jelly conduits in a dark top-down insect-hive survival game.\nReference image is a STYLE AND MATERIAL reference only: painted gritty pixel-detail violet chitin, cracked shell edges, warm highlights. Do not copy its burrow hole or egg silhouettes.\nCreate ONE transparent 2 by 2 sheet, square canvas, four equally sized isolated sprites, same center, scale and overhead 90-degree camera in each quadrant. Keep each silhouette fully within its cell with 12% empty transparent padding.\nThe conduit is a recognizable biological power organ: six splayed violet chitin claws gripping a large CLOSED translucent golden-amber jelly heart. The bright warm central organ occupies most of the silhouette, with branching pink-violet veins and four short root-like resin tubes spreading outward. It must read as a vulnerable glowing object to destroy, distinct from a dark burrow hole and from an egg cluster. Low squat form seen exactly overhead; no towering pillar, no mechanical machine, no circular black hole. Broad clear silhouette legible at 100px across.\nTop-left: intact conduit, warm golden core, violet armor roots, contained small highlights.\nTop-right: same intact conduit in a pulse of brighter energy, same silhouette and placement, cream-gold core with luminous veins.\nBottom-left: damaged conduit, same silhouette, shell split open and jelly heart visibly cracked and leaking a few amber beads, light faltering.\nBottom-right: destroyed conduit, collapsed violet shell shards and dried torn resin roots, center ruptured and empty of light, flattened dark amber remains; no bright core.\nHand-painted game asset matching the reference's worn chitin and fine textured shading, restrained high contrast, not smooth vector/cartoon, not photorealistic 3D. Background must have actual transparent alpha, no floor, no scene, no backdrop, no checkerboard painted into pixels, no cast shadow rectangle, no ambient colored haze outside silhouettes. No text, labels, borders, UI, characters or extra objects.",
+  "tool": "image_gen.imagegen",
+  "transparent_background": true,
+  "reference": "art/source/hive-environment/royal.png",
+  "source": "Generated images are saved to C:\\Users\\nphil\\.codex\\generated_images\\01a1bd80-bff0-7160-a7b1-99ae2395d9cf as C:\\Users\\nphil\\.codex\\generated_images\\01a1bd80-bff0-7160-a7b1-99ae2395d9cf\\exec-22f2bfaf-a6bd-4118-832a-cb4f4a04082e.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+  "date": "2026-11-11",
+  "frames": [
+    "idle",
+    "pulse",
+    "damaged",
+    "destroyed"
+  ]
+}

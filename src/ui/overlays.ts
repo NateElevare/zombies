@@ -38,6 +38,16 @@ export interface OverlayHost {
   open(name: UiName): void;
 }
 
+type BagTab = 'all' | 'gear' | 'ammo' | 'heal' | 'other';
+/** Which backpack tab a stack belongs on. */
+function bagOf(stack: Stack): Exclude<BagTab, 'all'> {
+  const d = itemDef(stack.id);
+  if (d?.type === 'weapon' || d?.type === 'armor' || d?.type === 'backpack') return 'gear';
+  if (d?.type === 'ammo') return 'ammo';
+  if (d?.type === 'consumable' && (d.use?.heal || d.use?.stopBleed)) return 'heal';
+  return 'other';
+}
+
 export class Overlays {
   readonly node: HTMLElement;
   private panel: HTMLElement;
@@ -49,6 +59,8 @@ export class Overlays {
   private drag: DragSrc | null = null;
   private tab: 'tech' | 'craft' = 'tech';
   private tree = ''; private selNode = '';
+  /** Backpack tab: ALL shows every slot; the others show only the stacks of that kind (views of the one backpack). */
+  private bag: BagTab = 'all';
   private mapView: MapView = { cx: 8000, cy: 8000, zoom: 1 };
   private showSettings = false;
   private confirmQuit = false;
@@ -118,7 +130,7 @@ export class Overlays {
         case 'inventory': this.rInventory(); break;
         case 'loot': this.rTransfer(); break;
         case 'stash': this.rTransfer(); break;
-        case 'tech': this.panel.appendChild(this.header('TECH TREE', 'K to close')); this.rTech(); break;
+        case 'tech': this.panel.appendChild(this.header(this.s.mode==='arcade'?'ARCADE SKILLS':'TECH TREE', keybinds.text('tech',true)+' to close')); this.rTech(); break;
         case 'craft': this.panel.appendChild(this.header('CRAFTING', 'C to close')); this.rCraft(); break;
         case 'workbench': this.rWorkbench(); break;
         case 'map': this.rMap(); break;
@@ -254,7 +266,7 @@ export class Overlays {
     inv.takeAll(oi, pinv);
     const after = this.used(oi);
     if (after > 0) toast(this.s, 'Backpack full - some items left behind', '#f84');
-    if (after === 0 && this.current === 'loot') { this.host.close(); return; }
+    if (after === 0 && this.current === 'loot' && !this.lockbox()) { this.host.close(); return; }
     this.render();
   }
 
@@ -373,15 +385,45 @@ export class Overlays {
     return c;
   }
 
+  /** The backpack column with its tabs. A tab lists the matching stacks only; each keeps its real slot, so clicks and drags work as in ALL. */
+  private backpack() {
+    const pinv = this.playerInv, cols = (pinv?.size ?? 0) > 30 ? 8 : 6;
+    const c = el('div', 'col'), h = el('div', 'col-head');
+    h.innerHTML = `BACKPACK <span class="dim">${this.used(pinv)} / ${pinv ? pinv.slots.length : 0}</span>`;
+    c.appendChild(h);
+    const count: Record<Exclude<BagTab, 'all'>, number> = { gear: 0, ammo: 0, heal: 0, other: 0 };
+    for (const st of pinv?.slots ?? []) if (st) count[bagOf(st)]++;
+    if (this.bag === 'other' && !count.other) this.bag = 'all';
+    const list = [
+      { id: 'all', name: 'ALL', badge: String(this.used(pinv)) }, { id: 'gear', name: 'WEAPONS & GEAR', badge: String(count.gear) },
+      { id: 'ammo', name: 'AMMO', badge: String(count.ammo) }, { id: 'heal', name: 'HEALING', badge: String(count.heal) },
+      ...(count.other ? [{ id: 'other', name: 'OTHER', badge: String(count.other) }] : []),
+    ];
+    const bar = this.tabs(list, this.bag, (id) => { this.bag = id as BagTab; this.render(); });
+    bar.classList.add('mini'); bar.classList.add('bag-tabs');
+    c.appendChild(bar);
+    const sc = el('div', 'scroll'); sc.dataset.scroll = this.bag === 'all' ? 'pinv' : 'pinv-' + this.bag;
+    if (this.bag === 'all' || !pinv) sc.appendChild(this.grid(pinv, 'player', cols));
+    else {
+      const g = el('div', 'grid'); g.style.setProperty('--cols', String(cols));
+      let shown = 0;
+      pinv.slots.forEach((st, n) => { if (st && bagOf(st) === this.bag) { g.appendChild(this.slot(st, 'player', n)); shown++; } });
+      if (!shown) g.appendChild(el('div', 'empty', 'Nothing of this kind in the backpack'));
+      sc.appendChild(g);
+    }
+    c.appendChild(sc);
+    return c;
+  }
+
   private rInventory() {
     this.panel.appendChild(this.header('INVENTORY', 'I to close'));
     const body = el('div', 'body row');
     const left = el('div', 'col col-doll'); left.dataset.scroll = 'doll';   // scrolls when the upgrade list doesn't fit
     left.appendChild(el('div', 'col-head', 'EQUIPMENT')); left.appendChild(this.paperdoll()); left.appendChild(this.statBox()); left.appendChild(this.gearBox());
     body.appendChild(left);
-    const right = this.col('BACKPACK', this.playerInv, 'player', 'pinv', (this.playerInv?.size ?? 0) > 30 ? 8 : 6);
+    const right = this.backpack();
     right.appendChild(this.dropZone());
-    right.appendChild(el('div', 'help', 'Click equip/use · Right-click use · Shift-click drop · Drag to rearrange'));
+    right.appendChild(el('div', 'help', 'Click equip/use · Right-click use · Shift-click drop · Drag to rearrange · Tabs sort the same backpack'));
     body.appendChild(right); this.panel.appendChild(body);
   }
 
@@ -394,18 +436,26 @@ export class Overlays {
     if (t.kind === 'loot') return 'LOOT BAG';
     return String(t.kind || 'LOOT').replace(/_/g, ' ').toUpperCase();
   }
+  /** The Hive Below: the lockbox at a camp (sim/road.ts). It is storage, so it shows what you wear as well. */
+  private lockbox() { return this.current === 'loot' && (this.target as { kind?: string } | null)?.kind === 'lockbox'; }
   private rTransfer() {
-    const t = this.target as (Container & Drop & Structure) | null;
-    const sub = this.current === 'stash' ? (t?.type === 'turret' ? 'Load 9mm ammo to arm the turret' : 'Base storage') : t?.kind === 'deathbag' ? 'Everything you carried' : '';
+    const t = this.target as (Container & Drop & Structure) | null, box = this.lockbox();
+    const sub = box ? 'Take what you want to carry. What you leave here is at every camp.' : this.current === 'stash' ? (t?.type === 'turret' ? 'Load 9mm ammo to arm the turret' : 'Base storage') : t?.kind === 'deathbag' ? 'Everything you carried' : '';
     this.panel.appendChild(this.header(this.title(), sub));
     const body = el('div', 'body row');
+    if (box) {
+      this.panel.classList.add('p-lockbox');
+      const worn = el('div', 'col col-doll'); worn.dataset.scroll = 'doll';
+      worn.appendChild(el('div', 'col-head', 'EQUIPMENT')); worn.appendChild(this.paperdoll()); worn.appendChild(this.statBox());
+      body.appendChild(worn);
+    }
     body.appendChild(this.col('YOUR BACKPACK', this.playerInv, 'player', 'pinv', 6));
     const oi = this.other(), right = this.col(this.title(), oi, 'other', 'oinv', oi && oi.slots.length <= 8 ? 4 : 6);
     if (oi && this.used(oi) === 0 && this.current === 'loot') right.querySelector('.scroll')!.prepend(el('div', 'empty', 'Empty.'));
     const btns = el('div', 'btnrow'), ta = el('button', 'btn primary', 'TAKE ALL  [F]');
     ta.disabled = !oi || this.used(oi) === 0; ta.addEventListener('click', () => this.takeAll());
     btns.appendChild(ta); right.appendChild(btns);
-    right.appendChild(el('div', 'help', 'Click to move across · Drag to place · E / Esc to close'));
+    right.appendChild(el('div', 'help', box ? 'Click to move across · Right-click a stored weapon or armour to put it on · Click what you wear to take it off · E / Esc to close' : 'Click to move across · Drag to place · E / Esc to close'));
     body.appendChild(right); this.panel.appendChild(body);
   }
 
@@ -418,8 +468,16 @@ export class Overlays {
     const tree = trees.find((t) => t.id === this.tree) ?? trees[0]; this.tree = tree.id;
     const top = el('div', 'techtop');
     top.appendChild(this.tabs(trees.map((t) => ({ id: t.id, name: t.name, icon: t.icon, badge: t.nodes.filter((n) => this.owns(n.id)).length + '/' + t.nodes.length })), tree.id, (id) => { this.tree = id; this.selNode = ''; this.render(); }));
-    const spb = el('div', 'sp' + (p.sp > 0 ? ' has' : '')); spb.innerHTML = `<b>${p.sp || 0}</b> SKILL POINTS`; top.appendChild(spb);
+    const arcade=s.mode==='arcade', balance=progression.skillBalance(s), currency=arcade?'CORES':'SKILL POINTS';
+    const spb = el('div', 'sp' + (balance > 0 ? ' has' : '')); spb.innerHTML = `<b>${balance}</b> ${currency}`; top.appendChild(spb);
     wrap.appendChild(top);
+    if (arcade) {
+      const note=el('div','arcade-skill-note');
+      note.appendChild(el('span','','Cores bank as you fight. Spend them here for permanent skills that apply now, or save them for augments. Story progress is separate.'));
+      const shop=el('button','btn','CORE AUGMENTS & LOADOUT');
+      shop.addEventListener('click',()=>new AugmentsPanel(document.getElementById('ui-root')??document.body,()=>this.render(),true).open());
+      note.appendChild(shop);wrap.appendChild(note);
+    }
     if (tree.workbench && s.mode === 'survival' && !this.nearBench()) wrap.appendChild(el('div', 'notice', 'Requires a workbench at your base. Stand near one to unlock these upgrades.'));
     const main = el('div', 'techmain'), box = el('div', 'techgraph'); box.dataset.scroll = 'tech-' + tree.id;
     const CW = 170, RH = 96, PAD = 24, NW = 140, NH = 64, nodes = tree.nodes;
@@ -448,7 +506,7 @@ export class Overlays {
       const b = el('div', 'node ' + (owned ? 'owned' : reqMet ? (can ? 'available can' : 'available') : 'locked') + (this.selNode === n.id ? ' sel' : ''));
       const ps = pos(n); b.style.left = u(ps.x); b.style.top = u(ps.y); b.style.width = u(NW); b.style.height = u(NH);
       const items = Object.keys(progression.itemCost(s, n)).length;
-      b.innerHTML = `<div class="node-name">${esc(n.name)}</div><div class="node-cost">${owned ? '✔ OWNED' : esc(n.cost.sp + ' SP' + (items ? ' + items' : ''))}</div>`;
+      b.innerHTML = `<div class="node-name">${esc(n.name)}</div><div class="node-cost">${owned ? '✔ OWNED' : esc(progression.skillCost(s,n) + (arcade?' CORES':' SP') + (items ? ' + items' : ''))}</div>`;
       b.title = n.desc; b.addEventListener('click', () => { this.selNode = n.id; this.render(); });
       inner.appendChild(b);
     }
@@ -464,8 +522,8 @@ export class Overlays {
         rq.innerHTML = 'Requires: ' + node.requires.map((rid) => `<span class="${this.owns(rid) ? 'ok' : 'bad'}">${esc(byId[rid]?.name ?? rid)}</span>`).join(', ');
         det.appendChild(rq);
       }
-      const ul = el('ul', 'cost'), spHave = p.sp || 0, spNeed = node.cost.sp;
-      ul.innerHTML = `<li class="${spHave >= spNeed ? 'ok' : 'bad'}"><span>Skill points</span><b>${spHave} / ${spNeed}</b></li>` +
+      const ul = el('ul', 'cost'), spHave = balance, spNeed = progression.skillCost(s,node);
+      ul.innerHTML = `<li class="${spHave >= spNeed ? 'ok' : 'bad'}"><span>${arcade?'Banked cores':'Skill points'}</span><b>${spHave} / ${spNeed}</b></li>` +
         Object.entries(progression.itemCost(s, node)).map(([id, need]) => { const have = this.countItem(id); return `<li class="${have >= need ? 'ok' : 'bad'}"><span>${esc(itemName(id))}</span><b>${have} / ${need}</b></li>`; }).join('');
       det.appendChild(ul);
       if (this.owns(node.id)) det.appendChild(el('div', 'det-owned', '✔ UNLOCKED'));
@@ -582,6 +640,10 @@ export class Overlays {
       const back = el('button', 'btn', 'BACK'); back.addEventListener('click', () => { this.showSettings = false; this.render(); }); box.appendChild(back);
     } else {
       const r = el('button', 'big-btn', 'RESUME'); r.addEventListener('click', () => this.host.close()); box.appendChild(r);
+      if (s.mode==='arcade') {
+        const skills=el('button','btn','PERMANENT SKILLS ['+keybinds.text('tech',true)+']');
+        skills.addEventListener('click',()=>this.host.open('tech'));box.appendChild(skills);
+      }
       const st = el('button', 'btn', 'SETTINGS'); st.addEventListener('click', () => { this.showSettings = true; this.render(); }); box.appendChild(st);
       const ct = el('button', 'btn', 'CONTROLS'); ct.addEventListener('click', () => openControls()); box.appendChild(ct);
       const q = el('button', 'btn danger', s.mode === 'survival' ? 'SAVE & QUIT TO TITLE' : s.mode === 'road' ? (this.confirmQuit ? 'CONFIRM: QUIT (BACK TO LAST CHECKPOINT)' : 'QUIT TO TITLE') : this.confirmQuit ? 'CONFIRM: QUIT (ARCADE RUN LOST)' : 'QUIT TO TITLE');

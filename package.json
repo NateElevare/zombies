@@ -30,7 +30,8 @@
     "art:sheet": "tsx art/chars3d/sheet.ts",
     "art:story": "tsx art/angle/story-pack.ts",
     "art:story:preview": "tsx art/angle/story-preview.ts",
-    "art:hive": "tsx art/hive/build.ts"
+    "art:hive": "tsx art/hive/build.ts",
+    "art:hive:environment": "tsx art/hive/environment.ts"
   },
   "dependencies": {
     "mongodb": "7.7.0",

@@ -4,20 +4,43 @@ import * as inv from './inventory';
 import * as prog from './progression';
 import * as zombies from './zombies';
 import * as salvage from './salvage';
+import * as arms from './hive-arms';
 export interface WeaponDef { name: string; class: WeaponClass; ammo: string | null; damage: number; fireRate: number; magSize: number; reloadTime: number; spread: number; pellets: number; bulletSpeed: number; range: number; auto: boolean; noise: number; shake: number; sound: string; pitch?: number; pierce?: number; melee?: { range: number; arc: number; knock: number };
   /** a reload uses ONE ammo item and fills the whole magazine (Cola & Mints: one mint per blast) */ reloadAll?: boolean;
   /** shots coat zombies in sticky acid foam (zombies.stick: slow + damage over time) */ sticky?: boolean;
   /** built-in perks (normally unlocked through tech): explosion radius, set targets on fire, heal by a share of melee damage */
   explosive?: number; incendiary?: boolean; lifesteal?: number;
   /** The Hive Below: every hit adds a stack of corrosion (zombies.corrode: damage over time, no slow) */ corrode?: boolean;
-  /** melee: a kill carries the blow on to this many more bugs standing behind it */ cleave?: number }
+  /** melee: a kill carries the blow on to this many more bugs standing behind it */ cleave?: number;
+  /** a second skill tree that upgrades this weapon, on top of the tree of its class (progression.ts) */ tree?: string;
+  /** The Hive Below: what this insect weapon does beyond an ordinary one (sim/hive-arms.ts) */ arm?: import('./hive-arms').Arm;
+  /** ammunition one round costs to load (default 1): the heavier insect guns drink ichor */ ammoPer?: number }
 export interface WeaponStats extends WeaponDef { id: string; pierce: number; ricochet: number; burst: number; explosive: number; incendiary: boolean; crit: number; critMul: number; lifesteal: number; slug: boolean }
 export const WEAPONS: Record<string, WeaponDef> = {
   // ---- The Hive Below: insect weapons. The guns run on ichor.
   "formic_sprayer": { "name": "Formic Sprayer", "class": "smg", "ammo": "ichor", "damage": 7, "fireRate": 0.07, "magSize": 80, "reloadTime": 1.6, "spread": 0.13, "pellets": 1,
-    "bulletSpeed": 560, "range": 240, "auto": true, "noise": 240, "shake": 0.5, "sound": "fizz", "pierce": 1, "corrode": true },
+    "bulletSpeed": 560, "range": 240, "auto": true, "noise": 240, "shake": 0.5, "sound": "fizz", "pierce": 1, "corrode": true, "tree": "hive" },
   "mandible_shears": { "name": "Mandible Shears", "class": "melee", "ammo": null, "damage": 80, "fireRate": 0.6, "magSize": 0, "reloadTime": 0, "spread": 0, "pellets": 1,
-    "bulletSpeed": 0, "range": 0, "auto": true, "noise": 120, "shake": 3, "sound": "swing", "melee": { "range": 84, "arc": 1.2, "knock": 120 }, "cleave": 2 },
+    "bulletSpeed": 0, "range": 0, "auto": true, "noise": 120, "shake": 3, "sound": "swing", "melee": { "range": 84, "arc": 1.2, "knock": 120 }, "cleave": 2, "tree": "hive" },
+  // ---- the cells beyond the Warrens (behaviours: sim/hive-arms.ts)
+  "locust_repeater": { "name": "Locust Repeater", "class": "smg", "ammo": "ichor", "damage": 14, "fireRate": 0.08, "magSize": 40, "reloadTime": 1.5, "spread": 0.06, "pellets": 1,
+    "bulletSpeed": 1200, "range": 620, "auto": true, "noise": 600, "shake": 1.2, "sound": "smg", "pitch": 1.3, "tree": "hive", "arm": "hop" },
+  "needler": { "name": "Needler", "class": "rifle", "ammo": "ichor", "ammoPer": 4, "damage": 60, "fireRate": 0.38, "magSize": 8, "reloadTime": 1.9, "spread": 0.01, "pellets": 1,
+    "bulletSpeed": 1900, "range": 1100, "auto": false, "noise": 500, "shake": 3, "sound": "pistol", "pitch": 1.5, "pierce": 3, "tree": "hive", "arm": "needle" },
+  "vespiary": { "name": "The Vespiary", "class": "handgun", "ammo": null, "damage": 12, "fireRate": 0.11, "magSize": 24, "reloadTime": 0, "spread": 0.16, "pellets": 1,
+    "bulletSpeed": 620, "range": 700, "auto": true, "noise": 260, "shake": 0.6, "sound": "fizz", "pitch": 1.6, "tree": "hive", "arm": "homing" },
+  "bombardier": { "name": "Bombardier", "class": "shotgun", "ammo": "ichor", "ammoPer": 8, "damage": 11, "fireRate": 0.75, "magSize": 5, "reloadTime": 1.8, "spread": 0.36, "pellets": 9,
+    "bulletSpeed": 700, "range": 260, "auto": false, "noise": 800, "shake": 6, "sound": "shotgun", "pitch": 0.85, "incendiary": true, "tree": "hive", "arm": "cone" },
+  "hornbreaker": { "name": "Hornbreaker", "class": "melee", "ammo": null, "damage": 110, "fireRate": 1.0, "magSize": 0, "reloadTime": 0, "spread": 0, "pellets": 1,
+    "bulletSpeed": 0, "range": 0, "auto": true, "noise": 260, "shake": 5, "sound": "swing", "melee": { "range": 88, "arc": 1.6, "knock": 300 }, "tree": "hive", "arm": "shock" },
+  "lure_lantern": { "name": "Lure Lantern", "class": "handgun", "ammo": "ichor", "ammoPer": 15, "damage": 0, "fireRate": 0.9, "magSize": 6, "reloadTime": 2.6, "spread": 0, "pellets": 1,
+    "bulletSpeed": 600, "range": 320, "auto": false, "noise": 0, "shake": 0, "sound": "swing", "tree": "hive", "arm": "lure" },
+  "mantis_scythes": { "name": "Mantis Scythes", "class": "melee", "ammo": null, "damage": 48, "fireRate": 0.26, "magSize": 0, "reloadTime": 0, "spread": 0, "pellets": 1,
+    "bulletSpeed": 0, "range": 0, "auto": true, "noise": 90, "shake": 1.5, "sound": "swing", "melee": { "range": 74, "arc": 2.6, "knock": 60 }, "lifesteal": 0.04, "tree": "hive", "arm": "scythe" },
+  "carrion_hive": { "name": "Carrion Hive", "class": "shotgun", "ammo": "ichor", "ammoPer": 25, "damage": 25, "fireRate": 1.0, "magSize": 3, "reloadTime": 2.4, "spread": 0, "pellets": 1,
+    "bulletSpeed": 600, "range": 320, "auto": false, "noise": 200, "shake": 1, "sound": "fizz", "pitch": 0.7, "tree": "hive", "arm": "pod" },
+  "queens_decree": { "name": "Queen's Decree", "class": "handgun", "ammo": "ichor", "ammoPer": 10, "damage": 20, "fireRate": 0.6, "magSize": 6, "reloadTime": 1.6, "spread": 0.01, "pellets": 1,
+    "bulletSpeed": 1400, "range": 800, "auto": false, "noise": 200, "shake": 1.5, "sound": "pistol", "pitch": 0.6, "tree": "hive", "arm": "mark" },
   // ---- boss trophies (sim/bosses.ts BOSS_WEAPON)
   "butcher_cleaver": { "name": "Butcher's Cleaver", "class": "melee", "ammo": null, "damage": 95, "fireRate": 0.55, "magSize": 0, "reloadTime": 0, "spread": 0, "pellets": 1,
     "bulletSpeed": 0, "range": 0, "auto": true, "noise": 140, "shake": 3, "sound": "swing", "melee": { "range": 92, "arc": 2.5, "knock": 220 }, "lifesteal": 0.06 },
@@ -244,10 +267,14 @@ export const WEAPONS: Record<string, WeaponDef> = {
 
 // These fields are transient and intentionally excluded from save data.
 type CombatPlayer = Player & { reloadStack?: Stack | null; burstTimer?: number; syncT?: number };
-type CombatBullet = Bullet & { crit?: number };
+type CombatBullet = Bullet & { crit?: number; arm?: import('./hive-arms').Arm };
 export function weaponClass(id: string): WeaponClass { return WEAPONS[id]?.class || 'unarmed'; }
+/** Render the swing weapon temporarily without changing the selected equipment slot. */
+export function playerWeaponVisual(p: Player): string {
+  return p.swingTimer > 0 && p.swingWeapon ? p.swingWeapon : p.inv.equip[p.active]?.id || 'unarmed';
+}
 /** Ammo items that fill one magazine (1 for Cola & Mints, magSize for guns). */
-export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[id]?.magSize ?? 0;
+export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : (WEAPONS[id]?.magSize ?? 0) * (WEAPONS[id]?.ammoPer ?? 1);
   const mods = prog.playerMods;
   const stats = prog.weaponStats;
 
@@ -294,6 +321,7 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
     if (b.corrode && !z.dead) zombies.corrode(state, z);
     if (b.corrode) emit(state, { t: 'bulletHit', x: b.x, y: b.y, angle: b.angle, surface: 'flesh', acid: true });
     if (b.explosive > 0) explode(state, b.x, b.y, b.explosive, b.damage * 0.6, z);
+    if (b.arm) arms.onHit(state, b, z, dmg);
   }
 
   // Advance bullet over [b.x,b.y] -> +dt*velocity. Returns nothing; sets b.dead.
@@ -369,6 +397,7 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
   function fireShot(state: GameState, ws: WeaponStats, stack: Stack) {
     const p = state.player as CombatPlayer;
     stack.mag = Math.max(0, (stack.mag || 0) - 1);
+    if (ws.arm && arms.lob(state, ws.arm)) { p.lastShotT = state.time; addCombatTimer(state, 6); return; }   // the Lure Lantern and the Carrion Hive are thrown
     const mx = p.x + Math.cos(p.angle) * (p.r + 18), my = p.y + Math.sin(p.angle) * (p.r + 18);
     const speedBase = ws.bulletSpeed;
     const multi = ws.pellets > 1;
@@ -381,6 +410,7 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
         incendiary: ws.incendiary, hit: ws.pierce > 0 || ws.ricochet > 0 ? new Set() : null, dead: false,
         sticky: ws.sticky || undefined, corrode: ws.corrode || undefined,
         crit: ws.crit, color: ws.corrode ? '#b7e04a' : ws.sticky ? '#8a4a22' : ws.incendiary ? '#ff8a1e' : ws.explosive ? '#ff5a3e' : ws.crit > 0.2 ? '#ffe14a' : '#ffe9a8',
+        ...(ws.arm ? arms.bullet(ws.arm) : {}),
       };
       stepBullet(state, b, (p.r + 18) / sp);
       if (!b.dead) { b.prevX = b.x; b.prevY = b.y; state.bullets.push(b); }
@@ -396,7 +426,9 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
 
   function trySwing(state: GameState, ws: WeaponStats & { melee: NonNullable<WeaponStats["melee"]> }) {
     const p = state.player as CombatPlayer;
-    p.fireCooldown = ws.fireRate;
+    p.fireCooldown = Math.max(p.fireCooldown, ws.fireRate);
+    p.meleeCooldown = ws.fireRate;
+    p.swingWeapon = ws.id;
     p.swingTimer = Math.min(0.22, ws.fireRate * 0.8);
     p.swingTotal = p.swingTimer;
     emit(state, { t: 'swing', x: p.x, y: p.y, angle: p.angle, weapon: ws.id });
@@ -417,7 +449,7 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
       const slack = d > 1 ? Math.atan2(z.r, d) : Math.PI;
       if (Math.abs(da) > ws.melee.arc / 2 + slack) continue;
       if (phys.raycast(state, p.x, p.y, z.x, z.y, 0, bulletFilter)) continue;
-      let dmg = ws.damage;
+      let dmg = ws.damage * arms.meleeMul(state, ws.arm, z);
       const crit = ws.crit > 0 && rand(state) < ws.crit;
       if (crit) dmg *= 2;
       const ang = Math.atan2(dy, dx);
@@ -453,16 +485,29 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
     });
     if (fence) { const o = fence as Solid; if (o.kind === 'fence') salvage.hitFence(state, o, fx, fy, p.angle); else salvage.hitObject(state, o, fx, fy, p.angle); hitAny = true; }
     if (hitAny) state.shake = Math.max(state.shake || 0, (ws.shake || 0) + 1.5);
+    if (ws.arm) arms.onSwing(state, ws);
+  }
+
+  function quickMelee(state: GameState) {
+    const p = state.player as CombatPlayer;
+    if ((p.meleeCooldown || 0) > 0 || p.swingTimer > 0) return false;
+    const stack = p.inv.equip.melee, id = stack?.id || 'unarmed';
+    const ws = stats(state, id, stack?.lvl);
+    if (!ws.melee) return false;
+    p.reloadTimer = p.reloadTotal = 0; p.reloadStack = null;
+    p.burstQueue = 0; p.burstTimer = 0;
+    trySwing(state, ws as WeaponStats & { melee: NonNullable<WeaponStats['melee']> });
+    return true;
   }
 
   function startReload(state: GameState) {
     const p = state.player as CombatPlayer, stack = equipped(state);
-    if (!p || !stack || p.reloadTimer > 0) return false;
+    if (!p || !stack || p.reloadTimer > 0 || p.swingTimer > 0) return false;
     const def = WEAPONS[stack.id];
     if (!def || !def.ammo) return false;
     const ws = stats(state, stack.id, stack.lvl);
     if ((stack.mag || 0) >= ws.magSize) return false;
-    if (ammoCount(state, def.ammo) <= 0) return false;
+    if (ammoCount(state, def.ammo) < (def.ammoPer ?? 1)) return false;
     p.burstQueue = 0;
     p.reloadTimer = p.reloadTotal = ws.reloadTime;
     p.reloadStack = stack;
@@ -481,8 +526,8 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
       if ((stack.mag || 0) < ws.magSize && inv.remove(p.inv, def.ammo, 1)) { stack.mag = ws.magSize; emit(state, { t: 'reloadDone', weapon: stack.id }); }
       return;
     }
-    const take = Math.min(ws.magSize - (stack.mag || 0), ammoCount(state, def.ammo));
-    if (take > 0 && inv.remove(p.inv, def.ammo, take)) { stack.mag = (stack.mag || 0) + take; emit(state, { t: 'reloadDone', weapon: stack.id }); }
+    const per = def.ammoPer ?? 1, take = Math.min(ws.magSize - (stack.mag || 0), Math.floor(ammoCount(state, def.ammo) / per));
+    if (take > 0 && inv.remove(p.inv, def.ammo, take * per)) { stack.mag = (stack.mag || 0) + take; emit(state, { t: 'reloadDone', weapon: stack.id }); }
   }
 
   function tryFire(state: GameState, wantHeld: boolean, wantClick: boolean) {
@@ -556,9 +601,13 @@ export const ammoPerMag = (id: string) => WEAPONS[id]?.reloadAll ? 1 : WEAPONS[i
       if (!p || p.dead) { combat._bullets(state, dt); tickBurn(state, dt); return; }
       if (prog && prog.sync) { p.syncT = (p.syncT || 0) - dt; if (p.syncT <= 0) { p.syncT = 0.5; prog.sync(state); } }
       if (p.fireCooldown > 0) p.fireCooldown -= dt;
+      if ((p.meleeCooldown || 0) > 0) p.meleeCooldown = Math.max(0, p.meleeCooldown! - dt);
       if (p.swingTimer > 0) p.swingTimer = Math.max(0, p.swingTimer - dt);
       if ((p.combatTimer || 0) > 0) p.combatTimer = (p.combatTimer || 0) - dt;
       const stack = equipped(state);
+      // Right-click takes priority over reload completion and burst follow-ups.
+      // Gun recovery does not prevent an emergency swing; melee recovery still does.
+      if (state.screen === 'playing' && !state.paused && !state.ui && input.altPressed) quickMelee(state);
       // reload progress (cancel if the weapon changed)
       if (p.reloadTimer > 0) {
         if (p.reloadStack !== stack) { p.reloadTimer = 0; p.reloadTotal = 0; p.reloadStack = null; }

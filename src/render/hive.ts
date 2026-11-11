@@ -6,6 +6,9 @@ import type { GameState } from '../sim/types';
 import type { Art } from './art';
 import { TX } from './art';
 import { D, Pool, type View } from './common';
+import { hiveMaterial, hiveMaterialZone, hiveResinAnchor } from './hive-materials';
+import * as road from '../sim/road';
+import { isQueenConduit } from '../hive-conduits';
 
 /** Frame prefix of a hive creature or fixture: `hive_drone_0_`, `hive_burrow_0_`. */
 export const hivePrefix = (type: string) => `hive_${type}_0_`;
@@ -22,9 +25,13 @@ export class HiveRender {
   private glows: Pool<Phaser.GameObjects.Image>;
   private labels: Pool<Phaser.GameObjects.Text>;
   private atlas: string | null;
+  /** the lockbox is a steel footlocker from the city props (the crate at every camp when that atlas is missing) */
+  private box: { atlas: string; frame: string };
 
   constructor(private scene: Phaser.Scene, private art: Art) {
     this.atlas = art.atlasOf('hive_seal_0') ?? null;
+    const steel = art.atlasOf('prop_locker_0');
+    this.box = steel ? { atlas: steel, frame: 'prop_locker_0' } : { atlas: 'campaign_props', frame: 'cache_1' };
     this.floor = new Pool(() => scene.add.image(0, 0, TX.px).setDepth(D.decal + 1));
     this.props = new Pool(() => scene.add.image(0, 0, TX.px).setDepth(D.structure));
     this.glows = new Pool(() => scene.add.image(0, 0, TX.soft).setDepth(D.glow).setBlendMode(Phaser.BlendModes.ADD));
@@ -41,7 +48,7 @@ export class HiveRender {
     const glow = (x: number, y: number, rad: number, col: number, a: number) => this.glows.get().setTexture(TX.soft).setPosition(x, y).setScale(rad * 2 / 256, rad * 2 / 256).setTint(col).setAlpha(a).setRotation(0);
 
     // ---- the rift: a tear in the mud of the drained bed, at the mouth of the way down
-    if (vis(h.rift.x, h.rift.y, 400)) {
+    if (vis(h.rift.x, h.rift.y, 400) && !r.riftShut) {
       const f = `hive_rift_${Math.floor(time * 6) % 4}`;
       this.floor.get().setTexture(A, f).setPosition(h.rift.x, h.rift.y).setRotation(h.seals[0] ? Math.atan2(h.seals[0].y - h.rift.y, h.seals[0].x - h.rift.x) : 0).setScale(0.95).setAlpha(1).clearTint();
       glow(h.rift.x, h.rift.y, 150 + 14 * Math.sin(time * 2.3), 0xb48cff, 0.34 + 0.08 * Math.sin(time * 3.1));
@@ -50,16 +57,24 @@ export class HiveRender {
     r.world.gates.forEach((g, i) => {
       const at = h.seals[i]; if (!at || !vis(at.x, at.y, 420)) return;
       const nx = -Math.sin(at.angle), ny = Math.cos(at.angle);
+      const zone = hiveMaterialZone(h, at.x, at.y), seal = hiveMaterial(zone, 'seal');
+      const painted = this.art.has(seal), sealAtlas = painted ? this.art.atlasOf(seal)! : A;
+      const bounds = painted ? this.art.manifest.hiveEnvironment.frames[seal].bounds : null;
       if (g.open) {
         // withered rims left on either wall
-        for (const k of [-1, 1]) this.floor.get().setTexture(A, 'hive_seal_1').setPosition(at.x + nx * k * 96, at.y + ny * k * 96).setRotation(at.angle).setScale(0.86, 0.86 * k).setAlpha(1).clearTint();
+        for (const k of [-1, 1]) {
+          const rim = this.floor.get().setTexture(sealAtlas, painted ? seal : 'hive_seal_1').setPosition(at.x + nx * k * 116, at.y + ny * k * 116).setRotation(at.angle + (painted ? Math.PI / 2 : 0));
+          if (painted) rim.setScale(44 / bounds.w, 24 / bounds.h).setAlpha(.65).setTint(0x50483d);
+          else rim.setScale(.86, .86 * k).setAlpha(1).clearTint();
+        }
         return;
       }
       for (const k of [-1, 0, 1]) {
         const x = at.x + nx * k * 108, y = at.y + ny * k * 108, flip = k === 0 ? 0.86 : -0.86;
-        this.props.get().setTexture(A, 'hive_seal_0').setPosition(x, y).setRotation(at.angle).setScale(0.86, flip).setAlpha(1).clearTint().setDepth(D.structure).setBlendMode(Phaser.BlendModes.NORMAL);
+        const sprite = this.props.get().setTexture(sealAtlas, painted ? seal : 'hive_seal_0').setPosition(x, y).setRotation(at.angle + (painted ? Math.PI / 2 : 0)).setAlpha(1).clearTint().setDepth(D.structure).setBlendMode(Phaser.BlendModes.NORMAL);
+        if (painted) sprite.setScale(116 / bounds.w, 82 / bounds.h); else sprite.setScale(.86, flip);
         // it gives off its own light: the same sprite again, added over the darkness
-        this.glows.get().setTexture(A, 'hive_seal_0').setPosition(x, y).setRotation(at.angle).setScale(0.86, flip).setTint(0xffffff).setAlpha(0.3 + 0.08 * Math.sin(time * 2 + i + k));
+        this.glows.get().setTexture(sprite.texture.key, sprite.frame.name).setPosition(x, y).setRotation(sprite.rotation).setScale(sprite.scaleX, sprite.scaleY).setTint(0xffffff).setAlpha((painted ? .14 : .3) + .04 * Math.sin(time * 2 + i + k));
       }
       {
         glow(at.x, at.y, 170, 0xf0a93a, 0.16 + 0.05 * Math.sin(time * 2 + i));
@@ -73,6 +88,15 @@ export class HiveRender {
       lamp.setScale(Math.min(60 / lamp.frame.width, 48 / lamp.frame.height), Math.min(60 / lamp.frame.width, 48 / lamp.frame.height));
       if (r.lights) { glow(gl.x, gl.y - 20, 46, 0xffffff, 0.8); glow(gl.x, gl.y + 120, 260, 0xdfe8ff, 0.12); }
     }
+    // ---- the lockbox at a camp: everything you did not take down the rope
+    for (const at of road.lockboxSpots(s)) {
+      if (!vis(at.x, at.y, 120)) continue;
+      const img = this.props.get().setTexture(this.box.atlas, this.box.frame).setPosition(at.x, at.y).setRotation(0).setAlpha(1).clearTint().setDepth(D.structure).setBlendMode(Phaser.BlendModes.NORMAL);
+      const k = Math.min(64 / img.frame.width, 56 / img.frame.height); img.setScale(k, k);
+      glow(at.x, at.y, 70, 0xbfe0ff, 0.16 + 0.05 * Math.sin(time * 2.6));
+      const near = Math.hypot(s.player.x - at.x, s.player.y - at.y) < 260;
+      if (near) this.labels.get().setText('LOCKBOX').setPosition(at.x, at.y - 40);
+    }
     // ---- honey: where a Honeypot burst; it dries up
     for (const q of r.hiveRt?.pools ?? []) {
       if (!vis(q.x, q.y, 200)) continue;
@@ -85,13 +109,20 @@ export class HiveRender {
     for (const z of s.zombies) {
       if (z.dead || (z.type !== 'egg' && z.type !== 'burrow') || !vis(z.x, z.y, 80)) continue;
       const f = z as { hatchT?: number; eruptT?: number };
+      if (isQueenConduit(z)) {
+        glow(z.x, z.y, 85, 0xffcb69, .22 + .06 * Math.sin(time * 3));
+        this.labels.get().setText('DESTROY CONDUIT').setPosition(z.x, z.y + z.r * 1.5 + 16);
+        continue;
+      }
       if (z.type === 'egg') glow(z.x, z.y, 44, 0xe6f0b0, (f.hatchT ?? 0) > 0 ? 0.3 + 0.15 * Math.sin(time * 22) : 0.13);
       else if ((f.eruptT ?? 99) < 0.9) glow(z.x, z.y, 60, 0xb48cff, 0.4 * (1 - (f.eruptT ?? 0) / 0.9));
     }
     // ---- resin and fungus: the light sources on the walls read as light sources
     for (const gl of h.glows) {
       if (gl.kind !== 'wall' || !vis(gl.x, gl.y, 80)) continue;
-      glow(gl.x, gl.y, 34, gl.col, 0.3 + 0.06 * Math.sin(time * 1.7 + gl.x * 0.013));
+      const fine=this.art.has('hive_warrens_resin')&&hiveMaterialZone(h,gl.x,gl.y)===1;
+      const p=hiveResinAnchor(h,gl.x,gl.y);
+      glow(p.x,p.y,fine?21:34,gl.col,(fine?.12:.3)+(fine?.04:.06)*Math.sin(time*1.7+gl.x*.013));
     }
     for (const p of this.pools()) p.end();
   }

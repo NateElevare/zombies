@@ -122,7 +122,7 @@ export class BossRender {
       if (!inView(view, x, y, R * 4)) continue;
       const v = this.view(z); v.stamp = st;
       const pose = bossPose(z);
-      const frame = bossFrame(z.boss, pose, pose === 'melee' ? z.attackT : z.act ? z.actT : time);
+      const frame = bossFrame(z.boss, pose, pose === 'melee' ? z.attackT : z.act ? z.actT : time, z as { act?: string; stage?: number; hitFlash?: number });
       if (this.art.has(frame) && v.body.frame.name !== frame) v.body.setTexture(this.art.atlasOf(frame)!, frame);
       const d = BOSSES[z.boss], act = String(z.act || ''), leap = Number(z.leapK) || 0;
       const lift = leap > 0 ? Math.sin(Math.PI * leap) : 0;
@@ -130,13 +130,15 @@ export class BossRender {
       const sc = (R * 2.7) / bossFrameSize(z.boss) * (1 + 0.45 * lift) * (winding ? 1 + 0.05 * Math.sin(time * 30) : 1);
       const wob = act === 'stunned' ? Math.sin(time * 18) * 0.25 : Math.sin(time * 3 + z.r) * 0.04;
       const raged = !!(z as { raged?: boolean }).raged;
-      v.body.setVisible(true).setPosition(x, y - lift * 40).setRotation(z.angle + wob).setScale(sc);
+      // The Hive Below: the Prioress fades out of sight outside your beam (sim/hive-bosses.ts sets `alpha`)
+      const seen = typeof (z as { alpha?: number }).alpha === 'number' ? Math.max(0, Math.min(1, (z as { alpha?: number }).alpha!)) : 1;
+      v.body.setVisible(true).setPosition(x, y - lift * 40).setRotation(z.angle + wob).setScale(sc).setAlpha(seen);
       if (z.hitFlash > 0.06) v.body.setTintMode(Phaser.TintModes.FILL).setTint(0xffffff);
       else if (winding) v.body.setTintMode(Phaser.TintModes.MULTIPLY).setTint(0xffd0c0);
       else if (raged) v.body.setTintMode(Phaser.TintModes.MULTIPLY).setTint(0xffb8b0);
       else v.body.setTintMode(Phaser.TintModes.MULTIPLY).clearTint();
-      v.glow.setVisible(true).setPosition(x, y - lift * 40).setScale(R * (winding || raged ? 4 : 3) / 64).setAlpha(winding ? 0.28 : raged ? 0.2 : 0.1);
-      v.shadow.setVisible(true).setPosition(x + 4, y + 6).setScale(R * 2.8 / 64 * (1 - 0.35 * lift)).setAlpha(0.55 * (1 - 0.4 * lift));
+      v.glow.setVisible(true).setPosition(x, y - lift * 40).setScale(R * (winding || raged ? 4 : 3) / 64).setAlpha((winding ? 0.28 : raged ? 0.2 : 0.1) * seen);
+      v.shadow.setVisible(true).setPosition(x + 4, y + 6).setScale(R * 2.8 / 64 * (1 - 0.35 * lift)).setAlpha(0.55 * (1 - 0.4 * lift) * seen);
       if (act === 'stunned') {   // dizzy stars
         for (let i = 0; i < 3; i++) {
           const an = time * 5 + i * TAU / 3, sx = Math.round(x + Math.cos(an) * R * 0.8), sy = Math.round(y - R - 6 + Math.sin(an) * 6);

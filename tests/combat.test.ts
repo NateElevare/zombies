@@ -88,6 +88,53 @@ describe('combat', () => {
     phys.addSolid(s, { x: 150, y: 100, w: 10, h: 100, kind: 'wall' }); s.player.fireCooldown = 0;
     combat.update(s, input({ fire: true }), 0); expect(a.hp).toBe(978);
   });
+  it('right-click swings the equipped upgraded melee weapon without switching or spending gun ammo', () => {
+    const s=state(),gun=arm(s),target=zombie('near',170);s.zombies=[target];
+    s.player.inv.equip.melee={id:'knife',qty:1,lvl:3};s.player.tech.melee_dmg1=true;
+    const reference=state();arm(reference,'knife',0)!.lvl=3;reference.player.tech.melee_dmg1=true;
+    const other=zombie('near',170);reference.zombies=[other];combat.update(reference,input({fire:true}),0);
+    s.player.fireCooldown=.8;
+    combat.update(s,input({altPressed:true,fire:true,firePressed:true}),0);
+    expect(target.hp).toBe(other.hp);expect(target.hp).toBeLessThan(978);
+    expect(s.player.active).toBe('secondary');expect(gun.mag).toBe(12);expect(s.bullets).toHaveLength(0);
+    expect(combat.playerWeaponVisual(s.player)).toBe('knife');
+    combat.update(s,input(),s.player.swingTotal+.01);
+    expect(combat.playerWeaponVisual(s.player)).toBe('pistol');expect(s.player.active).toBe('secondary');
+  });
+  it('paces quick swings and lets the selected gun fire again after recovery', () => {
+    const s=state(),gun=arm(s);s.player.inv.equip.melee={id:'knife',qty:1};
+    combat.update(s,input({altPressed:true}),0);
+    combat.update(s,input({altPressed:true,fire:true}),.1);
+    expect(s.events.filter(e=>e.t==='swing')).toHaveLength(1);expect(gun.mag).toBe(12);
+    combat.update(s,input({fire:true}),1);
+    expect(gun.mag).toBe(11);expect(s.player.active).toBe('secondary');
+    combat.update(s,input({altPressed:true}),0);
+    expect(s.events.filter(e=>e.t==='swing')).toHaveLength(2);
+  });
+  it('interrupts reload without consuming reserves and cancels queued burst shots', () => {
+    const s=state(),gun=arm(s,'pistol',7);s.player.inv.equip.melee={id:'bat',qty:1};inv.add(s.player.inv,'ammo_9mm',20);
+    combat.reload(s);
+    combat.update(s,input({altPressed:true,pressed:new Set(['reload'])}),1.3);
+    expect(s.player.reloadTimer).toBe(0);expect(s.player.reloadTotal).toBe(0);
+    expect(gun.mag).toBe(7);expect(inv.totalAmmo(s,'ammo_9mm')).toBe(20);
+    expect(s.events.some(e=>e.t==='reloadDone')).toBe(false);
+    combat.update(s,input(),1);s.player.tech.handgun_burst=true;
+    combat.update(s,input({fire:true}),0);expect(gun.mag).toBe(6);
+    combat.update(s,input({altPressed:true}),.07);
+    expect(s.player.burstQueue).toBe(0);expect(gun.mag).toBe(6);
+  });
+  it('quick melee falls back to fists and still respects walls and facing', () => {
+    const s=state();arm(s);const near=zombie('near',170),behind=zombie('behind',80);s.zombies=[near,behind];
+    combat.update(s,input({altPressed:true}),0);
+    expect(near.hp).toBeLessThan(1000);expect(behind.hp).toBe(1000);expect(s.player.active).toBe('secondary');
+    expect(s.events).toContainEqual(expect.objectContaining({t:'swing',weapon:'unarmed'}));
+    const hp=near.hp;phys.addSolid(s,{x:150,y:100,w:10,h:100,kind:'wall'});
+    combat.update(s,input({altPressed:true}),1);expect(near.hp).toBe(hp);
+  });
+  it('does not quick-melee through menus, build mode, pause, or death', () => {
+    for(const ui of ['inventory','build','pause'] as const){const s=state();arm(s);s.ui=ui;combat.update(s,input({altPressed:true}),0);expect(s.events.some(e=>e.t==='swing')).toBe(false);}
+    for(const flag of ['paused','dead'] as const){const s=state();arm(s);if(flag==='paused')s.paused=true;else s.player.dead=true;combat.update(s,input({altPressed:true}),0);expect(s.events.some(e=>e.t==='swing')).toBe(false);}
+  });
   it('explosive hits damage neighbors and incendiary rounds burn', () => {
     const s = state(), a = zombie('a', 160), b = zombie('b', 180, 160); s.zombies = [a, b];
     s.bullets.push(bullet({ explosive: 70, incendiary: true })); combat._bullets(s, 0.1);

@@ -156,6 +156,22 @@ export function unequip(state: GameState, key: EquipKey) {
   const landed = inv.slots.includes(stack) ? inv : state.drops.map(d => d.inv).find(i => i.slots.includes(stack));
   return landed ? { inv: landed, index: landed.slots.indexOf(stack), stack } : null;
 }
+/** Merge stacks of the same item (and the same metadata) up to its stack limit, front to back. Slots that empty are freed.
+ *  Called when a road checkpoint is restored, so a raised stack limit gives room back to a backpack saved under the old one. */
+export function compact(inv: Inventory) {
+  if (!validInv(inv)) return;
+  for (let i = 0; i < inv.slots.length; i++) {
+    const a = inv.slots[i], item = a && def(a.id);
+    if (!a || !item || !(item.stack > 1)) continue;
+    for (let j = i + 1; j < inv.slots.length && a.qty < item.stack; j++) {
+      const b = inv.slots[j];
+      if (!b || !compatible(a, b)) continue;
+      const n = Math.min(b.qty, item.stack - a.qty);
+      a.qty += n; b.qty -= n;
+      if (b.qty <= 0) inv.slots[j] = null;
+    }
+  }
+}
 export function equippedWeapon(state: GameState) { const p = state.player; return p?.inv?.equip?.[p.active] || null; }
 export function use(state: GameState, index: number) {
   const p = state.player, inv = p?.inv;
@@ -268,4 +284,4 @@ export function upgradeGear(state: GameState, key: EquipKey) {
   emit(state, { t: 'toast', msg: `${u.name} upgraded to level ${u.level + 1}`, color: '#c8e6a0' });
   return true;
 }
-export const inv = { gearUpgrade, upgradeGear, gearArmor, packSlots, upgradable, create, createPlayer, recalcSize, add, count, remove, has, moveSlot, takeAll, equip, unequip, equippedWeapon, use, quickHeal, drop, canCraft, craft, totalAmmo, bind };
+export const inv = { gearUpgrade, upgradeGear, gearArmor, packSlots, upgradable, create, createPlayer, recalcSize, compact, add, count, remove, has, moveSlot, takeAll, equip, unequip, equippedWeapon, use, quickHeal, drop, canCraft, craft, totalAmmo, bind };

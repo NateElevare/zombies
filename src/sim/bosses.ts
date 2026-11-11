@@ -1,4 +1,4 @@
-// bosses.ts — boss fights: every 10th arcade wave, and lairs in the city's largest buildings (city-bosses.ts).
+// bosses.ts — boss fights: every 5th arcade wave, and lairs in the city's largest buildings (city-bosses.ts).
 // Each boss is a huge, slow, very tough zombie with special attacks and a signature weapon it drops.
 // A boss is an ordinary Zombie (its `type` is a base type, so chase/melee/pathing/gadgets all just work) tagged
 // with `boss: BossId`; this module layers the special attacks on top and owns their hazards (arcade.bfx / state.bossFx).
@@ -9,8 +9,10 @@ import * as zombies from './zombies';
 import * as player from './player';
 import * as pathing from './pathing';
 import * as hive from './hive';
+import * as hiveBosses from './hive-bosses';
 
-export type BossId = 'butcher' | 'broodmother' | 'howler' | 'juggernaut' | 'plague' | 'warden' | 'marshal';
+export type BossId = 'butcher' | 'broodmother' | 'howler' | 'juggernaut' | 'plague' | 'warden' | 'marshal'
+  | 'famine' | 'vespa' | 'goliath' | 'prioress' | 'carrion_lord' | 'queen';
 export interface BossDef {
   name: string; title: string; base: ZombieType; r: number; hp: number; speed: number; damage: number;
   /** Identity and attack-warning colours for the renderer. */
@@ -27,12 +29,19 @@ export const BOSSES: Record<BossId, BossDef> = {
   warden:      { name: 'The Warden', title: 'Fort Ashgrove\'s last sentry', base: 'brute', r: 60, hp: 26000, speed: 42, damage: 52, color: '#4a2a2a', glow: '#ff7a3a', attacks: ['slam', 'rush', 'barrage', 'quake'] },
   // The Hive Below: the soldier ant that seals the Warrens. Bait its charge into a wall. Not in the arcade rotation.
   marshal:     { name: 'The Marshal', title: 'Charges, rallies the column, sprays acid', base: 'brute', r: 40, hp: 5000, speed: 52, damage: 30, color: '#8a5a22', glow: '#f0a93a', attacks: ['charge', 'rally', 'formic'] },
+  // The Hive Below, the cells beyond the Warrens (their fights are in sim/hive-bosses.ts). Not in the arcade rotation.
+  famine:      { name: 'Famine', title: 'Leaps out of sight, sweeps the floor with locusts', base: 'brute', r: 34, hp: 4500, speed: 74, damage: 26, color: '#6f8a2a', glow: '#b7e04a', attacks: ['skyfall', 'front'] },
+  vespa:       { name: 'Matriarch Vespa', title: 'Strafes, lobs venom, hatches her comb', base: 'brute', r: 36, hp: 5200, speed: 80, damage: 24, color: '#a8862a', glow: '#f2d25a', attacks: ['strafe', 'volley', 'hatch', 'dash'] },
+  goliath:     { name: 'Goliath', title: 'Armoured in front: make it ram the rock', base: 'brute', r: 48, hp: 7500, speed: 40, damage: 40, color: '#5a3a26', glow: '#ff8a3a', attacks: ['ram', 'vent', 'quake'] },
+  prioress:    { name: 'The Prioress', title: 'Unseen outside your light', base: 'brute', r: 34, hp: 5000, speed: 86, damage: 34, color: '#2a6a5a', glow: '#58d0c0', attacks: ['cross', 'reap', 'vespers'] },
+  carrion_lord: { name: 'The Carrion Lord', title: 'Infests the dead, floods the floor with bile', base: 'brute', r: 42, hp: 6000, speed: 50, damage: 28, color: '#4a3a5a', glow: '#a98bd0', attacks: ['infest', 'bile', 'buzz', 'aura'] },
+  queen:       { name: 'The Queen', title: 'She holds the rift open', base: 'brute', r: 64, hp: 24000, speed: 55, damage: 45, color: '#4a2a7a', glow: '#b48cff', attacks: ['court', 'brood', 'unbound', 'anchor'] },
 };
 /** Bosses that belong to a story and never join the arcade rotation or the city lairs. */
-export const STORY_BOSSES: ReadonlySet<BossId> = new Set<BossId>(['warden', 'marshal']);
+export const STORY_BOSSES: ReadonlySet<BossId> = new Set<BossId>(['warden', 'marshal', 'famine', 'vespa', 'goliath', 'prioress', 'carrion_lord', 'queen']);
 /** Arcade rotation (the Warden and the hive's bosses are story-only). */
 export const BOSS_IDS = (Object.keys(BOSSES) as BossId[]).filter(id => !STORY_BOSSES.has(id));
-export const BOSS_EVERY = 10;
+export const BOSS_EVERY = 5;
 export const isBossWave = (wave: number) => wave > 0 && wave % BOSS_EVERY === 0;
 /** Which boss appears on a boss wave (cycles through all five), and how many times the cycle has repeated. */
 export function bossFor(wave: number) {
@@ -44,9 +53,10 @@ export const PLAGUE_AURA = 130;
 export const BOSS_WEAPON: Record<BossId, string> = {
   butcher: 'butcher_cleaver', broodmother: 'brood_scattergun', howler: 'banshee_smg', juggernaut: 'rockbreaker', plague: 'cola_mints', warden: 'rockbreaker',
   marshal: 'mandible_shears',
+  famine: 'locust_repeater', vespa: 'vespiary', goliath: 'hornbreaker', prioress: 'mantis_scythes', carrion_lord: 'carrion_hive', queen: 'queens_decree',
 };
 const TROPHY_AMMO: Record<string, [string, number]> = { brood_scattergun: ['ammo_12g', 24], banshee_smg: ['ammo_9mm', 135], rockbreaker: ['ammo_308', 18], cola_mints: ['mints', 6] };
-const TROPHY_MAG: Record<string, number> = { brood_scattergun: 8, banshee_smg: 45, rockbreaker: 6, cola_mints: 50 };
+const TROPHY_MAG: Record<string, number> = { brood_scattergun: 8, banshee_smg: 45, rockbreaker: 6, cola_mints: 50, locust_repeater: 40, vespiary: 24, carrion_hive: 3, queens_decree: 6 };
 /** The signature weapon (loaded) and a supply of its ammo. */
 export function trophyLoot(id: BossId): Stack[] {
   const w = BOSS_WEAPON[id], ammo = TROPHY_AMMO[w];
@@ -202,6 +212,8 @@ function minions(state: GameState, z: BossZ, n: number, types: ZombieType[], hpM
   }
 }
 
+/** The boss kit, for the bosses that live in their own module (sim/hive-bosses.ts) and for hive creatures that hit like one. */
+export const kit = { hurtPlayer, shove, lob, spit, ring, minions, dist };
 /** Pick and run special attacks. Called once per arcade tick after zombies.update. */
 function think(state: GameState, z: BossZ, dt: number, hpMul: number) {
   const p = state.player, d = BOSSES[z.boss], m = z.bossMul, dp = dist(z, p);
@@ -209,6 +221,8 @@ function think(state: GameState, z: BossZ, dt: number, hpMul: number) {
   const enraged = z.hp < z.maxHp * 0.5;
   if (enraged && !z.raged) { z.raged = true; toast(state, `${d.name.toUpperCase()} IS ENRAGED`, d.glow); state.shake = Math.max(state.shake, 10); sound(state, 'horde', z.x, z.y); }
   for (const k in z.cd) z.cd[k] -= dt * (enraged ? 1.35 : 1);
+  // the hive's later bosses run their own fights on this kit
+  if (hiveBosses.IDS.has(z.boss)) { hiveBosses.think(state, z, dt, { enraged, m, hpMul }); return; }
   // the Warden's stages
   if (z.boss === 'warden') {
     // Ordinary zombie sight ends at 350px. An engaged Warden keeps hunting at

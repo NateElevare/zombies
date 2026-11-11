@@ -11,8 +11,10 @@ import { drawMinimap } from './mapview';
 import { keybinds } from '../keybinds';
 import { buildKeysHtml, hintRows } from './controls';
 import * as upgrades from '../sim/upgrades';
+import { load as loadCoreBank } from '../sim/augments';
 import { upgradeIcon } from './levelup';
 import * as bosses from '../sim/bosses';
+import { queenConduitObjective } from '../hive-conduits';
 
 const HINT_KEY = 'deadzone_hints_seen_v1';
 const SLOTS: { key: WeaponSlot; n: string }[] = [{ key: 'primary', n: '1' }, { key: 'secondary', n: '2' }, { key: 'melee', n: '3' }];
@@ -26,7 +28,7 @@ const HTML = `
 </div>
 <div class="hud-axp arc"><i></i></div>
 <div class="hud-load arc"><div class="ld-row ld-g"></div><div class="ld-row ld-p"></div></div>
-<div class="hud-boss hidden"><div class="hb-top"><span class="hb-name"></span><span class="hb-t"></span></div><div class="hb-bar"><i></i></div></div>
+<div class="hud-boss hidden"><div class="hb-top"><span class="hb-name"></span><span class="hb-t"></span></div><div class="hb-bar"><i></i></div><div class="hb-objective hidden" role="status"></div></div>
 <div class="hud-arc arc"><div><span>LEVEL</span><b class="a-lvl">1</b></div><div><span>WAVE</span><b class="a-wave">1</b></div><div class="a-main"><span>SCORE</span><b class="a-score">0</b></div><div><span>BEST</span><b class="a-best">0</b></div><div class="a-sub"></div></div>
 <div class="hud-tr surv">
   <div class="mm-wrap"><canvas class="mm"></canvas><div class="mm-n">N</div></div>
@@ -89,6 +91,7 @@ export class Hud {
   private frame = 0;
   private ico: { weapon: string; stash: string } = { weapon: '', stash: '' };
   private loadKey = '';
+  private coreBalance = 0;
 
   constructor(root: HTMLElement) {
     this.node = el('div', 'hud hidden'); this.node.innerHTML = HTML; root.appendChild(this.node);
@@ -104,7 +107,7 @@ export class Hud {
       build: q('.build'), bName: q('.b-name'), bDesc: q('.b-desc'), bCost: q('.b-cost'), bTarget: q('.b-target'), bTools: q('.bp-tools'), bList: q('.bp-list'),
       hints: q('.hints'), vHurt: q('.hud-vig.hurt'), vLow: q('.hud-vig.low'), vStarve: q('.hud-vig.starve'),
       aWave: q('.a-wave'), aLvl: q('.a-lvl'), axp: q('.hud-axp i'), ldG: q('.ld-g'), ldP: q('.ld-p'), aScore: q('.a-score'), aBest: q('.a-best'), aSub: q('.a-sub'),
-      boss: q('.hud-boss'), bossName: q('.hb-name'), bossT: q('.hb-t'), bossF: q('.hb-bar i'),
+      boss: q('.hud-boss'), bossName: q('.hb-name'), bossT: q('.hb-t'), bossF: q('.hb-bar i'), bossObjective: q('.hb-objective'),
     };
     this.mm = q('.mm') as HTMLCanvasElement;
     for (const s of SLOTS) {
@@ -239,13 +242,17 @@ export class Hud {
       if (this.frame % 2 === 0) this.drawMini(s);
     } else if (s.arcade) {
       const a = s.arcade;
+      if (this.frame % 15 === 0 || !r.aSub.dataset.v) this.coreBalance = loadCoreBank().cores;
       setText(r.aWave, String(a.wave)); setText(r.aScore, String(Math.floor(a.score))); setText(r.aBest, String(Math.floor(a.best)));
-      setText(r.aSub, a.intermission > 0 ? 'NEXT WAVE IN ' + Math.ceil(a.intermission) : '');
+      setText(r.aSub, (a.intermission > 0 ? 'NEXT ' + Math.ceil(a.intermission) + 's · ' : '') + this.coreBalance + ' CORES · ' + keybinds.text('tech',true) + (a.intermission > 0 ? '' : ' SKILLS'));
       if (a.run) this.updateRun(a.run);
     }
     // boss health bar: arcade boss waves, and city lair bosses once they come for you
     const boss = s.player ? bosses.engagedBoss(s) : null;
     setCls(r.boss, 'hidden', !boss);
+    const queenObjective = queenConduitObjective(s, boss);
+    setText(r.bossObjective, queenObjective);
+    setCls(r.bossObjective, 'hidden', !queenObjective);
     if (boss) {
       const d = bosses.BOSSES[boss.boss];
       setText(r.bossName, d.name.toUpperCase()); setText(r.bossT, d.title);
@@ -272,8 +279,13 @@ export class Hud {
       setCls(r.warn, 'hidden', !needR);
       if (needR) setText(r.warn, total > 0 ? 'RELOAD [R]' : 'NO AMMO');
     } else {
-      setText(r.mag, wid ? 'MELEE' : '—'); setText(r.tot, ''); setCls(r.wAmmo, 'empty', false);
-      setCls(r.reload, 'hidden', true); setCls(r.warn, 'hidden', true);
+      // a gun that needs no ammunition (the Vespiary breeds its own) still shows what is in it
+      const own = !!(wdef && w && !wdef.melee && wdef.magSize > 0);
+      setText(r.mag, own ? String(w!.mag ?? 0) : wid ? 'MELEE' : '—'); setText(r.tot, own ? '/ ∞' : ''); setCls(r.wAmmo, 'empty', own && (w!.mag ?? 0) <= 0);
+      setCls(r.reload, 'hidden', true);
+      const breeding = own && (w!.mag ?? 0) < wdef!.magSize;
+      setCls(r.warn, 'hidden', !breeding);
+      if (breeding) setText(r.warn, (w!.mag ?? 0) <= 0 ? 'BREEDING · STOP FIRING OR SWITCH WEAPON' : 'BREEDING');
     }
     this.ico.weapon = wid;
     SLOTS.forEach((sl, i) => {
@@ -285,7 +297,7 @@ export class Hud {
       }
       setCls(se.box, 'active', p.active === sl.key); setCls(se.box, 'empty', !st);
       const wdf = st ? WEAPONS[st.id] : undefined;
-      setText(se.a, wdf && wdf.ammo && st ? String(st.mag ?? 0) : '');
+      setText(se.a, wdf && (wdf.ammo || (!wdf.melee && wdf.magSize > 0)) && st ? String(st.mag ?? 0) : '');
     });
 
     // interaction prompt + search
@@ -349,11 +361,11 @@ export class Hud {
     };
     const empty = () => el('div', 'ld-s empty');
     r.ldG.replaceChildren(); r.ldP.replaceChildren();
-    for (let i = 0; i < upgrades.MAX_GADGETS; i++) {
+    for (let i = 0; i < upgrades.MAX_GADGETS+(run.aug?.gadgetSlots||0); i++) {
       const g = run.gadgets[i], d = g && upgrades.GADGETS[g.id];
       r.ldG.appendChild(g && d ? slot(g.id, g.evolved ? d.evoName : d.name, g.evolved ? '#ffcf4a' : d.color, g.level, g.evolved) : empty());
     }
-    for (let i = 0; i < upgrades.MAX_PASSIVES; i++) {
+    for (let i = 0; i < upgrades.MAX_PASSIVES+(run.aug?.passiveSlots||0); i++) {
       const p = run.passives[i], d = p && upgrades.PASSIVES[p.id];
       r.ldP.appendChild(p && d ? slot(p.id, d.name, d.color, p.level, false) : empty());
     }

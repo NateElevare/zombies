@@ -27,20 +27,20 @@ function atWave(wave: number, seed = 7) {
 }
 
 describe('arcade bosses', () => {
-  it('appear every 10th wave and cycle through all five', () => {
-    expect([9, 10, 11, 20, 25, 50].map(bosses.isBossWave)).toEqual([false, true, false, true, false, true]);
-    expect([10, 20, 30, 40, 50].map(w => bosses.bossFor(w).id)).toEqual(['butcher', 'broodmother', 'howler', 'juggernaut', 'plague']);
-    expect(bosses.bossFor(60)).toEqual({ id: 'butcher', cycle: 1 });
+  it('appear every 5th wave and cycle through all five', () => {
+    expect([0, 4, 5, 6, 9, 10, 11, 20, 25, 50].map(bosses.isBossWave)).toEqual([false, false, true, false, false, true, false, true, true, true]);
+    expect([5, 10, 15, 20, 25].map(w => bosses.bossFor(w).id)).toEqual(['butcher', 'broodmother', 'howler', 'juggernaut', 'plague']);
+    expect(bosses.bossFor(30)).toEqual({ id: 'butcher', cycle: 1 });
   });
 
   it('a boss wave spawns one huge, slow, tough boss and does not clear until it dies', () => {
-    const s = atWave(10), a = s.arcade!;
+    const s = atWave(5), a = s.arcade!;
     ticks(s, 2);
     const boss = bosses.activeBoss(s)!;
     expect(boss).toBeTruthy(); expect(boss.boss).toBe('butcher');
     expect(s.zombies.filter(z => bosses.isBoss(z))).toHaveLength(1);
     const walker = zombies.TYPES.walker;
-    expect(boss.maxHp).toBeGreaterThan(walker.hp * waveHp(10) * 40);
+    expect(boss.maxHp).toBeGreaterThan(walker.hp * waveHp(5) * 40);
     expect(boss.r).toBeGreaterThan(30);
     expect(boss.speed).toBeLessThan(walker.speed);
     // kill the escort; the boss keeps the wave open
@@ -51,7 +51,7 @@ describe('arcade bosses', () => {
     const score = a.score;
     zombies.damage(s, boss, 1e9, 0);
     ticks(s, 1);
-    expect(a.score).toBeGreaterThan(score + 2000);
+    expect(a.score).toBeGreaterThanOrEqual(score + 250 * a.wave);
     expect(s.drops.filter(d => d.id.startsWith('arcade-boss')).length).toBe(3);
     // the Butcher drops its signature cleaver, and the kill grants a free upgrade card
     expect(s.drops.some(d => d.inv.slots.some(x => x?.id === 'butcher_cleaver'))).toBe(true);
@@ -84,7 +84,7 @@ describe('arcade bosses', () => {
         phys.addSolid(s, { x: bx - 40, y: by + 62, w: 80, h: 48, kind: 'furniture', sub: 'crate', breakable: true }),
         phys.addSolid(s, { x: bx + 62, y: by - 40, w: 48, h: 80, kind: 'furniture', sub: 'crate', breakable: true }),
       ];
-      const boss = bosses.spawnBoss(s, (bosses.BOSS_IDS.indexOf(id) + 1) * 10, bx, by, 1);
+      const boss = bosses.spawnBoss(s, (bosses.BOSS_IDS.indexOf(id) + 1) * bosses.BOSS_EVERY, bx, by, 1);
       boss.hp = boss.maxHp = 1e9;
       let reached = false;
       for (let i = 0; i < 60 * 25 && !reached; i++) {

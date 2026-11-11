@@ -3,7 +3,7 @@
 // Rules: locked gates between sectors, one objective at a time, checkpoint at every mission end,
 // death restarts the current mission from its start snapshot, walk-over pickups, no needs, no building.
 import { emit, hash, makeRng, newState, phys, rand, snapshotInterp, sound, toast, type Rng } from './core';
-import type { Building, Drop, EquipKey, GameState, InputState, MissionTarget, Stack, Vec, Zombie, ZombieType } from './types';
+import type { Building, Drop, EquipKey, GameState, InputState, Inventory, MissionTarget, Stack, Vec, Zombie, ZombieType } from './types';
 import type { CharacterId } from '../characters';
 import * as player from './player';
 import * as combat from './combat';
@@ -22,6 +22,9 @@ import { createSquad, updateSquad, type RoadAlly } from './road-squad';
 import * as hive from './hive';
 import { build as buildHive, isFloor, zoneAt, zoneOfSector } from './hive-world';
 import { HIVE_MISSIONS } from './hive-data';
+import * as kit from './hive-kit';
+import * as bugs from './hive-bugs';
+import { addSites, fixtureSpots, lurkSpots, vents as ventSpots } from './hive-sites';
 
 export const ROAD_SAVE_KEY = 'deadzone_road_v1';
 export const NEED_SAVE_KEY = 'deadzone_need_v1';
@@ -66,6 +69,8 @@ export const HOLD_R = 420;
 export interface PlayerSnapshot {
   equip: Record<EquipKey, Stack | null>; slots: (Stack | null)[]; active: Player['active'];
   xp: number; level: number; sp: number; tech: Record<string, true>; maxHp: number; flashlight: boolean;
+  /** The Hive Below: what you left with Mara (sim/hive-kit.ts). Part of the checkpoint, so a restart puts it back as it was. */
+  lockbox?: Inventory | null;
 }
 type Player = GameState['player'];
 export interface Subtitle extends Line { until: number }
@@ -102,6 +107,8 @@ export interface RoadState {
   collected: string[];
   totals: { kills: number; deaths: number; time: number };
   lights: boolean;
+  /** The Hive Below: the last mission is in daylight; the rift has been shut (the ending) */
+  dawn?: boolean; riftShut?: boolean;
   /** runtime */
   gateSolids: (import('./types').Solid | null)[];
   seenPacks: Set<string>;
@@ -112,10 +119,17 @@ export interface RoadState {
   lastCompleted: { title: string; kills: number; time: number; deaths: number } | null;
   /** The Hive Below: honey pools, queued columns and spawner timers (sim/hive.ts) */
   hiveRt?: hive.HiveRuntime;
+  /** The Hive Below: everything you did not take down the rope. null until you have handed it over. */
+  lockbox?: Inventory | null;
+  /** runtime: where the lockbox stands at each camp */
+  boxAt?: Record<number, Vec>;
+  /** runtime: the steam vents of the Boiling Galleries (sim/hive-sites.ts) */
+  vents?: Vec[];
 }
 
 export const missionsOf = (state: GameState) => missionsFor(state.road!.story);
 export const missionOf = (state: GameState) => missionsOf(state)[state.road!.mission];
+bugs.setTypesOf(state => missionOf(state).types);
 export const current = (state: GameState): ObjectiveDef | null => missionOf(state)?.objectives[state.road!.step] ?? null;
 export const currentRun = (state: GameState) => state.road!.objectives[state.road!.step] ?? null;
 export const sectorOf = (state: GameState) => state.road!.world.sectors[missionOf(state).sector];
@@ -154,6 +168,7 @@ export function newHiveBelow(): GameState | null {
 function createRoad(character: CharacterId, seed: number, story: RoadStory, snapshot?: PlayerSnapshot, mission = 0): GameState {
   const state = newState(seed, 'road');
   const world = story === 'hive-below' ? buildHive(state) : build(state);
+  if (world.hive) addSites(world);   // the stops of the cells beyond the Warrens, measured off the carved map
   const p = state.player = player.create(world.start.x, world.start.y);
   p.character = character;
   inv.bind(state);
@@ -204,14 +219,17 @@ export function save(state: GameState, done?: boolean): boolean {
   try { globalThis.localStorage?.setItem(saveKey(r.story), JSON.stringify(data)); return true; } catch { return false; }
 }
 
-function snapshotPlayer(p: Player): PlayerSnapshot {
+function snapshotPlayer(p: Player, lockbox?: Inventory | null): PlayerSnapshot {
   const clone = <T>(v: T): T => JSON.parse(JSON.stringify(v));
-  return { equip: clone(p.inv.equip), slots: clone(p.inv.slots.map(st => st && ITEMS[st.id]?.type === 'material' ? null : st)), active: p.active, xp: p.xp, level: p.level, sp: p.sp, tech: clone(p.tech), maxHp: p.maxHp, flashlight: p.flashlight };
+  return { equip: clone(p.inv.equip), slots: clone(p.inv.slots.map(st => st && ITEMS[st.id]?.type === 'material' ? null : st)), active: p.active, xp: p.xp, level: p.level, sp: p.sp, tech: clone(p.tech), maxHp: p.maxHp, flashlight: p.flashlight,
+    ...(lockbox ? { lockbox: clone(lockbox) } : {}) };
 }
 function restorePlayer(state: GameState, s: PlayerSnapshot) {
   const p = state.player, clone = <T>(v: T): T => JSON.parse(JSON.stringify(v));
   p.inv.equip = clone(s.equip); p.inv.slots = clone(s.slots); p.active = s.active;
   p.xp = s.xp; p.level = s.level; p.sp = s.sp; p.tech = clone(s.tech); p.maxHp = s.maxHp; p.flashlight = s.flashlight;
+  state.road!.lockbox = s.lockbox ? clone(s.lockbox) : null;
+  inv.compact(p.inv);   // stack limits have grown since some checkpoints were saved: fold the old stacks together
   inv.recalcSize(state);
   progression.sync(state);
 }
@@ -225,7 +243,11 @@ function buildingOf(state: GameState, id: Place): Building | null {
 }
 export function campOf(state: GameState, m: number): Vec {
   const w = state.road!.world;
-  if (w.hive) return m < 0 ? w.start : w.camps[Math.min(m, w.camps.length - 1)];
+  if (w.hive) {
+    if (m < 0) return w.start;
+    const at = HIVE_MISSIONS[m]?.campSite, s = at && w.sites[at];
+    return s ? { x: s.x + s.w / 2, y: s.y + s.h / 2 } : w.camps[Math.min(m, w.camps.length - 1)];
+  }
   if (state.road!.story === 'group-in-need') {
     if (m < 0) { const relay = w.sites.relay!; return { x: relay.x + relay.w / 2, y: relay.y + relay.h + 140 }; }
     const def = NEED_MISSIONS[m], sec = w.sectors[def.sector];
@@ -275,10 +297,11 @@ function indoorSpot(state: GameState, b: Building, rng: Rng): Vec | null {
   return null;
 }
 function freeNear(state: GameState, c: Vec, r: number, rng: Rng, maxD = 200): Vec {
-  if (phys.isFree(state, c.x, c.y, r)) return { x: c.x, y: c.y };
+  const h = state.road?.world.hive, ok = (x: number, y: number) => phys.isFree(state, x, y, r) && (!h || isFloor(h, x, y));   // solid rock has no colliders of its own
+  if (ok(c.x, c.y)) return { x: c.x, y: c.y };
   for (let d = 30; d <= maxD; d += 30) for (let k = 0; k < 10; k++) {
     const a = rng.next() * Math.PI * 2, x = c.x + Math.cos(a) * d, y = c.y + Math.sin(a) * d;
-    if (phys.isFree(state, x, y, r)) return { x, y };
+    if (ok(x, y)) return { x, y };
   }
   return { x: c.x, y: c.y };
 }
@@ -291,13 +314,28 @@ export function startMission(state: GameState, m: number, snapshot?: PlayerSnaps
   r.mission = m; r.step = 0; r.phase = 'briefing'; r.missionKills = 0; r.missionDeaths = 0; r.collected = []; r.subtitle = null; r.interactTarget = null;
   r.seenPacks = new Set(); r.ambientT = 0; r.cullT = 0;
   if (snapshot) restorePlayer(state, snapshot);
+  if (r.world.hive && !r.lockbox) {
+    // down the rope with your belt: the rest stays with Mara until the rift is shut (sim/hive-kit.ts)
+    if (!def.handOver && missionsOf(state).slice(0, m).some(d => d.handOver)) r.lockbox = kit.handOver(state);   // a checkpoint from before the hand-over existed
+    else if (def.handOver) {
+      // what you left lying on the reservoir bed is gathered up with the rest (so nothing is lost, and nothing waits up there to be fetched)
+      const lying = state.drops.filter(d => d.kind === 'loot' && !d.quest);
+      state.drops = state.drops.filter(d => !lying.includes(d));
+      r.lockbox = kit.handOver(state, lying.flatMap(d => d.inv.slots.filter((st): st is Stack => !!st && ITEMS[st.id]?.type !== 'material')));
+      progression.sync(state);
+    }
+  } else if (r.world.hive && r.lockbox && kitAway(state, m)) {
+    // the lockbox stays up top until the very end: a long gun that is on you (an older checkpoint) goes back to it
+    if (kit.sendBack(state, r.lockbox)) { progression.sync(state); toast(state, 'Your long guns went back up the rope. Mara has them until the rift is shut.', '#f4cf80'); }
+  }
   // fresh body at the checkpoint
   p.dead = false; p.hp = p.maxHp; p.stamina = p.maxStamina; p.food = p.water = 100; p.bleeding = 0; p.invuln = 1.5;
-  p.reloadTimer = p.reloadTotal = 0; p.swingTimer = 0; p.fireCooldown = 0; p.burstQueue = 0; p.vx = p.vy = 0;
-  const start = m === 0 && r.story !== 'group-in-need' ? r.world.start : campOf(state, m - 1);
+  p.reloadTimer = p.reloadTotal = 0; p.swingTimer = 0; p.meleeCooldown = 0; p.fireCooldown = 0; p.burstQueue = 0; p.vx = p.vy = 0;
+  const from = def.startAt && r.world.sites[def.startAt];
+  const start = from ? { x: from.x + from.w / 2, y: from.y + from.h / 2 } : m === 0 && r.story !== 'group-in-need' ? r.world.start : campOf(state, m - 1);
   p.x = start.x; p.y = start.y; phys.collideCircle(state, p);
   state.clock.t = def.clock; state.clock.day = m + 1;
-  r.snapshot = snapshotPlayer(p);
+  r.snapshot = snapshotPlayer(p, r.lockbox);
   // world reset
   state.zombies.length = 0; state.bullets.length = 0; state.search = null; state.interact = null;
   // bags placed by this mission (or a later one) are re-placed below; everything older stays where it lies,
@@ -318,6 +356,7 @@ export function startMission(state: GameState, m: number, snapshot?: PlayerSnaps
   placeCast(state);
   r.allies = []; r.trail = [];
   if (r.world.hive) {
+    r.dawn = !!def.dawn; r.riftShut = false;
     // the floodlights on the dam come on in the first mission and stay on; underground you want your torch
     r.lights = m >= 1;
     if (def.clock >= 420) p.flashlight = true;
@@ -370,7 +409,7 @@ function complete(state: GameState) {
   for (const l of def.outro) r.log.push(l);
   // open the gate out of this sector for good and save the checkpoint
   if (r.story !== 'group-in-need' && r.mission < r.world.gates.length) { r.world.gates[r.mission].open = true; syncGates(state); }
-  r.snapshot = snapshotPlayer(state.player);
+  r.snapshot = snapshotPlayer(state.player, r.lockbox);
   save(state);
   sound(state, 'levelUp');
   emit(state, { t: 'banner', title: 'CHECKPOINT', sub: 'PROGRESS SAVED', color: '#8fd98a', ms: 2600 });
@@ -427,8 +466,9 @@ function placeCaches(state: GameState, def: MissionDef, rng: Rng, camp?: boolean
         const a = rng.next() * Math.PI * 2, d = c.spread ? rng.next() * c.spread : 30 + i * 26;
         p = freeNear(state, { x: centre.x + Math.cos(a) * d, y: centre.y + Math.sin(a) * d }, 26, rng, 220);
       }
-      const def2 = ITEMS[it.id];
-      dropAt(state, p, { id: it.id, qty: it.qty ?? 1, ...(def2?.type === 'weapon' && combat.WEAPONS[it.id] ? { mag: combat.WEAPONS[it.id].magSize } : {}) });
+      // 'ammo_sidearm': rounds for the handgun on your belt, counted in pistol magazines (a revolver gets the same number of reloads)
+      const side = it.id === 'ammo_sidearm', id = side ? kit.sidearmAmmo(state) : it.id, def2 = ITEMS[id];
+      dropAt(state, p, { id, qty: side ? kit.sidearmRounds(state, it.qty ?? 12) : it.qty ?? 1, ...(def2?.type === 'weapon' && combat.WEAPONS[id] ? { mag: combat.WEAPONS[id].magSize } : {}) });
     });
   }
 }
@@ -469,8 +509,22 @@ function placeHive(state: GameState, def: MissionDef, rng: Rng) {
   for (const b of h.burrows[zone]) hive.spawnFixture(state, 'burrow', b);
   for (const e of h.eggs[zone]) hive.spawnFixture(state, 'egg', e);
   def.objectives.forEach((o, i) => {
-    if (o.kind === 'burrows') for (const b of (r.world.nurseryBurrows ?? []).slice(0, o.count)) hive.spawnFixture(state, 'burrow', b, r.objectives[i].tag);
+    if (o.kind !== 'burrows') return;
+    // the Warrens' nursery has its three burrows on the map; every other mission's fixtures stand around its marker
+    const spots = o.at === 'nursery' ? (r.world.nurseryBurrows ?? []).slice(0, o.count) : fixtureSpots(state, r.objectives[i].point, o.count, !o.fixture);
+    for (const at of spots) {
+      const f = hive.spawnFixture(state, o.fixture ? 'egg' : 'burrow', at, r.objectives[i].tag) as bugs.HBug;
+      if (o.fixture === 'comb') { f.brood = 'stinger'; f.broodN = 3; }
+      else if (o.fixture === 'heap') { f.brood = 'grub'; f.broodN = 4; }
+      else if (o.fixture === 'cocoon') { f.noHatch = true; f.cocoon = true; }
+      if (o.fixture) f.maxHp = f.hp = f.hp * 2;   // sturdier than a loose egg cluster: it is an objective
+    }
   });
+  // Lurkers: against the rock, motionless, until your beam or your feet find them
+  if (def.lurkers) for (const at of lurkSpots(state, zone, def.lurkers, [campOf(state, r.mission - 1), campOf(state, r.mission), h.arenas[Math.min(zone, 7)]])) {
+    const z = zombies.spawn(state, 'lurker', at.x, at.y) as bugs.HBug;
+    z.roadTag = 'scout'; z.do = 'hide'; z.alpha = 0.1;
+  }
   // wanderers: idle until one of them sees you (and then the pheromone does the rest)
   for (let k = 0, placed = 0; k < 600 && placed < (def.scouts ?? 0); k++) {
     const x = sec.x + rng.next() * sec.w, y = sec.y + rng.next() * sec.h;
@@ -479,8 +533,11 @@ function placeHive(state: GameState, def: MissionDef, rng: Rng) {
     placed++;
   }
   // what the hive dragged down from the city: bullets, bandages and the odd gun, in the corners off the route
-  const owned = new Set(['ammo_9mm', ...Object.values(p.inv.equip).map(st => st && combat.WEAPONS[st.id]?.ammo).filter(Boolean) as string[]]);
-  const pool = [...SCAVENGE.filter(e => !e.id.startsWith('ammo_') || owned.has(e.id) || e.id === 'ammo_556'), { id: 'ichor', qty: [20, 40] as [number, number], w: 6 }, { id: 'royal_jelly', qty: [1, 1] as [number, number], w: 0.8 }];
+  const away = kitAway(state);
+  const owned = new Set([...(away ? [kit.sidearmAmmo(state)] : ['ammo_9mm']), ...Object.values(p.inv.equip).map(st => st && combat.WEAPONS[st.id]?.ammo).filter(Boolean) as string[]]);
+  // while your kit is with Mara the corners hold no city guns and no bullets: ammunition down here is ichor
+  const pool = [...SCAVENGE.filter(e => away ? !combat.WEAPONS[e.id] && !e.id.startsWith('ammo_') : !e.id.startsWith('ammo_') || owned.has(e.id) || e.id === 'ammo_556'),
+    { id: 'ichor', qty: [20, 40] as [number, number], w: 6 }, { id: 'royal_jelly', qty: [1, 1] as [number, number], w: 0.8 }];
   let total = 0; for (const e of pool) total += e.w;
   for (const n of h.nooks[zone]) {
     if (rng.next() > 0.8) continue;
@@ -527,7 +584,7 @@ function startObjective(state: GameState) {
             const a = rng.next() * Math.PI * 2, d = 120 + rng.next() * ((o.r ?? 300) - 120);
             const x = run.point.x + Math.cos(a) * d, y = run.point.y + Math.sin(a) * d;
             // outdoors: never inside a building (a zombie in a locked back room would stall the counter)
-            if (phys.isFree(state, x, y, 24) && Math.hypot(x - state.player.x, y - state.player.y) > 260 && (b ? true : !buildingAt(state, x, y))) p = { x, y };
+            if (phys.isFree(state, x, y, 24) && Math.hypot(x - state.player.x, y - state.player.y) > 260 && (b ? true : !buildingAt(state, x, y)) && (!r.world.hive || isFloor(r.world.hive, x, y))) p = { x, y };
           }
         }
         if (!p) continue;
@@ -537,11 +594,25 @@ function startObjective(state: GameState) {
       run.waveT = 4;
       break;
     }
-    case 'holdout': run.timer = o.seconds; run.waveT = 1.5; run.need = o.seconds; break;
+    case 'holdout':
+      run.timer = o.seconds; run.waveT = 1.5; run.need = o.seconds;
+      if (o.squad && r.world.hive) { createSquad(state, run.point, false); toast(state, 'Ada, Ben, Kit and Lewis are holding it with you', '#9ed9dc'); }
+      break;
+    case 'reach': run.timer = o.limit ?? 0; break;
     case 'burrows': run.need = objectiveBurrows(state, run.tag).length; run.kills = 0; break;
     case 'interact': run.hold = 0; break;
     case 'boss': break;   // spawns when the player comes close
-    case 'camp': if (r.world.hive) placeCaches(state, missionOf(state), rng, true); break;   // the camp and its crates are carried down to you
+    case 'camp':
+      if (!r.world.hive) break;
+      placeCaches(state, missionOf(state), rng, true);   // the camp and its crates are carried down to you
+      if (missionsOf(state)[r.mission + 1]?.handOver && !r.lockbox) {
+        // the last chance to change what is on your belt
+        emit(state, { t: 'banner', title: 'THE ROPE TAKES YOU AND YOUR BELT', sub: `SIDEARM · MELEE · WHAT YOU WEAR · ${kit.SIDEARM_ROUNDS} ROUNDS · HALF YOUR BANDAGES`, color: '#f4cf80', ms: 6000 });
+        toast(state, 'Everything else stays with Mara. You get it back when the rift is shut.', '#f4cf80');
+      } else if (r.lockbox && missionOf(state).lockbox) {
+        emit(state, { t: 'banner', title: 'YOUR KIT IS BACK', sub: 'THE LOCKBOX IS ON THE WALL · EVERYTHING YOU LEFT WITH MARA', color: '#8fd98a', ms: 5000 });
+      }
+      break;
   }
 }
 function finishObjective(state: GameState) {
@@ -549,19 +620,21 @@ function finishObjective(state: GameState) {
   if (!run || !o) return;
   run.done = true; r.interactTarget = null; state.interact = null; state.search = null;
   if (o.kind === 'camp') { complete(state); return; }
+  if (o.kind === 'holdout' && o.squad && r.world.hive) r.allies = [];   // they go back up to hold the camps
   sound(state, 'pickup');
   const nextDef = missionOf(state).objectives[r.step + 1];
   emit(state, { t: 'banner', title: 'OBJECTIVE COMPLETE', sub: nextDef ? 'NEXT: ' + nextDef.text.toUpperCase() : '', color: '#8fd98a', ms: 2400 });
   r.step++;
   startObjective(state);
 }
-const objectiveBurrows = (state: GameState, tag: string) => state.zombies.filter(z => !z.dead && z.type === 'burrow' && (z as Zombie & { roadTag?: string }).roadTag === tag);
+const objectiveBurrows = (state: GameState, tag: string) => state.zombies.filter(z => !z.dead && (z.type === 'burrow' || z.type === 'egg') && (z as Zombie & { roadTag?: string }).roadTag === tag);
 export function objectiveText(state: GameState) {
   const o = current(state), run = currentRun(state);
   if (!o || !run) return '';
   if (o.kind === 'clear' || o.kind === 'burrows') return `${o.text} (${Math.max(0, run.need - run.kills)} left)`;
   if (o.kind === 'holdout') return !run.armed ? `Get to the position: ${o.text.replace(/^Hold /, 'hold ')}` : run.away ? `${o.text} — GET BACK TO THE POSITION (${Math.ceil(run.timer)}s)` : `${o.text} (${Math.ceil(run.timer)}s)`;
   if (o.kind === 'camp' && run.near) return `${o.text} — clear the area first`;
+  if (o.kind === 'reach' && o.limit) return `${o.text} (${Math.max(0, Math.ceil(run.timer))}s)`;
   if (o.kind === 'escort' || (o.kind === 'camp' && state.road!.allies.some(a => a.following))) {
     const arrived = state.road!.allies.filter(a => a.following && Math.hypot(a.x - run.point.x, a.y - run.point.y) < 240).length;
     return `${o.text} (${arrived}/${RESCUED_GROUP.length} together)`;
@@ -585,12 +658,27 @@ function updateObjective(state: GameState, input: InputState, dt: number) {
     case 'escort':
       if (d < (o.r ?? 130) && r.allies.length === RESCUED_GROUP.length && r.allies.every(a => a.following && Math.hypot(a.x - run.point.x, a.y - run.point.y) < 240)) finishObjective(state);
       break;
-    case 'reach': if (d < (o.r ?? 110)) finishObjective(state); break;
+    case 'reach':
+      if (d < (o.r ?? 110)) { finishObjective(state); break; }
+      if (o.limit) {
+        run.timer -= dt;
+        if (run.timer <= 0) { emit(state, { t: 'banner', title: 'TOO LATE', sub: 'THE WAY OUT HAS CLOSED', color: '#ff7a6a', ms: 3000 }); died(state); }
+      }
+      break;
     case 'camp': {
       const hostile = state.zombies.some(z => !z.dead && !zombies.isInert(z) && Math.hypot(z.x - p.x, z.y - p.y) < 240);
       run.near = d < 130 && hostile;
       const together = r.allies.every(a => !a.following || Math.hypot(a.x - run.point.x, a.y - run.point.y) < 240);
-      if (d < 130 && !hostile && together) finishObjective(state);
+      if (!o.rest) { if (d < 130 && !hostile && together) finishObjective(state); break; }
+      // a camp you rest at: there is a lockbox to sort (or a belt to choose) before you move on, so it takes a held key
+      if (d < REST_R && !hostile && together && !state.interact) {
+        state.interact = { kind: 'mission', target: { id: run.tag, name: o.rest, x: run.point.x - 24, y: run.point.y - 24, w: 48, h: 48 }, label: `${o.rest} (hold)` };
+        const bar = () => ({ target: { name: 'for somewhere to sleep' } as any, t: run.hold, total: REST_HOLD });
+        if (input.interactHeld || input.pressed.has('interact')) {
+          run.hold += dt; state.search = bar();
+          if (run.hold >= REST_HOLD) finishObjective(state);
+        } else { run.hold = Math.max(0, run.hold - dt * 2); state.search = run.hold > 0 ? bar() : null; }
+      } else { run.hold = 0; state.search = null; }
       break;
     }
     case 'pickup': if (r.collected.includes(o.item)) finishObjective(state); break;
@@ -650,7 +738,11 @@ function updateObjective(state: GameState, input: InputState, dt: number) {
         if (input.interactHeld || input.pressed.has('interact')) {
           run.hold += dt;
           state.search = { target: { name: o.label } as any, t: run.hold, total: o.hold ?? 0.3 };
-          if (run.hold >= (o.hold ?? 0.3)) { if (o.at === 'pumping' || o.at === 'dam') r.lights = true; finishObjective(state); }
+          if (run.hold >= (o.hold ?? 0.3)) {
+            if (o.at === 'pumping' || o.at === 'dam') r.lights = true;
+            if (r.world.hive && missionOf(state).dawn) shutRift(state);   // the last breaker: Eli's charge
+            finishObjective(state);
+          }
         } else { run.hold = Math.max(0, run.hold - dt * 2); state.search = run.hold > 0 ? { target: { name: o.label } as any, t: run.hold, total: o.hold ?? 0.3 } : null; }
       } else { state.search = null; }
       break;
@@ -660,7 +752,8 @@ function updateObjective(state: GameState, input: InputState, dt: number) {
         // already standing in its arena: it turns on you when you walk in, or when you shoot it
         if (d < 1100) {
           const at = freeNear(state, run.point, 44, missionRng(state, 500 + r.step), 200);
-          const z = bosses.spawnBossOf(state, o.boss, 0, at.x, at.y, o.hp, { maxR: 34, dmgMul: 0.85, kit: 1, lurk: true, drawR: 46 }) as Zombie & { roadTag?: string };
+          const queen = o.boss === 'queen', big = bosses.BOSSES[o.boss].r;
+          const z = bosses.spawnBossOf(state, o.boss, 0, at.x, at.y, o.hp, { maxR: queen ? 60 : 34, dmgMul: 0.85, kit: 1, lurk: true, drawR: queen ? 170 : Math.max(46, big * 1.15) }) as Zombie & { roadTag?: string };
           z.roadTag = run.tag; run.bossId = z.id;
         }
       } else if (!run.bossId) {
@@ -681,7 +774,7 @@ function updateObjective(state: GameState, input: InputState, dt: number) {
         if (!z || z.dead) finishObjective(state);
         else {
           run.point = { x: z.x, y: z.y };
-          if (o.fixed && !z.announced && (d < 470 || z.hp < z.maxHp || z.state === 'chase')) { bosses.announce(state, z); z.state = 'chase'; z.target = { x: p.x, y: p.y }; (z as Zombie & { memory?: number }).memory = 99; }
+          if (o.fixed && !z.announced && (d < (o.boss === 'queen' ? 900 : 470) || z.hp < z.maxHp || z.state === 'chase')) { bosses.announce(state, z); z.state = 'chase'; z.target = { x: p.x, y: p.y }; (z as Zombie & { memory?: number }).memory = 99; }
           // an engaged arena boss does not lose you behind a pillar
           if (o.fixed && z.announced && z.state !== 'chase' && d < 1500) { z.state = 'chase'; z.target = { x: p.x, y: p.y }; (z as Zombie & { memory?: number }).memory = 12; }
         }
@@ -784,11 +877,15 @@ function rewardKills(state: GameState, actors: Zombie[]) {
     }
     progression.addXP(state, zombies.TYPES[z.type].xp * XP_MUL);
     if (zombies.isInert(z)) continue;
-    const roll = rand(state);
-    if (roll < 0.045) {
+    // a kill that already paid out ichor pays nothing else; the hive's rates are lower because there is far more to kill
+    if (ichor.length) continue;
+    const roll = rand(state), ammoP = r.world.hive ? hive.AMMO_DROP : 0.045, bandageP = r.world.hive ? hive.BANDAGE_DROP : 0.02;
+    if (roll < ammoP) {
       // Random standard ammo; mints remain a Plague Lord reward.
-      const d = dropAt(state, { x: z.x, y: z.y }, randomAmmoDrop(state, 1.2)); d.life = 45;
-    } else if (roll < 0.065) { const d = dropAt(state, { x: z.x, y: z.y }, { id: 'bandage', qty: 1 }); d.life = 45; }
+      const any = randomAmmoDrop(state, 1.2);
+      // while your kit is with Mara, what a kill gives up is rounds for the handgun you kept
+      const d = dropAt(state, { x: z.x, y: z.y }, kitAway(state) ? kit.sidearmDrop(state) : any); d.life = 45;
+    } else if (roll < ammoP + bandageP) { const d = dropAt(state, { x: z.x, y: z.y }, { id: 'bandage', qty: 1 }); d.life = 45; }
   }
 }
 
@@ -814,7 +911,7 @@ function equipDirect(state: GameState, stack: Stack): string | null {
   const def = combat.WEAPONS[stack.id];
   p.inv.equip[slot] = { id: stack.id, qty: 1, ...(def ? { mag: stack.mag ?? def.magSize } : {}), ...(stack.lvl ? { lvl: stack.lvl } : {}) };
   if (def) {
-    if (def.ammo) inv.add(p.inv, def.ammo, def.reloadAll ? 5 : def.magSize * 2);
+    if (def.ammo) inv.add(p.inv, def.ammo, def.reloadAll ? 5 : def.magSize * 2 * (def.ammoPer ?? 1));
     // a new gun goes straight into your hands unless you are already holding a primary
     if (slot === 'primary' || (slot === 'secondary' && p.active === 'melee')) combat.switchTo(state, slot);
   } else { progression.sync(state); inv.recalcSize(state); }
@@ -873,6 +970,63 @@ function died(state: GameState) {
 }
 
 // ------------------------------------------------------------------ step
+/** The ending of The Hive Below: the charge goes off under the Queen's floor and the rift closes on everything still in it. */
+function shutRift(state: GameState) {
+  const r = state.road!, h = r.world.hive!;
+  r.riftShut = true;
+  for (const z of state.zombies) if (!z.dead && !z.boss) zombies.damage(state, z, 1e6, NaN, { explosion: true, source: 'charge' });
+  if (r.hiveRt) r.hiveRt.columns.length = 0;
+  emit(state, { t: 'explosion', x: h.rift.x, y: h.rift.y, radius: 320 });
+  emit(state, { t: 'banner', title: 'THE RIFT IS SHUT', sub: 'NOTHING ELSE IS COMING OUT', color: '#8fd98a', ms: 5000 });
+  state.shake = Math.max(state.shake, 24); sound(state, 'explosion', h.rift.x, h.rift.y);
+}
+
+// ------------------------------------------------------------------ the lockbox (The Hive Below)
+const REST_R = 95, REST_HOLD = 1.2, LOCKBOX_R = 74;
+/** Where the lockbox stands at the camp of mission m: beside the tent, on open floor. */
+export function lockboxAt(state: GameState, m: number): Vec {
+  const r = state.road!, known = (r.boxAt ??= {})[m];
+  if (known) return known;
+  const c = campOf(state, m), h = r.world.hive;
+  let at = { x: c.x + 46, y: c.y - 46 };
+  for (const [dx, dy] of [[88, -54], [-88, 58], [92, 64], [0, -104], [118, 0], [-118, 0], [0, 110]]) {
+    const x = c.x + dx, y = c.y + dy;
+    if (phys.isFree(state, x, y, 28) && (!h || isFloor(h, x, y))) { at = { x, y }; break; }
+  }
+  return r.boxAt[m] = at;
+}
+/** Is everything you handed over still with Mara? From the hand-over until the mission whose camp gives it back. */
+export function kitAway(state: GameState, m = state.road!.mission): boolean {
+  const r = state.road!, all = missionsOf(state), back = all.findIndex(d => d.lockbox);
+  return !!r.world.hive && all.slice(0, m + 1).some(d => d.handOver) && (back < 0 || m <= back);
+}
+/** The lockboxes you can reach right now. It stays with Mara for the whole of the hive and is handed back once: at the
+ *  camp of the mission marked `lockbox` (the dam, when the rift is shut). A later mission would find it at its start camp. */
+export function lockboxSpots(state: GameState): Vec[] {
+  const r = state.road;
+  if (!r?.world.hive || !r.lockbox) return [];
+  const out: Vec[] = [], def = missionOf(state), back = missionsOf(state).findIndex(d => d.lockbox);
+  if (back >= 0 && r.mission > back) out.push(lockboxAt(state, r.mission - 1));
+  if (def.lockbox && current(state)?.kind === 'camp' && currentRun(state)?.started) out.push(lockboxAt(state, r.mission));
+  return out;
+}
+/** Standing at a lockbox: the prompt, and E opens it as a two-way transfer (ui/overlays.ts). True when it opened. */
+function updateLockbox(state: GameState, input: InputState): boolean {
+  const r = state.road!, p = state.player;
+  for (const at of lockboxSpots(state)) {
+    if (Math.hypot(p.x - at.x, p.y - at.y) > LOCKBOX_R) continue;
+    state.interact = { kind: 'mission', target: { id: 'lockbox', name: 'Lockbox', x: at.x - 24, y: at.y - 24, w: 48, h: 48 }, label: 'Open the lockbox' };
+    if (!input.pressed.has('interact')) return false;
+    state.interact = null; state.search = null;
+    const run = currentRun(state); if (run) run.hold = 0;
+    state.ui = 'loot';
+    emit(state, { t: 'openUi', ui: 'loot', target: { kind: 'lockbox', name: 'Lockbox', inv: r.lockbox } });
+    sound(state, 'pickup');
+    return true;
+  }
+  return false;
+}
+
 export function stepRoad(state: GameState, input: InputState, dt: number) {
   const r = state.road; if (!r) return;
   if (state.screen !== 'playing' || state.paused) return;
@@ -886,6 +1040,7 @@ export function stepRoad(state: GameState, input: InputState, dt: number) {
   if (state.player.dead || state.player.hp <= 0) { rewardKills(state, actors); died(state); return; }
   state.time += dt;
   if (r.subtitle && state.time > r.subtitle.until) r.subtitle = null;
+  if (r.world.hive) hive.toughen(state, missionOf(state).tough);   // before anything can be hit this tick
   player.update(state, input, dt);
   state.interact = null;   // no container searching in this mode: supplies are bags on the floor (see placeScavenge)
   if (input.pressed.has('heal')) inv.quickHeal(state);
@@ -899,10 +1054,12 @@ export function stepRoad(state: GameState, input: InputState, dt: number) {
     // burrows fall quiet while an arena boss is up: its own rally brings the adds
     const o = current(state), def = missionOf(state), bossUp = o?.kind === 'boss' && !!currentRun(state)?.bossId;
     hive.update(state, dt, bossUp ? null : def.swarm ?? null, def.types, pressureOf(state));
+    if (def.hazard) bugs.hazards(state, dt, def.hazard, r.vents ??= ventSpots(r.world.hive), (def.tough ?? hive.TOUGH).dmg);
   }
   if (state.player.dead || state.player.hp <= 0) { died(state); return; }
   pickups(state, dt);
   ambient(state, dt); packs(state); cull(state, dt);
+  if (r.lockbox && updateLockbox(state, input)) return;
   updateObjective(state, input, dt);
   state.shake = state.shake > 0.1 ? state.shake * Math.exp(-10 * dt) : 0;
 }

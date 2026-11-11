@@ -13,6 +13,7 @@ export const RARITY_COLORS: Record<Rarity, string> = {
 };
 /** Item id whose art (in-hand sprite, icon) this item uses. */
 export const lookOf = (id: string) => (Object.hasOwn(ITEMS, id) && ITEMS[id].look) || id;
+// Ammunition and healing items stack three times as high as they first did (2026-11-11): a long story fills a backpack.
 export const ITEMS: Record<string, ItemDef> = {
   // ---- The Hive Below
   "formic_sprayer": {
@@ -25,15 +26,65 @@ export const ITEMS: Record<string, ItemDef> = {
     "desc": "Boss trophy (The Marshal). A heavy snap in a narrow arc. A kill cuts through to two more bugs behind it.",
     "stack": 1, "slot": "melee"
   },
+  "locust_repeater": {
+    "id": "locust_repeater", "name": "Locust Repeater", "type": "weapon", "rarity": "legendary", "color": "#ffb43a", "glyph": "LCR",
+    "desc": "Boss trophy (Famine). Fast automatic. Every hit hops on to two more bugs within 140 px at 60% damage. Runs on ichor: 40 to a drum.",
+    "stack": 1, "slot": "primary"
+  },
+  "needler": {
+    "id": "needler", "name": "Needler", "type": "weapon", "rarity": "epic", "color": "#c48ae0", "glyph": "NDL",
+    "desc": "Hive weapon (wasp). A rifle whose needle passes through three bugs and poisons each one: 30 damage over 4 seconds. 4 ichor a needle, 8 to a magazine.",
+    "stack": 1, "slot": "primary"
+  },
+  "vespiary": {
+    "id": "vespiary", "name": "The Vespiary", "type": "weapon", "rarity": "legendary", "color": "#ffb43a", "glyph": "VSP",
+    "desc": "Boss trophy (Matriarch Vespa). Fires hornets that steer at the nearest bug. Needs no ammunition and never reloads: it holds 24 and breeds its own, 2 a second holstered, 1 a second in your hand once you stop firing.",
+    "stack": 1, "slot": "secondary"
+  },
+  "bombardier": {
+    "id": "bombardier", "name": "Bombardier", "type": "weapon", "rarity": "epic", "color": "#c48ae0", "glyph": "BMB",
+    "desc": "Hive weapon (bombardier beetle). A short cone of boiling spray out to 260 px. Sets bugs alight and shoves them back. 8 ichor a shot, 5 shots.",
+    "stack": 1, "slot": "primary"
+  },
+  "hornbreaker": {
+    "id": "hornbreaker", "name": "Hornbreaker", "type": "weapon", "rarity": "legendary", "color": "#ffb43a", "glyph": "HRN",
+    "desc": "Boss trophy (Goliath). A slow hammer. Every swing sends a shock line 300 px forward that knocks a column flat.",
+    "stack": 1, "slot": "melee"
+  },
+  "lure_lantern": {
+    "id": "lure_lantern", "name": "Lure Lantern", "type": "weapon", "rarity": "epic", "color": "#c48ae0", "glyph": "LUR",
+    "desc": "Hive weapon (firefly). Lobs a glowing lure: every ordinary bug within 500 px goes for it for 6 seconds, then it bursts for 120 damage. 15 ichor a lure, carries 6.",
+    "stack": 1, "slot": "secondary"
+  },
+  "mantis_scythes": {
+    "id": "mantis_scythes", "name": "Mantis Scythes", "type": "weapon", "rarity": "legendary", "color": "#ffb43a", "glyph": "SCY",
+    "desc": "Boss trophy (The Prioress). Fast twin blades with a wide arc. Each swing steps you forward. Double damage from behind, and a little health back per hit.",
+    "stack": 1, "slot": "melee"
+  },
+  "carrion_hive": {
+    "id": "carrion_hive", "name": "Carrion Hive", "type": "weapon", "rarity": "legendary", "color": "#ffb43a", "glyph": "CRN",
+    "desc": "Boss trophy (The Carrion Lord). Lobs a pod: a cloud of flies hangs for 6 seconds and does 25 damage a second, and any bug that dies inside it bursts. 25 ichor a pod, 3 pods.",
+    "stack": 1, "slot": "primary"
+  },
+  "queens_decree": {
+    "id": "queens_decree", "name": "Queen's Decree", "type": "weapon", "rarity": "legendary", "color": "#ffb43a", "glyph": "QDC",
+    "desc": "Boss trophy (The Queen). Fires a pheromone dart: the swarm turns on the marked bug for 6 seconds. A marked boss takes 25% more damage instead. 10 ichor a dart.",
+    "stack": 1, "slot": "secondary"
+  },
+  "carapace_vest": {
+    "id": "carapace_vest", "name": "Carapace Vest", "type": "armor", "rarity": "legendary", "color": "#ffb43a", "glyph": "CV",
+    "desc": "Body armour cut from a Shieldback. Reduces incoming damage by 33% before upgrades.",
+    "stack": 1, "slot": "body", "armor": 0.33, "weightless": false
+  },
   "ichor": {
     "id": "ichor", "name": "Ichor", "type": "ammo", "rarity": "uncommon", "color": "#79bd73", "glyph": "ICH",
     "desc": "What the hive's dead run on. Ammunition for every insect gun. Anything with six legs can drop it.",
-    "stack": 400
+    "stack": 1200
   },
   "royal_jelly": {
     "id": "royal_jelly", "name": "Royal Jelly", "type": "consumable", "rarity": "rare", "color": "#70a9df", "glyph": "RJ",
     "desc": "Restores 50 health and adds 20% damage for 10 seconds.",
-    "stack": 10, "use": { "heal": 50, "boost": 10, "time": 1.5 }
+    "stack": 30, "use": { "heal": 50, "boost": 10, "time": 1.5 }
   },
   "butcher_cleaver": {
     "id": "butcher_cleaver", "name": "Butcher's Cleaver", "type": "weapon", "rarity": "legendary", "color": "#ffb43a", "glyph": "CLV",
@@ -74,7 +125,7 @@ export const ITEMS: Record<string, ItemDef> = {
     "color": "#79bd73",
     "glyph": "MNT",
     "desc": "One mint refills the Cola & Mints with a full blast.",
-    "stack": 40
+    "stack": 120
   },
   "pistol": {
     "id": "pistol",
@@ -183,7 +234,7 @@ export const ITEMS: Record<string, ItemDef> = {
     "color": "#bfc5ba",
     "glyph": "9mm",
     "desc": "Ammunition for pistols and submachine guns.",
-    "stack": 240
+    "stack": 720
   },
   "ammo_357": {
     "id": "ammo_357",
@@ -193,7 +244,7 @@ export const ITEMS: Record<string, ItemDef> = {
     "color": "#79bd73",
     "glyph": "357",
     "desc": "Ammunition for revolvers.",
-    "stack": 180
+    "stack": 540
   },
   "ammo_12g": {
     "id": "ammo_12g",
@@ -203,7 +254,7 @@ export const ITEMS: Record<string, ItemDef> = {
     "color": "#79bd73",
     "glyph": "12g",
     "desc": "Shotgun ammunition.",
-    "stack": 120
+    "stack": 360
   },
   "ammo_556": {
     "id": "ammo_556",
@@ -213,7 +264,7 @@ export const ITEMS: Record<string, ItemDef> = {
     "color": "#70a9df",
     "glyph": "556",
     "desc": "Assault rifle ammunition.",
-    "stack": 240
+    "stack": 720
   },
   "ammo_308": {
     "id": "ammo_308",
@@ -223,7 +274,7 @@ export const ITEMS: Record<string, ItemDef> = {
     "color": "#70a9df",
     "glyph": "308",
     "desc": "Hunting rifle ammunition.",
-    "stack": 180
+    "stack": 540
   },
   "cap": {
     "id": "cap",
@@ -370,7 +421,7 @@ export const ITEMS: Record<string, ItemDef> = {
     "color": "#bfc5ba",
     "glyph": "+",
     "desc": "Restores 15 health and stops bleeding.",
-    "stack": 20,
+    "stack": 60,
     "use": {
       "heal": 15,
       "stopBleed": true,
@@ -385,7 +436,7 @@ export const ITEMS: Record<string, ItemDef> = {
     "color": "#70a9df",
     "glyph": "MED",
     "desc": "Restores 60 health.",
-    "stack": 10,
+    "stack": 30,
     "use": {
       "heal": 60,
       "time": 2.5
@@ -399,7 +450,7 @@ export const ITEMS: Record<string, ItemDef> = {
     "color": "#79bd73",
     "glyph": "RX",
     "desc": "Restores 25 health.",
-    "stack": 20,
+    "stack": 60,
     "use": {
       "heal": 25,
       "time": 1

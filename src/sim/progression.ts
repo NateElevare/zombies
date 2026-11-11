@@ -3,6 +3,7 @@ import { toast, sound, emit } from './core';
 import { ITEMS } from './items';
 import * as inv from './inventory';
 import * as base from './base';
+import * as augments from './augments';
 import { WEAPONS, type WeaponStats } from './combat';
 export interface TechCost { sp: number; items: Record<string, number> }
 export interface TechEffect { [key: string]: number | boolean | undefined }
@@ -1424,12 +1425,195 @@ const TREES: TechTree[] = [
         }
       }
     ]
+  },
+  // The Hive Below: the insect weapons (combat.ts WEAPONS with tree: 'hive') have a tree of their own, shown only in that story.
+  {
+    "id": "hive",
+    "name": "Hive Weapons",
+    "icon": "H",
+    "workbench": false,
+    "nodes": [
+      {
+        "id": "hive_dmg1",
+        "name": "Ripe Ichor I",
+        "desc": "+15% damage with insect weapons.",
+        "tier": 1,
+        "col": 1,
+        "row": 0,
+        "effect": {
+          "dmg": 0.15
+        },
+        "requires": [],
+        "cost": {
+          "sp": 1,
+          "items": {}
+        }
+      },
+      {
+        "id": "hive_tank",
+        "name": "Swollen Tank",
+        "desc": "Formic Sprayer: +30 to a tank.",
+        "tier": 2,
+        "col": 0,
+        "row": 1,
+        "effect": {
+          "magAdd": 30
+        },
+        "requires": [
+          "hive_dmg1"
+        ],
+        "cost": {
+          "sp": 1,
+          "items": {}
+        }
+      },
+      {
+        "id": "hive_corrode1",
+        "name": "Stronger Acid",
+        "desc": "Corrosion burns 50% harder.",
+        "tier": 2,
+        "col": 1,
+        "row": 1,
+        "effect": {
+          "corrodeDmg": 0.5
+        },
+        "requires": [
+          "hive_dmg1"
+        ],
+        "cost": {
+          "sp": 1,
+          "items": {}
+        }
+      },
+      {
+        "id": "hive_reach",
+        "name": "Longer Jaws",
+        "desc": "Mandible Shears: reach +15%, arc +25%.",
+        "tier": 2,
+        "col": 2,
+        "row": 1,
+        "effect": {
+          "range": 0.15,
+          "arc": 0.25
+        },
+        "requires": [
+          "hive_dmg1"
+        ],
+        "cost": {
+          "sp": 1,
+          "items": {}
+        }
+      },
+      {
+        "id": "hive_dmg2",
+        "name": "Ripe Ichor II",
+        "desc": "+20% damage with insect weapons.",
+        "tier": 2,
+        "col": 0,
+        "row": 2,
+        "effect": {
+          "dmg": 0.2
+        },
+        "requires": [
+          "hive_tank"
+        ],
+        "cost": {
+          "sp": 1,
+          "items": {}
+        }
+      },
+      {
+        "id": "hive_corrode2",
+        "name": "Deep Burn",
+        "desc": "Corrosion stacks 3 higher and lasts 2 seconds longer.",
+        "tier": 3,
+        "col": 1,
+        "row": 2,
+        "effect": {
+          "corrodeMax": 3,
+          "corrodeTime": 2
+        },
+        "requires": [
+          "hive_corrode1"
+        ],
+        "cost": {
+          "sp": 2,
+          "items": {}
+        }
+      },
+      {
+        "id": "hive_cleave",
+        "name": "Clean Through",
+        "desc": "Mandible Shears: a kill cuts through to 2 more bugs, and knockback +50%.",
+        "tier": 3,
+        "col": 2,
+        "row": 2,
+        "effect": {
+          "cleave": 2,
+          "knock": 0.5
+        },
+        "requires": [
+          "hive_reach"
+        ],
+        "cost": {
+          "sp": 2,
+          "items": {}
+        }
+      },
+      {
+        "id": "hive_harvest",
+        "name": "Harvester",
+        "desc": "Bugs drop ichor twice as often. Burrows and egg clusters give half again as much.",
+        "tier": 4,
+        "col": 0,
+        "row": 3,
+        "effect": {
+          "ichorDrop": 1
+        },
+        "requires": [
+          "hive_dmg2",
+          "hive_corrode2"
+        ],
+        "cost": {
+          "sp": 3,
+          "items": {}
+        }
+      },
+      {
+        "id": "hive_venom",
+        "name": "Queen's Venom",
+        "desc": "+25% damage and a 10% chance of double damage with insect weapons.",
+        "tier": 4,
+        "col": 2,
+        "row": 3,
+        "effect": {
+          "dmg": 0.25,
+          "crit": 0.1
+        },
+        "requires": [
+          "hive_corrode2",
+          "hive_cleave"
+        ],
+        "cost": {
+          "sp": 3,
+          "items": {}
+        }
+      }
+    ]
   }
 ];
 const NODES: Record<string, TechNode> = Object.fromEntries(TREES.flatMap(t => t.nodes.map(n => [n.id,n])));
 const TREE_OF: Record<string, TechTree> = Object.fromEntries(TREES.flatMap(t => t.nodes.map(n => [n.id,t])));
 export const TECH = { trees: TREES, nodes: NODES };
   function techOf(state: GameState) { return (state && state.player && state.player.tech) || {}; }
+  /** Sum of one effect over every unlocked perk, for effects read outside weaponStats and playerMods (corrosion, ichor). */
+  export function perkSum(state: GameState, key: string) {
+    const tech = techOf(state); let v = 0;
+    for (const tr of TREES) for (const n of tr.nodes) if (tech[n.id] && n.effect[key]) v += Number(n.effect[key]);
+    return v;
+  }
+  /** The Hive Weapons tree belongs to The Hive Below: the other modes never see it. */
+  const showsHiveTree = (state: GameState) => state.road?.story === 'hive-below';
 
 
   // XP needed to go from level l to l+1. player.xp is progress within the current level.
@@ -1454,11 +1638,25 @@ export const TECH = { trees: TREES, nodes: NODES };
   };
 
   /** Material costs apply to the open-world campaign; The Long Road spends skill points only (no crafting, no workbench). */
-  export function itemCost(state: GameState, node: TechNode): Record<string, number> { return state.mode === 'road' ? {} : node.cost.items; }
+  export function itemCost(state: GameState, node: TechNode): Record<string, number> { return state.mode === 'survival' ? node.cost.items : {}; }
+  /** Arcade uses banked cores for permanent skills; story keeps its own SP economy. */
+  export const coreCost = (node: TechNode) => [0,25,45,85,150][node.tier] ?? 150;
+  export const skillBalance = (state: GameState) => state.mode === 'arcade' ? augments.load().cores : state.player.sp || 0;
+  export const skillCost = (state: GameState, node: TechNode) => state.mode === 'arcade' ? coreCost(node) : node.cost.sp;
   /** Perks that do nothing in The Long Road (no hunger, no searching, no loot luck, no bleeding): hidden there, and
    *  anything that required them requires their parents instead. */
   const ROAD_HIDDEN = new Set(['survival_hunger1', 'survival_hunger2', 'survival_search1', 'survival_luck1', 'survival_luck2', 'armor_bleed1']);
-  export const hiddenIn = (state: GameState, id: string) => state.mode === 'road' && ROAD_HIDDEN.has(id);
+  const ARCADE_HIDDEN = new Set([...ROAD_HIDDEN, 'survival_stam1', 'survival_stam2', 'survival_sneak', 'armor_eff1', 'armor_eff2']);
+  export const hiddenIn = (state: GameState, id: string) => state.mode === 'road' ? ROAD_HIDDEN.has(id) : state.mode === 'arcade' && ARCADE_HIDDEN.has(id);
+  export function restoreArcadeSkills(state: GameState) {
+    if (state.mode !== 'arcade') return;
+    const saved = augments.load().tech || {}, tech: Record<string,true> = {};
+    // Accept only supported skills with their prerequisite chain intact.
+    for (let pass=0;pass<10;pass++) for (const node of Object.values(NODES)) {
+      if (saved[node.id] && !hiddenIn(state,node.id) && requiresFor(state,node).every(id=>tech[id])) tech[node.id]=true;
+    }
+    state.player.tech=tech;
+  }
   export function requiresFor(state: GameState, node: TechNode): string[] {
     const out: string[] = [];
     const walk = (ids: string[]) => { for (const id of ids) { if (hiddenIn(state, id)) walk(NODES[id]?.requires ?? []); else if (!out.includes(id)) out.push(id); } };
@@ -1468,10 +1666,10 @@ export const TECH = { trees: TREES, nodes: NODES };
   const treeCache = new Map<string, TechTree[]>();
   /** The trees as this mode shows them (hidden perks removed, prerequisites rewired). */
   export function treesFor(state: GameState): TechTree[] {
-    const key = state.mode;
+    const hive = showsHiveTree(state), key = state.mode + (hive ? ':hive' : '');
     let trees = treeCache.get(key);
     if (!trees) {
-      trees = TREES.map(t => ({ ...t, nodes: t.nodes.filter(n => !hiddenIn(state, n.id)).map(n => ({ ...n, requires: requiresFor(state, n) })) }));
+      trees = TREES.filter(t => t.id !== 'hive' || hive).map(t => ({ ...t, nodes: t.nodes.filter(n => !hiddenIn(state, n.id)).map(n => ({ ...n, requires: requiresFor(state, n) })) }));
       treeCache.set(key, trees);
     }
     return trees;
@@ -1479,12 +1677,13 @@ export const TECH = { trees: TREES, nodes: NODES };
   export function canUnlock(state: GameState, nodeId: string) {
     const p = state && state.player, node = NODES[nodeId];
     if (!p || !node) return { ok: false, reason: 'Unknown node' };
+    if (TREE_OF[nodeId].id === 'hive' && !showsHiveTree(state)) return { ok: false, reason: 'Only in The Hive Below' };
     if (hiddenIn(state, nodeId)) return { ok: false, reason: 'Not available in this mode' };
-    if (p.tech && p.tech[nodeId]) return { ok: false, reason: 'Already unlocked' };
+    if (p.tech && p.tech[nodeId] || state.mode === 'arcade' && augments.load().tech?.[nodeId]) return { ok: false, reason: 'Already unlocked' };
     for (const r of requiresFor(state, node)) {
       if (!(p.tech && p.tech[r])) return { ok: false, reason: 'Requires ' + (NODES[r] ? NODES[r].name : r) };
     }
-    if ((p.sp || 0) < node.cost.sp) return { ok: false, reason: 'Need ' + node.cost.sp + ' skill point' + (node.cost.sp > 1 ? 's' : '') };
+    if (skillBalance(state) < skillCost(state,node)) return { ok: false, reason: 'Need ' + skillCost(state,node) + (state.mode === 'arcade' ? ' banked cores' : ' skill point' + (node.cost.sp > 1 ? 's' : '')) };
     for (const id in itemCost(state, node)) {
       const have = p.inv ? inv.count(p.inv, id) : 0;
       if (have < node.cost.items[id]) return { ok: false, reason: 'Need ' + node.cost.items[id] + ' ' + id.replace(/_/g, ' ') + ' (have ' + have + ')' };
@@ -1499,9 +1698,14 @@ export const TECH = { trees: TREES, nodes: NODES };
     const c = canUnlock(state, nodeId);
     if (!c.ok) { toast(state, c.reason, '#ff7a6b'); return false; }
     const p = state.player, node = NODES[nodeId];
+    if (state.mode === 'arcade') {
+      const m=augments.load();
+      m.cores-=coreCost(node); m.tech={...m.tech,[nodeId]:true};
+      if (!augments.save(m)) { toast(state,'Upgrade not purchased: storage could not save it.','#ff7a6b'); return false; }
+    }
     const items = itemCost(state, node);
     for (const id in items) inv.remove(p.inv, id, items[id]);
-    p.sp -= node.cost.sp;
+    if (state.mode !== 'arcade') p.sp -= node.cost.sp;
     p.tech = p.tech || {};
     p.tech[nodeId] = true;
     sync(state);
@@ -1538,12 +1742,17 @@ export const TECH = { trees: TREES, nodes: NODES };
     s.id = weaponId;
     s.pierce = base.pierce || 0; s.ricochet = 0; s.burst = 0; s.explosive = base.explosive || 0; s.incendiary = !!base.incendiary;
     s.crit = 0; s.critMul = 2; s.lifesteal = base.lifesteal || 0; s.slug = false;
-    const tr = TREES.find((x) => x.id === base.class);
+    const a = state.mode === 'arcade' ? state.arcade?.run?.aug : undefined;
+    if (a) {
+      s.crit += a.crit || 0;
+      s.bulletSpeed *= 1 + (a.velocity || 0);
+    }
+    const tr = TREES.find((x) => x.id === base.class), also = base.tree && base.tree !== base.class ? TREES.find((x) => x.id === base.tree) : undefined;   // insect weapons take the Hive Weapons tree on top of the tree of their class
     const up = Math.max(0, Math.min(4, Math.floor(Number(lvl) || 1) - 1));
     if (!tr) { if (up) { s.damage = base.damage * (1 + 0.12 * up); s.fireRate = base.fireRate / (1 + 0.04 * up); s.reloadTime = base.reloadTime * (1 - 0.05 * up); } return s; }
     const tech = techOf(state);
-    let dmg = 0.12 * up, rate = 0.04 * up, reload = 0.05 * up, spread = 0, magAdd = 0, pellets = 0, arc = 0, knock = 0, range = 0;
-    for (const n of tr.nodes) {
+    let dmg = 0.12 * up, rate = 0.04 * up, reload = 0.05 * up, spread = a?.stability || 0, magAdd = a?.magazine && base.magSize ? Math.max(Math.round(a.magazine*10),Math.round(base.magSize*a.magazine)) : 0, pellets = 0, arc = 0, knock = a?.knock || 0, range = 0;
+    for (const n of also ? [...tr.nodes, ...also.nodes] : tr.nodes) {
       if (!tech[n.id]) continue;
       const e = n.effect as Record<string, number>;
       dmg += e.dmg || 0; rate += e.rate || 0; reload += e.reload || 0; spread += e.spread || 0;
@@ -1558,6 +1767,7 @@ export const TECH = { trees: TREES, nodes: NODES };
       if (e.incendiary) s.incendiary = true;
       s.crit += e.crit || 0; s.lifesteal += e.lifesteal || 0;
       if (e.slug) s.slug = true;
+      if (e.cleave && s.cleave) s.cleave += e.cleave;
     }
     s.damage = base.damage * (1 + dmg);
     s.fireRate = base.fireRate / (1 + rate);
@@ -1567,7 +1777,7 @@ export const TECH = { trees: TREES, nodes: NODES };
     s.pellets = (base.pellets || 1) + pellets;
     if (s.slug && base.class === 'shotgun') {
       s.damage = s.damage * (base.pellets || 1) * 0.75;
-      s.pellets = 1; s.spread = base.spread * 0.2; s.range = base.range * 1.6; s.bulletSpeed = base.bulletSpeed * 1.4;
+      s.pellets = 1; s.spread = base.spread * 0.2; s.range = base.range * 1.6; s.bulletSpeed = base.bulletSpeed * 1.4 * (1+(a?.velocity||0));
     } else s.slug = false;
     s.crit = Math.min(0.75, s.crit);
     if (base.melee) {
@@ -1595,12 +1805,14 @@ export const TECH = { trees: TREES, nodes: NODES };
     }
     armor = Math.min(0.75, armor * (1 + sum('armorMul')));
     const inCombat = !!p && (p.combatTimer || 0) > 0;
+    const run=state.mode==='arcade'?state.arcade?.run:undefined;
+    const arcadeHp=(run?.aug?.hp||0)+20*(run?.passives.find(q=>q.id==='kevlar')?.level||0);
     return {
-      maxHp: 100 + sum('maxHp'),
+      maxHp: 100 + sum('maxHp') + arcadeHp,
       armor,
       dmgReduction: Math.min(0.5, sum('dmgReduction')),
       regen: inCombat ? 0 : sum('regen'),
-      speedMult: 1 + sum('speed'),
+      speedMult: (1 + sum('speed')) * (p && p.hp < p.maxHp*.35 ? 1+(run?.aug?.escape||0) : 1),
       maxStamina: 100 + sum('maxStamina'),
       staminaRegenMult: 1 + sum('staminaRegen'),
       hungerMult: Math.max(0.3, 1 - sum('hungerMult')),
