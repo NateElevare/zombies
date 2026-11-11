@@ -636,3 +636,7 @@ there are 18,000 to shoot through, and the last 6,000 go at 150%. Two crates of 
 camp where the mission starts. One number each: `hp` of `queen` in `bosses.ts`, `tough.hp` of the mission in
 `hive-data.ts`. The other bosses were not changed (7,200 to 13,500 with their cells' multipliers): none of them has
 been reported, and they have not been fought with insect guns only yet.
+
+Later the same evening, at Nate's request: **the Vespiary holds 100 and breeds 2 a second always**, in the hand or
+holstered (it was 24, and 1 a second in the hand). `magSize` in `combat.ts`, `VESPIARY_MAG` and `BREED_RATE` in
+`hive-arms.ts`.

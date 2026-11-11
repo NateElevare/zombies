@@ -2,7 +2,7 @@
 // sim/combat.ts owns firing, magazines, bullets and swings; a weapon with `arm` set in WEAPONS calls in here:
 //   hop     Locust Repeater  every hit hops on to two more bugs within 140 px at 60% damage
 //   needle  Needler          the needle goes through three bugs and poisons each (30 damage over 4 s)
-//   homing  The Vespiary     hornets steer at the nearest bug; no ammunition: the nest breeds 2 a second holstered, 1 in hand
+//   homing  The Vespiary     hornets steer at the nearest bug; no ammunition: it holds 100 and breeds 2 a second, always
 //   cone    Bombardier       a short cone of boiling spray: sets alight (combat's incendiary) and shoves back
 //   shock   Hornbreaker      every swing sends a shock line 300 px forward that knocks a column flat
 //   lure    Lure Lantern     lobs a lure: every ordinary bug within 500 px goes for it for 6 s, then it bursts for 120
@@ -24,7 +24,7 @@ type RT = hive.HiveRuntime & { markAcc?: number };
 
 export const HOP_RANGE = 140, HOP_COUNT = 2, HOP_DAMAGE = 0.6;
 export const NEEDLE_VENOM = 4;
-export const HOME_RANGE = 420, HOME_TURN = 7, BREED_RATE = 2, BREED_IN_HAND = 1, BREED_PAUSE = 1;
+export const HOME_RANGE = 420, HOME_TURN = 7, BREED_RATE = 2;
 export const CONE_SHOVE = 26;
 export const SHOCK_LEN = 300, SHOCK_HALF = 36, SHOCK_STUN = 1.1, SHOCK_DAMAGE = 0.5;
 export const LOB_RANGE = 320, LOB_TIME = 0.45, LURE_RANGE = 500, LURE_TIME = 6, LURE_BURST = 120, LURE_BLAST = 110;
@@ -168,13 +168,12 @@ export function update(state: GameState, dt: number) {
     const want = Math.atan2(best.y - b.y, best.x - b.x), turn = Math.max(-HOME_TURN * dt, Math.min(HOME_TURN * dt, angleDiff(b.angle, want))), sp = Math.hypot(b.vx, b.vy);
     b.angle += turn; b.vx = Math.cos(b.angle) * sp; b.vy = Math.sin(b.angle) * sp;
   }
-  // ---- the Vespiary breeds its own: 2 a second holstered, 1 a second in your hand once you have stopped firing for a second
+  // ---- the Vespiary breeds its own: 2 a second, always, in your hand or holstered, up to 100
   for (const key of ['primary', 'secondary'] as const) {
     const st = p.inv.equip[key] as (typeof p.inv.equip.secondary & { brood?: number }) | null;
     if (st?.id !== 'vespiary' || (st.mag ?? 0) >= VESPIARY_MAG) continue;
-    const rate = p.active !== key ? BREED_RATE : state.time - (p.lastShotT ?? -99) > BREED_PAUSE ? BREED_IN_HAND : 0;
-    st.brood = (st.brood ?? 0) + rate * dt;
+    st.brood = (st.brood ?? 0) + BREED_RATE * dt;
     if (st.brood >= 1) { const n = Math.floor(st.brood); st.brood -= n; st.mag = Math.min(VESPIARY_MAG, (st.mag ?? 0) + n); }
   }
 }
-export const VESPIARY_MAG = 24;
+export const VESPIARY_MAG = 100;

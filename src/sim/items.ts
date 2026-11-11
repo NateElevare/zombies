@@ -38,7 +38,7 @@ export const ITEMS: Record<string, ItemDef> = {
   },
   "vespiary": {
     "id": "vespiary", "name": "The Vespiary", "type": "weapon", "rarity": "legendary", "color": "#ffb43a", "glyph": "VSP",
-    "desc": "Boss trophy (Matriarch Vespa). Fires hornets that steer at the nearest bug. Needs no ammunition and never reloads: it holds 24 and breeds its own, 2 a second holstered, 1 a second in your hand once you stop firing.",
+    "desc": "Boss trophy (Matriarch Vespa). Fires hornets that steer at the nearest bug. Needs no ammunition and never reloads: it holds 100 and breeds its own, 2 a second, in your hand or holstered.",
     "stack": 1, "slot": "secondary"
   },
   "bombardier": {

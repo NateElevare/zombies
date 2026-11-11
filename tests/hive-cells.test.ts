@@ -249,7 +249,7 @@ describe('the insect weapons of the later cells', () => {
     const W = combat.WEAPONS;
     expect([W.locust_repeater.damage, W.locust_repeater.magSize]).toEqual([14, 40]);
     expect([W.needler.damage, W.needler.range, W.needler.pierce]).toEqual([60, 1100, 3]);
-    expect([W.vespiary.damage, W.vespiary.magSize, W.vespiary.ammo]).toEqual([12, 24, null]);
+    expect([W.vespiary.damage, W.vespiary.magSize, W.vespiary.ammo]).toEqual([12, 100, null]);
     expect([W.bombardier.magSize, W.bombardier.range, W.bombardier.class]).toEqual([5, 260, 'shotgun']);
     expect([W.hornbreaker.damage, W.hornbreaker.fireRate]).toEqual([110, 1.0]);
     expect(W.lure_lantern.magSize).toBe(6);
@@ -293,7 +293,7 @@ describe('the insect weapons of the later cells', () => {
     expect(hp0 - row[0].hp).toBeCloseTo(30, 0);
     expect(row[4].hp).toBe(5000);
   });
-  it('The Vespiary: hornets steer at a bug you are not aiming at; it never reloads and breeds its own, 2 a second holstered, 1 in your hand once you stop firing', () => {
+  it('The Vespiary: hornets steer at a bug you are not aiming at; it never reloads, holds 100 and breeds 2 a second, in your hand or holstered', () => {
     const { s } = cell('paper'), p = s.player;
     const st = arm(s, 'vespiary');
     p.inv.equip.melee = { id: 'knife', qty: 1 };
@@ -301,15 +301,19 @@ describe('the insect weapons of the later cells', () => {
     p.angle = 0; fire(s, 1); secs(s, 1.2);
     expect(z.hp).toBeLessThan(5000);                                                 // aimed due east, it found the bug 30 degrees off
     expect(combat.reload(s)).toBe(false);
-    // in your hand, firing: nothing comes back
-    st.mag = 3; for (let i = 0; i < 30 && st.mag! > 0; i++) fire(s);
-    expect(st.mag).toBe(0); secs(s, 0.8); expect(st.mag).toBe(0);
-    // stop firing: one a second after a second's pause
-    secs(s, 4.3); expect(st.mag).toBeGreaterThanOrEqual(3); expect(st.mag).toBeLessThanOrEqual(5);
-    // holstered: two a second, up to 24
+    expect(arms.VESPIARY_MAG).toBe(100); expect(arms.BREED_RATE).toBe(2);
+    // in your hand: two a second
+    st.mag = 0; secs(s, 3);
+    expect(st.mag).toBeGreaterThanOrEqual(5); expect(st.mag).toBeLessThanOrEqual(7);
+    // holstered: the same, up to 100
     st.mag = 0; combat.switchTo(s, 'melee'); secs(s, 3);
     expect(st.mag).toBeGreaterThanOrEqual(5); expect(st.mag).toBeLessThanOrEqual(7);
-    secs(s, 12); expect(st.mag).toBe(arms.VESPIARY_MAG);
+    secs(s, 50); expect(st.mag).toBe(100);
+    // held down on an empty nest it fires each hornet as it hatches: two shots a second
+    combat.switchTo(s, 'secondary'); st.mag = 0; s.player.fireCooldown = 0;
+    const shots = () => s.bullets.length; let fired = 0, last = shots();
+    for (let i = 0; i < 180; i++) { tick(s, { fire: true }); if (shots() > last) fired += shots() - last; last = shots(); }
+    expect(fired).toBeGreaterThanOrEqual(4); expect(fired).toBeLessThanOrEqual(7);
   });
   it('Bombardier: a short cone that sets bugs alight and shoves them back', () => {
     const { s } = cell('galleries');

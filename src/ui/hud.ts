@@ -285,7 +285,7 @@ export class Hud {
       setCls(r.reload, 'hidden', true);
       const breeding = own && (w!.mag ?? 0) < wdef!.magSize;
       setCls(r.warn, 'hidden', !breeding);
-      if (breeding) setText(r.warn, (w!.mag ?? 0) <= 0 ? 'BREEDING · STOP FIRING OR SWITCH WEAPON' : 'BREEDING');
+      if (breeding) setText(r.warn, 'BREEDING · 2 A SECOND');
     }
     this.ico.weapon = wid;
     SLOTS.forEach((sl, i) => {

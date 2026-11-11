@@ -56,7 +56,7 @@ export const BOSS_WEAPON: Record<BossId, string> = {
   famine: 'locust_repeater', vespa: 'vespiary', goliath: 'hornbreaker', prioress: 'mantis_scythes', carrion_lord: 'carrion_hive', queen: 'queens_decree',
 };
 const TROPHY_AMMO: Record<string, [string, number]> = { brood_scattergun: ['ammo_12g', 24], banshee_smg: ['ammo_9mm', 135], rockbreaker: ['ammo_308', 18], cola_mints: ['mints', 6] };
-const TROPHY_MAG: Record<string, number> = { brood_scattergun: 8, banshee_smg: 45, rockbreaker: 6, cola_mints: 50, locust_repeater: 40, vespiary: 24, carrion_hive: 3, queens_decree: 6 };
+const TROPHY_MAG: Record<string, number> = { brood_scattergun: 8, banshee_smg: 45, rockbreaker: 6, cola_mints: 50, locust_repeater: 40, vespiary: 100, carrion_hive: 3, queens_decree: 6 };
 /** The signature weapon (loaded) and a supply of its ammo. */
 export function trophyLoot(id: BossId): Stack[] {
   const w = BOSS_WEAPON[id], ammo = TROPHY_AMMO[w];

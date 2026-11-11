@@ -27,7 +27,7 @@ export const WEAPONS: Record<string, WeaponDef> = {
     "bulletSpeed": 1200, "range": 620, "auto": true, "noise": 600, "shake": 1.2, "sound": "smg", "pitch": 1.3, "tree": "hive", "arm": "hop" },
   "needler": { "name": "Needler", "class": "rifle", "ammo": "ichor", "ammoPer": 4, "damage": 60, "fireRate": 0.38, "magSize": 8, "reloadTime": 1.9, "spread": 0.01, "pellets": 1,
     "bulletSpeed": 1900, "range": 1100, "auto": false, "noise": 500, "shake": 3, "sound": "pistol", "pitch": 1.5, "pierce": 3, "tree": "hive", "arm": "needle" },
-  "vespiary": { "name": "The Vespiary", "class": "handgun", "ammo": null, "damage": 12, "fireRate": 0.11, "magSize": 24, "reloadTime": 0, "spread": 0.16, "pellets": 1,
+  "vespiary": { "name": "The Vespiary", "class": "handgun", "ammo": null, "damage": 12, "fireRate": 0.11, "magSize": 100, "reloadTime": 0, "spread": 0.16, "pellets": 1,
     "bulletSpeed": 620, "range": 700, "auto": true, "noise": 260, "shake": 0.6, "sound": "fizz", "pitch": 1.6, "tree": "hive", "arm": "homing" },
   "bombardier": { "name": "Bombardier", "class": "shotgun", "ammo": "ichor", "ammoPer": 8, "damage": 11, "fireRate": 0.75, "magSize": 5, "reloadTime": 1.8, "spread": 0.36, "pellets": 9,
     "bulletSpeed": 700, "range": 260, "auto": false, "noise": 800, "shake": 6, "sound": "shotgun", "pitch": 0.85, "incendiary": true, "tree": "hive", "arm": "cone" },
