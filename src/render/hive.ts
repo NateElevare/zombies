@@ -81,6 +81,13 @@ export class HiveRender {
       this.floor.get().setTexture(A, 'hive_honey_0').setPosition(q.x, q.y).setRotation((q.x * 0.37 + q.y * 0.11) % 6.28).setScale(q.r * 2 / 134 * grow).setAlpha(0.92 * k).clearTint();
       glow(q.x, q.y, q.r * 1.5, 0xffb840, 0.14 * k);
     }
+    // ---- eggs are pale enough to catch the eye in the dark, and brighten as they hatch; a burrow flares when it sends a column
+    for (const z of s.zombies) {
+      if (z.dead || (z.type !== 'egg' && z.type !== 'burrow') || !vis(z.x, z.y, 80)) continue;
+      const f = z as { hatchT?: number; eruptT?: number };
+      if (z.type === 'egg') glow(z.x, z.y, 44, 0xe6f0b0, (f.hatchT ?? 0) > 0 ? 0.3 + 0.15 * Math.sin(time * 22) : 0.13);
+      else if ((f.eruptT ?? 99) < 0.9) glow(z.x, z.y, 60, 0xb48cff, 0.4 * (1 - (f.eruptT ?? 0) / 0.9));
+    }
     // ---- resin and fungus: the light sources on the walls read as light sources
     for (const gl of h.glows) {
       if (gl.kind !== 'wall' || !vis(gl.x, gl.y, 80)) continue;
