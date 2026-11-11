@@ -1,0 +1,11 @@
+{
+  "id": "car-police-clean",
+  "kind": "car",
+  "type": "police",
+  "cols": 4,
+  "rows": 2,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/angle/source/story-v1/car-police.png"
+  ],
+  "prompt": "Remove the entire white/gray background and all soft cast shadows from this sprite sheet, leaving only the eight police cars, with opaque car interiors and true transparent alpha outside every vehicle. Preserve the exact four-column two-row grid, every car position, size, design, pixel art details and orientation. NO new background, no white matte, no haze. Clean hard pixel silhouettes."
+}

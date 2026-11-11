@@ -1,0 +1,18 @@
+{
+  "id": "structures-1-clean",
+  "kind": "structures",
+  "types": [
+    "wood_door_open",
+    "barricade",
+    "spike_trap",
+    "campfire",
+    "turret",
+    "stash_open"
+  ],
+  "cols": 4,
+  "rows": 6,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/angle/source/story-v1/structures-1.png"
+  ],
+  "prompt": "Reorient this production pixel-art sprite sheet to a camera with ZERO street rotation and 45 degree elevation. Preserve all six rows of different structure designs and exact four-column six-row grid. In EVERY row: column1 object faces exactly RIGHT in side elevation, with its base axis horizontal; column2 object faces exactly DOWN in front elevation, symmetrical left/right, base edges perfectly horizontal/vertical; column3 faces exactly LEFT side elevation; column4 faces exactly UP back elevation, symmetrical left/right. Visible tops are foreshortened rectangles, NEVER diamonds or diagonally rotated squares. Keep each structure fully inside its square cell with 15% margin, consistent game scale. For wall and door panels side views are narrow and edge-on; front and rear views are broad rectangular panels. For workbench/storage/bed/trap/turret show correct side/front/back surfaces. True transparent alpha background with opaque objects. No haze, floor, shadows, labels, borders or background. Keep gritty detailed pixel style."
+}

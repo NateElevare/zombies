@@ -1,0 +1,17 @@
+{
+  "id": "gear-body",
+  "kind": "gear",
+  "slot": "body",
+  "types": [
+    "hoodie",
+    "leather_jacket",
+    "police_vest",
+    "military_vest"
+  ],
+  "cols": 4,
+  "rows": 5,
+  "prompt": "Use case: stylized-concept. Production pixel-art sprite pack matching the supplied gritty survival-game art style, crisp clustered pixels, controlled highlights, muted weathered materials, clean dark outlines. TRUE transparent clean background, opaque sprites, no floor, cast shadow, text, labels, grid or checkerboard. Every object completely inside its cell with empty gutters. Modular wearable equipment for the reference character. Only equipment, no person, skin, limbs, mannequins or weapons. Exact 4 columns by FIVE rows, equal SQUARE cells. Columns: 1: dark gray padded hoodie torso with open neckline, NO HEAD OR ARMS; 2: worn brown leather protective jacket torso, NO HEAD OR ARMS; 3: navy police ballistic vest with pouches and shoulder straps, NO HEAD OR ARMS; 4: olive military plate carrier with magazine pouches, NO HEAD OR ARMS. Rows show five views at orthographic camera elevation45: RIGHT/east side; DOWN-RIGHT/southeast FRONT three-quarter; DOWN/south FRONT; UP-RIGHT/northeast REAR three-quarter; UP/north BACK. Each item sits as it would when WORN by a character facing that row direction. All views correct distinct visible faces. Full clean silhouette, detailed seams, buckles and straps. Torso shells have transparent arm holes and neck opening, waist cropped cleanly at belt level. No person inside.",
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ]
+}

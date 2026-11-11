@@ -1,0 +1,28 @@
+{
+  "id": "decals",
+  "kind": "decals",
+  "types": [
+    "blood",
+    "bones",
+    "debris",
+    "leaves",
+    "oil",
+    "firepit",
+    "tuft",
+    "puddle",
+    "tire",
+    "trash",
+    "manhole",
+    "helipad",
+    "crack",
+    "scorch",
+    "bullet_damage",
+    "structural_damage"
+  ],
+  "cols": 4,
+  "rows": 4,
+  "prompt": "Use case: stylized-concept. Production pixel-art sprite pack matching the supplied gritty survival-game art style, crisp clustered pixels, controlled highlights, muted weathered materials, clean dark outlines. TRUE transparent clean background, opaque sprites, no floor, cast shadow, text, labels, grid or checkerboard. Every object completely inside its cell with empty gutters. Ground/decal texture pack viewed DIRECTLY ABOVE, to be projected onto the angled game floor by code. EXACT FOUR columns by FOUR rows, sixteen square cells. Reading-order objects: 1 dark red blood pool and scattered small droplets; 2 scattered old bones; 3 small pile of broken masonry debris; 4 scattered dry leaves; 5 black motor oil stain; 6 stone firepit ring and charred logs without flame; 7 tuft of weeds; 8 muddy rain puddle; 9 abandoned black tire; 10 litter and crushed cans; 11 round iron manhole cover; 12 faded white helipad H marking in a circle; 13 branching asphalt crack with transparent gaps; 14 scorched black blast decal; 15 cluster of small bullet chips and holes with transparent gaps; 16 cracked broken wood and metal damage decal with splinters and transparent gaps. No surrounding ground or rectangular tiles, transparent outside each isolated decal. Muted gritty realistic pixels, no text except helipad H.",
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ]
+}

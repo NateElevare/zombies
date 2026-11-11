@@ -1,0 +1,10 @@
+{
+  "id": "death-scout",
+  "kind": "death",
+  "skin": "scout",
+  "cols": 4,
+  "rows": 5,
+  "prompt": "Use case: stylized-concept. Transparent sprite animation atlas of the Female scout, burgundy fitted weathered jacket, dark brown ponytail, gray fingerless gloves, black utility belt, slim athletic build. Distinct female face and ponytail visible in rear views, same art quality and visual scale as responder reference., full body, no held weapon. Gritty polished pixel art, same clothing, hair and identity as the upper-body reference; add dark charcoal cargo trousers and black boots for complete full body. Fixed orthographic 45 degrees above ground. EXACT FOUR columns by FIVE rows, twenty equally sized SQUARE cells, 1024x1280. Each row is one view: row1 face RIGHT/east; row2 DOWN-RIGHT/southeast; row3 DOWN/south/front; row4 UP-RIGHT/northeast BACK three-quarter; row5 UP/north BACK. Four columns form a death animation in that facing: 1 injured stagger with knees buckling; 2 collapsing onto one knee; 3 falling onto ground; 4 final fully prone motionless corpse lying on ground. No standing figure in last column. Preserve full-body scale and world foot pivot from reference. Transparent empty margins all around every sprite; no bleeding across cells. No text, labels, grid, cast shadows, floor or gray/noisy background. Opaque characters, fully transparent background.",
+  "hint": "Generated images are saved to C:\\Users\\nphil\\.codex\\generated_images\\01a1bc36-1e70-7ee0-8775-0317a88da2be as C:\\Users\\nphil\\.codex\\generated_images\\01a1bc36-1e70-7ee0-8775-0317a88da2be\\exec-e7f26c27-3ce9-4bc9-9d14-39691700f0d4.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+  "file": "art/angle/source/story-v1/death-scout.png"
+}

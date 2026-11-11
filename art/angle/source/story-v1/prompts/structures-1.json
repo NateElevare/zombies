@@ -1,0 +1,18 @@
+{
+  "id": "structures-1",
+  "kind": "structures",
+  "types": [
+    "wood_door_open",
+    "barricade",
+    "spike_trap",
+    "campfire",
+    "turret",
+    "stash_open"
+  ],
+  "cols": 4,
+  "rows": 6,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ],
+  "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Player-built base structures sprite pack. EXACT FOUR columns by SIX rows, 24 square cells. Each row shows one structure from four views: column1 front down-right along 22-degree street axis; column2 front down-left along 51-degree street axis; column3 rear up-left; column4 rear up-right. Row list: 1: same wooden defensive door open ninety degrees in frame; 2: waist-high wooden defensive barricade of crossed rough planks; 3: flat square board studded with sharpened wooden spikes; 4: stone ring with logs and small orange fire; 5: automatic defense machine-gun turret on tripod with ammo box; 6: reinforced wooden storage chest with lid open and visible supplies. Complete isolated structure in every cell, all legs/posts/base visible, transparent 12% margins. Rich wood grain, rust, seams, bolts, fabric and useful recognizable details. No terrain or cast shadows."
+}

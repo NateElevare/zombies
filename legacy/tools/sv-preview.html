@@ -1,0 +1,48 @@
+<!doctype html><html><body style="margin:0;overflow:hidden">
+<!-- Headless screenshot helper: sv-preview.html?scene=street|indoor|night|inventory|tech|map|build|loot -->
+<iframe id="f" src="../index.html" style="border:0;width:1280px;height:720px"></iframe>
+<script>
+const scene = new URLSearchParams(location.search).get('scene') || 'street';
+const f = document.getElementById('f');
+f.onload = () => {
+  const w = f.contentWindow, Z = w.Z;
+  // headless virtual time can freeze CSS animations mid-fade; disable them for screenshots
+  const st = w.document.createElement('style');
+  st.textContent = '*{animation:none!important;transition:none!important}';
+  w.document.head.appendChild(st);
+  try { w.localStorage.clear(); } catch (e) {}
+  Z.sv.game.newGame();
+  const S = Z.state, p = S.player;
+  const give = (id, q) => Z.sv.inv.add(p.inv, id, q);
+  if (scene === 'indoor' || scene === 'loot') {
+    // stand inside the nearest house next to a container
+    let best = null, bd = 1e9;
+    for (const c of S.containers) {
+      if (!c.buildingId) continue;
+      const d = Math.hypot(c.x - p.x, c.y - p.y);
+      if (d < bd) { bd = d; best = c; }
+    }
+    const cx = best.x + best.w / 2, cy = best.y + best.h / 2;
+    outer: for (let r = 20; r < 90; r += 6) for (let a = 0; a < 6.28; a += 0.3) {
+      const x = cx + Math.cos(a) * (best.w / 2 + r), y = cy + Math.sin(a) * (best.h / 2 + r);
+      if (Z.sv.phys.isFree(S, x, y, p.r) && Z.sv.world.buildingAt(S, x, y)) { p.x = x; p.y = y; break outer; }
+    }
+    if (scene === 'loot') { Z.sv.loot.fill(best); best.searched = true; setTimeout(() => Z.sv.ui.open('loot', best), 1500); }
+  }
+  if (scene === 'night') S.clock.t = Z.sv.game.DAY_LENGTH * 0.8;
+  if (scene === 'inventory' || scene === 'tech') {
+    give('shotgun', 1); give('ammo_12g', 30); give('police_vest', 1); give('medkit', 2); give('wood', 20); give('gun_parts', 3); give('hiking_backpack', 1);
+    Z.sv.prog.addXP(S, 1500);
+    setTimeout(() => Z.sv.ui.open(scene), 1500);
+  }
+  if (scene === 'map') setTimeout(() => Z.sv.ui.open('map'), 1500);
+  if (scene === 'build') {
+    give('wood', 50); give('nails', 20); give('scrap', 30); give('cloth', 10);
+    for (const [t, dx, dy] of [['workbench', 120, -40], ['bed', -120, -30], ['wood_wall', 0, -120], ['wood_wall', 64, -120], ['campfire', 0, 110]]) Z.sv.base.place(S, t, p.x + dx, p.y + dy, 0);
+    S.clock.t = Z.sv.game.DAY_LENGTH * 0.78;
+    setTimeout(() => Z.sv.base.enterBuild(S), 1200);
+  }
+  // fake mouse aim to the right
+  Z.input.mouse.x = 900; Z.input.mouse.y = 330;
+};
+</script></body></html>

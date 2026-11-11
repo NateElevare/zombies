@@ -1,0 +1,12 @@
+{
+  "id": "zombie-runner-0-clean",
+  "kind": "zombie",
+  "type": "runner",
+  "variant": 0,
+  "cols": 12,
+  "rows": 5,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/angle/source/story-v1/zombie-runner-0.png"
+  ],
+  "prompt": "Edit this 12-column by 5-row pixel-art zombie animation atlas. Change ONLY clothing: every frame wears a torn RED long-sleeved sports HOODIE and BLACK TRACK PANTS with a pale stripe, plus dirty running sneakers. Sleeves reach wrists, hood bunched at neck. Keep the exact character shape, five row directions, every animation pose, registration, proportions and green skin/red eyes. Replace the mauve sleeveless vest completely. Exact same grid, true transparent background, no scenery, labels or border. Each sprite cleanly isolated, entire sprite inside its cell."
+}

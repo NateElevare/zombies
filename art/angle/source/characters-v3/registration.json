@@ -1,0 +1,102 @@
+[
+  {
+    "actor": "responder",
+    "direction": "e",
+    "rows": 10,
+    "sourceSize": [
+      793,
+      1983
+    ],
+    "scale": 1.0511363636363635
+  },
+  {
+    "actor": "responder",
+    "direction": "se",
+    "rows": 10,
+    "sourceSize": [
+      793,
+      1983
+    ],
+    "scale": 1.0571428571428572
+  },
+  {
+    "actor": "responder",
+    "direction": "s",
+    "rows": 10,
+    "sourceSize": [
+      793,
+      1983
+    ],
+    "scale": 1.0818713450292399
+  },
+  {
+    "actor": "responder",
+    "direction": "ne",
+    "rows": 10,
+    "sourceSize": [
+      793,
+      1983
+    ],
+    "scale": 1.0054347826086956
+  },
+  {
+    "actor": "responder",
+    "direction": "n",
+    "rows": 10,
+    "sourceSize": [
+      793,
+      1983
+    ],
+    "scale": 1.0946745562130178
+  },
+  {
+    "actor": "zombie",
+    "direction": "e",
+    "rows": 10,
+    "sourceSize": [
+      793,
+      1983
+    ],
+    "scale": 0.9487179487179487
+  },
+  {
+    "actor": "zombie",
+    "direction": "se",
+    "rows": 10,
+    "sourceSize": [
+      793,
+      1983
+    ],
+    "scale": 0.9840425531914894
+  },
+  {
+    "actor": "zombie",
+    "direction": "s",
+    "rows": 10,
+    "sourceSize": [
+      793,
+      1983
+    ],
+    "scale": 1.022099447513812
+  },
+  {
+    "actor": "zombie",
+    "direction": "ne",
+    "rows": 9,
+    "sourceSize": [
+      793,
+      1983
+    ],
+    "scale": 0.9736842105263158
+  },
+  {
+    "actor": "zombie",
+    "direction": "n",
+    "rows": 10,
+    "sourceSize": [
+      793,
+      1983
+    ],
+    "scale": 1.022099447513812
+  }
+]

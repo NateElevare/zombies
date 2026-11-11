@@ -1,0 +1,20 @@
+{
+  "id": "environment",
+  "kind": "environment",
+  "types": [
+    "oak",
+    "pine",
+    "bush",
+    "rock",
+    "wood_fence",
+    "chainlink_fence",
+    "loot",
+    "deathbag"
+  ],
+  "cols": 4,
+  "rows": 8,
+  "prompt": "Use case: stylized-concept. Production pixel-art sprite pack matching the supplied gritty survival-game art style, crisp clustered pixels, controlled highlights, muted weathered materials, clean dark outlines. TRUE transparent clean background, opaque sprites, no floor, cast shadow, text, labels, grid or checkerboard. Every object completely inside its cell with empty gutters. EXACT FOUR columns by EIGHT rows, 32 square cells. Each row is one object in four orientations aligned with the 45-degree elevated camera and30-degree street rotation: front down-right along22-degree screen axis, front down-left along51-degree axis, rear up-left, rear up-right. Row objects: 1: tall broad oak tree with thick trunk and a detailed muted green leaf canopy; 2: tall evergreen pine tree with visible trunk and layered dark green needles; 3: low dense wild leafy shrub; 4: large irregular gray boulder; 5: wooden picket fence section with upright end posts; 6: steel chainlink fence panel with posts, transparent holes between wire mesh; 7: tied brown canvas loot sack with a few supplies visible at opening; 8: dark red rugged fallen-survivor backpack lying on the ground. Full object in every cell with base and top visible and 12% margin. Trees include both trunks and leafy canopies, NO ground. Fence holes truly transparent. Rich crisp game-quality detail. IMPORTANT: street/camera yaw is ZERO degrees. Four columns are exactly east facing RIGHT, south facing DOWN, west facing LEFT, north facing UP. Orthographic 45 degree camera elevation with ground X horizontal and ground Y vertical, no diagonal isometric ground axes.",
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ]
+}

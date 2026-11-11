@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DEAD ZONE</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/survival.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="title" class="overlay">
+  <div class="panel">
+    <h1 class="logo">DEAD<span>ZONE</span></h1>
+    <p class="tagline">They keep coming. So do you.</p>
+    <ul class="controls">
+      <li><b>WASD</b> move</li>
+      <li><b>MOUSE</b> aim</li>
+      <li><b>CLICK</b> shoot</li>
+      <li><b>R</b> reload</li>
+      <li><b>1 2 3</b> weapons</li>
+      <li><b>P / ESC</b> pause</li>
+      <li><b>M</b> mute</li>
+    </ul>
+    <p class="best">BEST SCORE: <span id="title-best">0</span></p>
+    <div class="mode-select">
+      <div class="mode">
+        <button id="btn-start" class="big-btn">ARCADE</button>
+        <p class="mode-desc">Endless waves. How long can you last?</p>
+      </div>
+      <div class="mode">
+        <button id="btn-survival-continue" class="big-btn hidden">CONTINUE</button>
+        <button id="btn-survival-new" class="big-btn">SURVIVAL</button>
+        <p class="mode-desc">Explore the city. Loot, build, upgrade, survive.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="pause" class="overlay hidden">
+  <div class="panel">
+    <h2>PAUSED</h2>
+    <button id="btn-resume" class="big-btn">RESUME</button>
+    <button id="btn-quit" class="small-btn">QUIT TO TITLE</button>
+  </div>
+</div>
+
+<div id="gameover" class="overlay hidden">
+  <div class="panel">
+    <h2 class="dead">YOU DIED</h2>
+    <div id="go-newbest" class="newbest hidden">NEW BEST!</div>
+    <table class="stats">
+      <tr><td>Wave reached</td><td id="go-wave">0</td></tr>
+      <tr><td>Kills</td><td id="go-kills">0</td></tr>
+      <tr><td>Score</td><td id="go-score">0</td></tr>
+      <tr><td>Best</td><td id="go-best">0</td></tr>
+    </table>
+    <button id="btn-again" class="big-btn">PLAY AGAIN</button>
+  </div>
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/input.js"></script>
+<script src="js/world.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/weapons.js"></script>
+<script src="js/player.js"></script>
+<script src="js/zombies.js"></script>
+<script src="js/pickups.js"></script>
+<script src="js/waves.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/render.js"></script>
+<!-- survival mode (see SURVIVAL_SPEC.md) -->
+<script src="js/sv/sv-core.js"></script>
+<script src="js/sv/sv-items.js"></script>
+<script src="js/sv/sv-inventory.js"></script>
+<script src="js/sv/sv-loot.js"></script>
+<script src="js/sv/sv-save.js"></script>
+<script src="js/sv/sv-world.js"></script>
+<script src="js/sv/sv-worldrender.js"></script>
+<script src="js/sv/sv-progression.js"></script>
+<script src="js/sv/sv-combat.js"></script>
+<script src="js/sv/sv-zombies.js"></script>
+<script src="js/sv/sv-base.js"></script>
+<script src="js/sv/sv-player.js"></script>
+<script src="js/sv/sv-render.js"></script>
+<script src="js/sv/sv-game.js"></script>
+<script src="js/sv/sv-ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

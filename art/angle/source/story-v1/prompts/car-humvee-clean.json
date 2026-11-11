@@ -1,0 +1,11 @@
+{
+  "id": "car-humvee-clean",
+  "kind": "car",
+  "type": "humvee",
+  "cols": 4,
+  "rows": 2,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/angle/source/story-v1/car-humvee.png"
+  ],
+  "prompt": "Edit this sprite atlas. Remove ALL medical crosses, medical decals and emergency lights from every vehicle, replacing those markings with plain weathered body paint. This is an ordinary olive army utility Humvee, not a medical vehicle. Preserve all eight sprites, exact four-column two-row layout, position, orientation, proportions, intact top row and wrecked bottom row, pixel detail and true transparent background. No text or symbols. Clean alpha edges, no floor or shadows."
+}

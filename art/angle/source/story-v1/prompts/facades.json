@@ -1,0 +1,25 @@
+{
+  "id": "facades",
+  "kind": "materials",
+  "types": [
+    "window_siding",
+    "window_brick",
+    "window_concrete",
+    "window_military",
+    "door_wood",
+    "door_metal",
+    "shop_glass",
+    "warehouse_door",
+    "hospital_window",
+    "police_window",
+    "school_window",
+    "cabin_window"
+  ],
+  "cols": 4,
+  "rows": 3,
+  "transparent": false,
+  "prompt": "Use case: stylized-concept. Gritty polished pixel-art architectural texture atlas, EXACT FOUR columns by THREE rows, twelve SQUARE tiles, OPAQUE edge-to-edge, no gutters or borders between tiles. Front elevation views with NO perspective, for mapping onto game walls. One architectural wall panel fills each tile. Reading order: 1 cream clapboard siding with dark weathered sash window; 2 red brick masonry with metal-framed window; 3 gray concrete office wall with tall blue-gray window; 4 olive military concrete with narrow reinforced window; 5 wooden entry door and frame on neutral worn wall; 6 heavy gray metal security door and frame; 7 shopfront large plate-glass windows and glass door; 8 industrial warehouse roll-up steel door; 9 white hospital wall with pale blue window and a small red medical cross; 10 police-station brick wall with barred blue-gray window; 11 school brick wall with broad multi-pane classroom window; 12 log-cabin timber wall with a small wooden window and shutters. Match reference pixel style and scale. Full wall surface in every tile, neutral lighting, readable weathered details. No text, words, labels, ground, shadows or standalone building illustrations.",
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ]
+}

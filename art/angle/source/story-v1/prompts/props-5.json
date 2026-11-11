@@ -1,0 +1,19 @@
+{
+  "id": "props-5",
+  "kind": "props",
+  "types": [
+    "shelf",
+    "ship",
+    "sink",
+    "sofa",
+    "statue",
+    "stove",
+    "table"
+  ],
+  "cols": 4,
+  "rows": 7,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ],
+  "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Environmental furniture sprite pack. Exact FOUR columns by 7 rows, one complete isolated object per cell, square cells, all sprites have the same elevated camera. Each row contains four sides of the SAME object. Column1 front facing RIGHT; column2 front facing DOWN; column3 front facing LEFT; column4 front facing UP. Orthographic horizontal X and vertical Y axes, no diagonal street rotation. Row list from top to bottom: 1: shop shelving unit with canned supplies; 2: large shipping container with corrugated rusty red metal sides; 3: porcelain utility sink on cabinet; 4: worn green three-seat sofa; 5: weathered stone human statue on pedestal; 6: old four-burner stove and oven; 7: plain wooden dining table. Scale every object to fit comfortably inside its cell with full feet/base and 12% transparent padding. Realistic worn survival-game materials, near-final game-quality pixels. No environment behind the objects. Objects must be distinct and recognizable, not generic boxes."
+}

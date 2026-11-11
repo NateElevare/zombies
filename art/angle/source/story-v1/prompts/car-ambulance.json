@@ -1,0 +1,11 @@
+{
+  "id": "car-ambulance",
+  "kind": "car",
+  "type": "ambulance",
+  "cols": 4,
+  "rows": 2,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ],
+  "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Asset: white box ambulance with muted red stripe and medical cross symbols, tall rear treatment compartment, entire vehicle, four tires or correct truck wheels, believable coherent construction. EXACT FOUR columns by TWO rows, eight equally sized SQUARE cells, landscape 2048x1024. Each cell contains ONE complete vehicle with no cropping, the same design and color throughout. The vehicle sits on the game's street grid: camera looks down 45 degrees, street rotation ZERO degrees. Four columns are four headings: column1 front points horizontally RIGHT, showing the side and roof; column2 front points straight DOWN, showing the front and roof; column3 front points horizontally LEFT, showing the opposite side and roof; column4 front points straight UP, showing rear and roof. Axes are horizontal and vertical, NEVER diagonally rotated. Row1 intact but weathered abandoned vehicle, glass and all wheels present. Row2 SAME vehicle WRECKED: crushed hood, broken windows, rust, deflated tires, missing panels, no flames or smoke. Exact same physical size and placement as row1. Correct roof and panel perspective, no duplicate wheels, no stretched textures, no stacked or overlapping vehicles. Strong readable pixel-art silhouette. No letters or logos except simple medical cross on ambulance."
+}

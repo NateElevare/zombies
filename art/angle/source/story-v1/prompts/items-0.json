@@ -1,0 +1,24 @@
+{
+  "id": "items-0",
+  "kind": "items",
+  "types": [
+    "mints",
+    "ammo_9mm",
+    "ammo_357",
+    "ammo_12g",
+    "ammo_556",
+    "ammo_308",
+    "cap",
+    "bike_helmet",
+    "riot_helmet",
+    "military_helmet",
+    "hoodie",
+    "leather_jacket"
+  ],
+  "cols": 4,
+  "rows": 3,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ],
+  "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Item-drop and inventory sprite pack. Exact FOUR columns by 3 rows, square cells, one item centered in each cell. The item lies at a natural angle on the ground, viewed from the 45-degree elevated camera, front-right three-quarter. No people, hands, shadows or floor. Cells in READING ORDER left to right then next row: 1 Mints (mints); 2 9mm Rounds (ammo_9mm); 3 .357 Rounds (ammo_357); 4 12 Gauge Shells (ammo_12g); 5 5.56mm Rounds (ammo_556); 6 .308 Rounds (ammo_308); 7 Reinforced Cap (cap); 8 Bike Helmet (bike_helmet); 9 Riot Helmet (riot_helmet); 10 Military Helmet (military_helmet); 11 Padded Hoodie (hoodie); 12 Leather Jacket (leather_jacket). Keep unused final cells empty/transparent. Make each item visually distinct and recognizable at small size, realistic muted colors, clean dark outline, readable silhouette. Ammunition in distinct small boxes plus visible cartridges, consumables in their actual packaging, tools and materials identifiable. No text, tiny blank label panels permitted. Each item fully inside cell with 18% transparent margin."
+}

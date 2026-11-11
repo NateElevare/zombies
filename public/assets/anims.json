@@ -1,0 +1,2166 @@
+[
+ {
+  "key": "zombie_walker_0_walk",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_0_walk_0",
+   "zombie_walker_0_walk_1",
+   "zombie_walker_0_walk_2",
+   "zombie_walker_0_walk_3",
+   "zombie_walker_0_walk_4",
+   "zombie_walker_0_walk_5",
+   "zombie_walker_0_walk_6",
+   "zombie_walker_0_walk_7"
+  ],
+  "frameRate": 8,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_walker_0_attack",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_0_attack_0",
+   "zombie_walker_0_attack_1",
+   "zombie_walker_0_attack_2",
+   "zombie_walker_0_attack_3",
+   "zombie_walker_0_attack_4",
+   "zombie_walker_0_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_0_hit",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_0_hit_0",
+   "zombie_walker_0_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_0_death",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_0_death_0",
+   "zombie_walker_0_death_1",
+   "zombie_walker_0_death_2",
+   "zombie_walker_0_death_3",
+   "zombie_walker_0_death_4",
+   "zombie_walker_0_death_5",
+   "zombie_walker_0_death_6",
+   "zombie_walker_0_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_0_corpse",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_0_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_1_walk",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_1_walk_0",
+   "zombie_walker_1_walk_1",
+   "zombie_walker_1_walk_2",
+   "zombie_walker_1_walk_3",
+   "zombie_walker_1_walk_4",
+   "zombie_walker_1_walk_5",
+   "zombie_walker_1_walk_6",
+   "zombie_walker_1_walk_7"
+  ],
+  "frameRate": 8,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_walker_1_attack",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_1_attack_0",
+   "zombie_walker_1_attack_1",
+   "zombie_walker_1_attack_2",
+   "zombie_walker_1_attack_3",
+   "zombie_walker_1_attack_4",
+   "zombie_walker_1_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_1_hit",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_1_hit_0",
+   "zombie_walker_1_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_1_death",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_1_death_0",
+   "zombie_walker_1_death_1",
+   "zombie_walker_1_death_2",
+   "zombie_walker_1_death_3",
+   "zombie_walker_1_death_4",
+   "zombie_walker_1_death_5",
+   "zombie_walker_1_death_6",
+   "zombie_walker_1_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_1_corpse",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_1_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_2_walk",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_2_walk_0",
+   "zombie_walker_2_walk_1",
+   "zombie_walker_2_walk_2",
+   "zombie_walker_2_walk_3",
+   "zombie_walker_2_walk_4",
+   "zombie_walker_2_walk_5",
+   "zombie_walker_2_walk_6",
+   "zombie_walker_2_walk_7"
+  ],
+  "frameRate": 8,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_walker_2_attack",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_2_attack_0",
+   "zombie_walker_2_attack_1",
+   "zombie_walker_2_attack_2",
+   "zombie_walker_2_attack_3",
+   "zombie_walker_2_attack_4",
+   "zombie_walker_2_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_2_hit",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_2_hit_0",
+   "zombie_walker_2_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_2_death",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_2_death_0",
+   "zombie_walker_2_death_1",
+   "zombie_walker_2_death_2",
+   "zombie_walker_2_death_3",
+   "zombie_walker_2_death_4",
+   "zombie_walker_2_death_5",
+   "zombie_walker_2_death_6",
+   "zombie_walker_2_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_2_corpse",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_2_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_3_walk",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_3_walk_0",
+   "zombie_walker_3_walk_1",
+   "zombie_walker_3_walk_2",
+   "zombie_walker_3_walk_3",
+   "zombie_walker_3_walk_4",
+   "zombie_walker_3_walk_5",
+   "zombie_walker_3_walk_6",
+   "zombie_walker_3_walk_7"
+  ],
+  "frameRate": 8,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_walker_3_attack",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_3_attack_0",
+   "zombie_walker_3_attack_1",
+   "zombie_walker_3_attack_2",
+   "zombie_walker_3_attack_3",
+   "zombie_walker_3_attack_4",
+   "zombie_walker_3_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_3_hit",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_3_hit_0",
+   "zombie_walker_3_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_3_death",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_3_death_0",
+   "zombie_walker_3_death_1",
+   "zombie_walker_3_death_2",
+   "zombie_walker_3_death_3",
+   "zombie_walker_3_death_4",
+   "zombie_walker_3_death_5",
+   "zombie_walker_3_death_6",
+   "zombie_walker_3_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_3_corpse",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_walker_3_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_0_walk",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_0_walk_0",
+   "zombie_runner_0_walk_1",
+   "zombie_runner_0_walk_2",
+   "zombie_runner_0_walk_3",
+   "zombie_runner_0_walk_4",
+   "zombie_runner_0_walk_5",
+   "zombie_runner_0_walk_6",
+   "zombie_runner_0_walk_7"
+  ],
+  "frameRate": 14,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_runner_0_attack",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_0_attack_0",
+   "zombie_runner_0_attack_1",
+   "zombie_runner_0_attack_2",
+   "zombie_runner_0_attack_3",
+   "zombie_runner_0_attack_4",
+   "zombie_runner_0_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_0_hit",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_0_hit_0",
+   "zombie_runner_0_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_0_death",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_0_death_0",
+   "zombie_runner_0_death_1",
+   "zombie_runner_0_death_2",
+   "zombie_runner_0_death_3",
+   "zombie_runner_0_death_4",
+   "zombie_runner_0_death_5",
+   "zombie_runner_0_death_6",
+   "zombie_runner_0_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_0_corpse",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_0_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_1_walk",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_1_walk_0",
+   "zombie_runner_1_walk_1",
+   "zombie_runner_1_walk_2",
+   "zombie_runner_1_walk_3",
+   "zombie_runner_1_walk_4",
+   "zombie_runner_1_walk_5",
+   "zombie_runner_1_walk_6",
+   "zombie_runner_1_walk_7"
+  ],
+  "frameRate": 14,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_runner_1_attack",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_1_attack_0",
+   "zombie_runner_1_attack_1",
+   "zombie_runner_1_attack_2",
+   "zombie_runner_1_attack_3",
+   "zombie_runner_1_attack_4",
+   "zombie_runner_1_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_1_hit",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_1_hit_0",
+   "zombie_runner_1_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_1_death",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_1_death_0",
+   "zombie_runner_1_death_1",
+   "zombie_runner_1_death_2",
+   "zombie_runner_1_death_3",
+   "zombie_runner_1_death_4",
+   "zombie_runner_1_death_5",
+   "zombie_runner_1_death_6",
+   "zombie_runner_1_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_1_corpse",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_1_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_2_walk",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_2_walk_0",
+   "zombie_runner_2_walk_1",
+   "zombie_runner_2_walk_2",
+   "zombie_runner_2_walk_3",
+   "zombie_runner_2_walk_4",
+   "zombie_runner_2_walk_5",
+   "zombie_runner_2_walk_6",
+   "zombie_runner_2_walk_7"
+  ],
+  "frameRate": 14,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_runner_2_attack",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_2_attack_0",
+   "zombie_runner_2_attack_1",
+   "zombie_runner_2_attack_2",
+   "zombie_runner_2_attack_3",
+   "zombie_runner_2_attack_4",
+   "zombie_runner_2_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_2_hit",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_2_hit_0",
+   "zombie_runner_2_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_2_death",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_2_death_0",
+   "zombie_runner_2_death_1",
+   "zombie_runner_2_death_2",
+   "zombie_runner_2_death_3",
+   "zombie_runner_2_death_4",
+   "zombie_runner_2_death_5",
+   "zombie_runner_2_death_6",
+   "zombie_runner_2_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_2_corpse",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_runner_2_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_brute_0_walk",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_brute_0_walk_0",
+   "zombie_brute_0_walk_1",
+   "zombie_brute_0_walk_2",
+   "zombie_brute_0_walk_3",
+   "zombie_brute_0_walk_4",
+   "zombie_brute_0_walk_5",
+   "zombie_brute_0_walk_6",
+   "zombie_brute_0_walk_7"
+  ],
+  "frameRate": 7,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_brute_0_attack",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_brute_0_attack_0",
+   "zombie_brute_0_attack_1",
+   "zombie_brute_0_attack_2",
+   "zombie_brute_0_attack_3",
+   "zombie_brute_0_attack_4",
+   "zombie_brute_0_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_brute_0_hit",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_brute_0_hit_0",
+   "zombie_brute_0_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_brute_0_death",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_brute_0_death_0",
+   "zombie_brute_0_death_1",
+   "zombie_brute_0_death_2",
+   "zombie_brute_0_death_3",
+   "zombie_brute_0_death_4",
+   "zombie_brute_0_death_5",
+   "zombie_brute_0_death_6",
+   "zombie_brute_0_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_brute_0_corpse",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_brute_0_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_brute_1_walk",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_brute_1_walk_0",
+   "zombie_brute_1_walk_1",
+   "zombie_brute_1_walk_2",
+   "zombie_brute_1_walk_3",
+   "zombie_brute_1_walk_4",
+   "zombie_brute_1_walk_5",
+   "zombie_brute_1_walk_6",
+   "zombie_brute_1_walk_7"
+  ],
+  "frameRate": 7,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_brute_1_attack",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_brute_1_attack_0",
+   "zombie_brute_1_attack_1",
+   "zombie_brute_1_attack_2",
+   "zombie_brute_1_attack_3",
+   "zombie_brute_1_attack_4",
+   "zombie_brute_1_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_brute_1_hit",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_brute_1_hit_0",
+   "zombie_brute_1_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_brute_1_death",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_brute_1_death_0",
+   "zombie_brute_1_death_1",
+   "zombie_brute_1_death_2",
+   "zombie_brute_1_death_3",
+   "zombie_brute_1_death_4",
+   "zombie_brute_1_death_5",
+   "zombie_brute_1_death_6",
+   "zombie_brute_1_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_brute_1_corpse",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_brute_1_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_crawler_0_walk",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_crawler_0_walk_0",
+   "zombie_crawler_0_walk_1",
+   "zombie_crawler_0_walk_2",
+   "zombie_crawler_0_walk_3",
+   "zombie_crawler_0_walk_4",
+   "zombie_crawler_0_walk_5",
+   "zombie_crawler_0_walk_6",
+   "zombie_crawler_0_walk_7"
+  ],
+  "frameRate": 8,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_crawler_0_attack",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_crawler_0_attack_0",
+   "zombie_crawler_0_attack_1",
+   "zombie_crawler_0_attack_2",
+   "zombie_crawler_0_attack_3",
+   "zombie_crawler_0_attack_4",
+   "zombie_crawler_0_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_crawler_0_hit",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_crawler_0_hit_0",
+   "zombie_crawler_0_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_crawler_0_death",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_crawler_0_death_0",
+   "zombie_crawler_0_death_1",
+   "zombie_crawler_0_death_2",
+   "zombie_crawler_0_death_3",
+   "zombie_crawler_0_death_4",
+   "zombie_crawler_0_death_5",
+   "zombie_crawler_0_death_6",
+   "zombie_crawler_0_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_crawler_0_corpse",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_crawler_0_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_crawler_1_walk",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_crawler_1_walk_0",
+   "zombie_crawler_1_walk_1",
+   "zombie_crawler_1_walk_2",
+   "zombie_crawler_1_walk_3",
+   "zombie_crawler_1_walk_4",
+   "zombie_crawler_1_walk_5",
+   "zombie_crawler_1_walk_6",
+   "zombie_crawler_1_walk_7"
+  ],
+  "frameRate": 8,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_crawler_1_attack",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_crawler_1_attack_0",
+   "zombie_crawler_1_attack_1",
+   "zombie_crawler_1_attack_2",
+   "zombie_crawler_1_attack_3",
+   "zombie_crawler_1_attack_4",
+   "zombie_crawler_1_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_crawler_1_hit",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_crawler_1_hit_0",
+   "zombie_crawler_1_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_crawler_1_death",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_crawler_1_death_0",
+   "zombie_crawler_1_death_1",
+   "zombie_crawler_1_death_2",
+   "zombie_crawler_1_death_3",
+   "zombie_crawler_1_death_4",
+   "zombie_crawler_1_death_5",
+   "zombie_crawler_1_death_6",
+   "zombie_crawler_1_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_crawler_1_corpse",
+  "atlas": "zombies",
+  "frames": [
+   "zombie_crawler_1_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_bloater_0_walk",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_bloater_0_walk_0",
+   "zombie_bloater_0_walk_1",
+   "zombie_bloater_0_walk_2",
+   "zombie_bloater_0_walk_3",
+   "zombie_bloater_0_walk_4",
+   "zombie_bloater_0_walk_5",
+   "zombie_bloater_0_walk_6",
+   "zombie_bloater_0_walk_7"
+  ],
+  "frameRate": 7,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_bloater_0_attack",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_bloater_0_attack_0",
+   "zombie_bloater_0_attack_1",
+   "zombie_bloater_0_attack_2",
+   "zombie_bloater_0_attack_3",
+   "zombie_bloater_0_attack_4",
+   "zombie_bloater_0_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_bloater_0_hit",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_bloater_0_hit_0",
+   "zombie_bloater_0_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_bloater_0_death",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_bloater_0_death_0",
+   "zombie_bloater_0_death_1",
+   "zombie_bloater_0_death_2",
+   "zombie_bloater_0_death_3",
+   "zombie_bloater_0_death_4",
+   "zombie_bloater_0_death_5",
+   "zombie_bloater_0_death_6",
+   "zombie_bloater_0_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_bloater_0_corpse",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_bloater_0_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_bloater_0_pulse",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_bloater_0_pulse_0",
+   "zombie_bloater_0_pulse_1",
+   "zombie_bloater_0_pulse_2",
+   "zombie_bloater_0_pulse_3"
+  ],
+  "frameRate": 6,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_bloater_1_walk",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_bloater_1_walk_0",
+   "zombie_bloater_1_walk_1",
+   "zombie_bloater_1_walk_2",
+   "zombie_bloater_1_walk_3",
+   "zombie_bloater_1_walk_4",
+   "zombie_bloater_1_walk_5",
+   "zombie_bloater_1_walk_6",
+   "zombie_bloater_1_walk_7"
+  ],
+  "frameRate": 7,
+  "repeat": -1
+ },
+ {
+  "key": "zombie_bloater_1_attack",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_bloater_1_attack_0",
+   "zombie_bloater_1_attack_1",
+   "zombie_bloater_1_attack_2",
+   "zombie_bloater_1_attack_3",
+   "zombie_bloater_1_attack_4",
+   "zombie_bloater_1_attack_5"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_bloater_1_hit",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_bloater_1_hit_0",
+   "zombie_bloater_1_hit_1"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_bloater_1_death",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_bloater_1_death_0",
+   "zombie_bloater_1_death_1",
+   "zombie_bloater_1_death_2",
+   "zombie_bloater_1_death_3",
+   "zombie_bloater_1_death_4",
+   "zombie_bloater_1_death_5",
+   "zombie_bloater_1_death_6",
+   "zombie_bloater_1_death_7"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_bloater_1_corpse",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_bloater_1_corpse_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_bloater_1_pulse",
+  "atlas": "zombies2",
+  "frames": [
+   "zombie_bloater_1_pulse_0",
+   "zombie_bloater_1_pulse_1",
+   "zombie_bloater_1_pulse_2",
+   "zombie_bloater_1_pulse_3"
+  ],
+  "frameRate": 6,
+  "repeat": -1
+ },
+ {
+  "key": "player_legs_walk",
+  "atlas": "characters",
+  "frames": [
+   "player_legs_walk_0",
+   "player_legs_walk_1",
+   "player_legs_walk_2",
+   "player_legs_walk_3",
+   "player_legs_walk_4",
+   "player_legs_walk_5",
+   "player_legs_walk_6",
+   "player_legs_walk_7"
+  ],
+  "frameRate": 10,
+  "repeat": -1
+ },
+ {
+  "key": "player_legs_idle",
+  "atlas": "characters",
+  "frames": [
+   "player_legs_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_torso_handgun_idle",
+  "atlas": "characters",
+  "frames": [
+   "player_torso_handgun_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_torso_handgun_shoot",
+  "atlas": "characters",
+  "frames": [
+   "player_torso_handgun_shoot_0",
+   "player_torso_handgun_shoot_1"
+  ],
+  "frameRate": 20,
+  "repeat": 0
+ },
+ {
+  "key": "player_torso_handgun_reload",
+  "atlas": "characters",
+  "frames": [
+   "player_torso_handgun_reload_0",
+   "player_torso_handgun_reload_1",
+   "player_torso_handgun_reload_2",
+   "player_torso_handgun_reload_3",
+   "player_torso_handgun_reload_4",
+   "player_torso_handgun_reload_5"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "player_torso_long_idle",
+  "atlas": "characters",
+  "frames": [
+   "player_torso_long_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_torso_long_shoot",
+  "atlas": "characters",
+  "frames": [
+   "player_torso_long_shoot_0",
+   "player_torso_long_shoot_1"
+  ],
+  "frameRate": 20,
+  "repeat": 0
+ },
+ {
+  "key": "player_torso_long_reload",
+  "atlas": "characters",
+  "frames": [
+   "player_torso_long_reload_0",
+   "player_torso_long_reload_1",
+   "player_torso_long_reload_2",
+   "player_torso_long_reload_3",
+   "player_torso_long_reload_4",
+   "player_torso_long_reload_5"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "player_torso_melee_idle",
+  "atlas": "characters",
+  "frames": [
+   "player_torso_melee_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_torso_melee_swing",
+  "atlas": "characters",
+  "frames": [
+   "player_torso_melee_swing_0",
+   "player_torso_melee_swing_1",
+   "player_torso_melee_swing_2",
+   "player_torso_melee_swing_3",
+   "player_torso_melee_swing_4",
+   "player_torso_melee_swing_5"
+  ],
+  "frameRate": 18,
+  "repeat": 0
+ },
+ {
+  "key": "player_torso_unarmed_idle",
+  "atlas": "characters",
+  "frames": [
+   "player_torso_unarmed_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_torso_unarmed_punch",
+  "atlas": "characters",
+  "frames": [
+   "player_torso_unarmed_punch_0",
+   "player_torso_unarmed_punch_1",
+   "player_torso_unarmed_punch_2",
+   "player_torso_unarmed_punch_3"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "player_survivor_torso_handgun_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_survivor_torso_handgun_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_survivor_torso_handgun_shoot",
+  "atlas": "player_variants",
+  "frames": [
+   "player_survivor_torso_handgun_shoot_0",
+   "player_survivor_torso_handgun_shoot_1"
+  ],
+  "frameRate": 20,
+  "repeat": 0
+ },
+ {
+  "key": "player_survivor_torso_handgun_reload",
+  "atlas": "player_variants",
+  "frames": [
+   "player_survivor_torso_handgun_reload_0",
+   "player_survivor_torso_handgun_reload_1",
+   "player_survivor_torso_handgun_reload_2",
+   "player_survivor_torso_handgun_reload_3",
+   "player_survivor_torso_handgun_reload_4",
+   "player_survivor_torso_handgun_reload_5"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "player_survivor_torso_long_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_survivor_torso_long_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_survivor_torso_long_shoot",
+  "atlas": "player_variants",
+  "frames": [
+   "player_survivor_torso_long_shoot_0",
+   "player_survivor_torso_long_shoot_1"
+  ],
+  "frameRate": 20,
+  "repeat": 0
+ },
+ {
+  "key": "player_survivor_torso_long_reload",
+  "atlas": "player_variants",
+  "frames": [
+   "player_survivor_torso_long_reload_0",
+   "player_survivor_torso_long_reload_1",
+   "player_survivor_torso_long_reload_2",
+   "player_survivor_torso_long_reload_3",
+   "player_survivor_torso_long_reload_4",
+   "player_survivor_torso_long_reload_5"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "player_survivor_torso_melee_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_survivor_torso_melee_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_survivor_torso_melee_swing",
+  "atlas": "player_variants",
+  "frames": [
+   "player_survivor_torso_melee_swing_0",
+   "player_survivor_torso_melee_swing_1",
+   "player_survivor_torso_melee_swing_2",
+   "player_survivor_torso_melee_swing_3",
+   "player_survivor_torso_melee_swing_4",
+   "player_survivor_torso_melee_swing_5"
+  ],
+  "frameRate": 18,
+  "repeat": 0
+ },
+ {
+  "key": "player_survivor_torso_unarmed_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_survivor_torso_unarmed_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_survivor_torso_unarmed_punch",
+  "atlas": "player_variants",
+  "frames": [
+   "player_survivor_torso_unarmed_punch_0",
+   "player_survivor_torso_unarmed_punch_1",
+   "player_survivor_torso_unarmed_punch_2",
+   "player_survivor_torso_unarmed_punch_3"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "player_survivor_legs_walk",
+  "atlas": "player_variants",
+  "frames": [
+   "player_survivor_legs_walk_0",
+   "player_survivor_legs_walk_1",
+   "player_survivor_legs_walk_2",
+   "player_survivor_legs_walk_3",
+   "player_survivor_legs_walk_4",
+   "player_survivor_legs_walk_5",
+   "player_survivor_legs_walk_6",
+   "player_survivor_legs_walk_7"
+  ],
+  "frameRate": 10,
+  "repeat": -1
+ },
+ {
+  "key": "player_survivor_legs_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_survivor_legs_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_scout_torso_handgun_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_scout_torso_handgun_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_scout_torso_handgun_shoot",
+  "atlas": "player_variants",
+  "frames": [
+   "player_scout_torso_handgun_shoot_0",
+   "player_scout_torso_handgun_shoot_1"
+  ],
+  "frameRate": 20,
+  "repeat": 0
+ },
+ {
+  "key": "player_scout_torso_handgun_reload",
+  "atlas": "player_variants",
+  "frames": [
+   "player_scout_torso_handgun_reload_0",
+   "player_scout_torso_handgun_reload_1",
+   "player_scout_torso_handgun_reload_2",
+   "player_scout_torso_handgun_reload_3",
+   "player_scout_torso_handgun_reload_4",
+   "player_scout_torso_handgun_reload_5"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "player_scout_torso_long_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_scout_torso_long_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_scout_torso_long_shoot",
+  "atlas": "player_variants",
+  "frames": [
+   "player_scout_torso_long_shoot_0",
+   "player_scout_torso_long_shoot_1"
+  ],
+  "frameRate": 20,
+  "repeat": 0
+ },
+ {
+  "key": "player_scout_torso_long_reload",
+  "atlas": "player_variants",
+  "frames": [
+   "player_scout_torso_long_reload_0",
+   "player_scout_torso_long_reload_1",
+   "player_scout_torso_long_reload_2",
+   "player_scout_torso_long_reload_3",
+   "player_scout_torso_long_reload_4",
+   "player_scout_torso_long_reload_5"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "player_scout_torso_melee_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_scout_torso_melee_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_scout_torso_melee_swing",
+  "atlas": "player_variants",
+  "frames": [
+   "player_scout_torso_melee_swing_0",
+   "player_scout_torso_melee_swing_1",
+   "player_scout_torso_melee_swing_2",
+   "player_scout_torso_melee_swing_3",
+   "player_scout_torso_melee_swing_4",
+   "player_scout_torso_melee_swing_5"
+  ],
+  "frameRate": 18,
+  "repeat": 0
+ },
+ {
+  "key": "player_scout_torso_unarmed_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_scout_torso_unarmed_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_scout_torso_unarmed_punch",
+  "atlas": "player_variants",
+  "frames": [
+   "player_scout_torso_unarmed_punch_0",
+   "player_scout_torso_unarmed_punch_1",
+   "player_scout_torso_unarmed_punch_2",
+   "player_scout_torso_unarmed_punch_3"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "player_scout_legs_walk",
+  "atlas": "player_variants",
+  "frames": [
+   "player_scout_legs_walk_0",
+   "player_scout_legs_walk_1",
+   "player_scout_legs_walk_2",
+   "player_scout_legs_walk_3",
+   "player_scout_legs_walk_4",
+   "player_scout_legs_walk_5",
+   "player_scout_legs_walk_6",
+   "player_scout_legs_walk_7"
+  ],
+  "frameRate": 10,
+  "repeat": -1
+ },
+ {
+  "key": "player_scout_legs_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_scout_legs_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_responder_torso_handgun_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_responder_torso_handgun_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_responder_torso_handgun_shoot",
+  "atlas": "player_variants",
+  "frames": [
+   "player_responder_torso_handgun_shoot_0",
+   "player_responder_torso_handgun_shoot_1"
+  ],
+  "frameRate": 20,
+  "repeat": 0
+ },
+ {
+  "key": "player_responder_torso_handgun_reload",
+  "atlas": "player_variants",
+  "frames": [
+   "player_responder_torso_handgun_reload_0",
+   "player_responder_torso_handgun_reload_1",
+   "player_responder_torso_handgun_reload_2",
+   "player_responder_torso_handgun_reload_3",
+   "player_responder_torso_handgun_reload_4",
+   "player_responder_torso_handgun_reload_5"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "player_responder_torso_long_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_responder_torso_long_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_responder_torso_long_shoot",
+  "atlas": "player_variants",
+  "frames": [
+   "player_responder_torso_long_shoot_0",
+   "player_responder_torso_long_shoot_1"
+  ],
+  "frameRate": 20,
+  "repeat": 0
+ },
+ {
+  "key": "player_responder_torso_long_reload",
+  "atlas": "player_variants",
+  "frames": [
+   "player_responder_torso_long_reload_0",
+   "player_responder_torso_long_reload_1",
+   "player_responder_torso_long_reload_2",
+   "player_responder_torso_long_reload_3",
+   "player_responder_torso_long_reload_4",
+   "player_responder_torso_long_reload_5"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "player_responder_torso_melee_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_responder_torso_melee_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_responder_torso_melee_swing",
+  "atlas": "player_variants",
+  "frames": [
+   "player_responder_torso_melee_swing_0",
+   "player_responder_torso_melee_swing_1",
+   "player_responder_torso_melee_swing_2",
+   "player_responder_torso_melee_swing_3",
+   "player_responder_torso_melee_swing_4",
+   "player_responder_torso_melee_swing_5"
+  ],
+  "frameRate": 18,
+  "repeat": 0
+ },
+ {
+  "key": "player_responder_torso_unarmed_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_responder_torso_unarmed_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "player_responder_torso_unarmed_punch",
+  "atlas": "player_variants",
+  "frames": [
+   "player_responder_torso_unarmed_punch_0",
+   "player_responder_torso_unarmed_punch_1",
+   "player_responder_torso_unarmed_punch_2",
+   "player_responder_torso_unarmed_punch_3"
+  ],
+  "frameRate": 14,
+  "repeat": 0
+ },
+ {
+  "key": "player_responder_legs_walk",
+  "atlas": "player_variants",
+  "frames": [
+   "player_responder_legs_walk_0",
+   "player_responder_legs_walk_1",
+   "player_responder_legs_walk_2",
+   "player_responder_legs_walk_3",
+   "player_responder_legs_walk_4",
+   "player_responder_legs_walk_5",
+   "player_responder_legs_walk_6",
+   "player_responder_legs_walk_7"
+  ],
+  "frameRate": 10,
+  "repeat": -1
+ },
+ {
+  "key": "player_responder_legs_idle",
+  "atlas": "player_variants",
+  "frames": [
+   "player_responder_legs_idle_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "fx_explosion",
+  "atlas": "fx",
+  "frames": [
+   "explosion_0",
+   "explosion_1",
+   "explosion_2",
+   "explosion_3",
+   "explosion_4",
+   "explosion_5",
+   "explosion_6",
+   "explosion_7",
+   "explosion_8",
+   "explosion_9",
+   "explosion_10",
+   "explosion_11"
+  ],
+  "frameRate": 18,
+  "repeat": 0
+ },
+ {
+  "key": "fx_fire",
+  "atlas": "fx",
+  "frames": [
+   "fire_0",
+   "fire_1",
+   "fire_2",
+   "fire_3",
+   "fire_4",
+   "fire_5",
+   "fire_6",
+   "fire_7"
+  ],
+  "frameRate": 12,
+  "repeat": -1
+ },
+ {
+  "key": "fx_muzzle_handgun",
+  "atlas": "fx",
+  "frames": [
+   "muzzle_handgun_0",
+   "muzzle_handgun_1",
+   "muzzle_handgun_2"
+  ],
+  "frameRate": 40,
+  "repeat": 0
+ },
+ {
+  "key": "fx_muzzle_long",
+  "atlas": "fx",
+  "frames": [
+   "muzzle_long_0",
+   "muzzle_long_1",
+   "muzzle_long_2"
+  ],
+  "frameRate": 40,
+  "repeat": 0
+ },
+ {
+  "key": "fx_muzzle_shotgun",
+  "atlas": "fx",
+  "frames": [
+   "muzzle_shotgun_0",
+   "muzzle_shotgun_1",
+   "muzzle_shotgun_2"
+  ],
+  "frameRate": 36,
+  "repeat": 0
+ },
+ {
+  "key": "fx_blood_spray",
+  "atlas": "fx",
+  "frames": [
+   "blood_spray_0",
+   "blood_spray_1",
+   "blood_spray_2",
+   "blood_spray_3",
+   "blood_spray_4",
+   "blood_spray_5"
+  ],
+  "frameRate": 24,
+  "repeat": 0
+ },
+ {
+  "key": "fx_spark",
+  "atlas": "fx",
+  "frames": [
+   "spark_0",
+   "spark_1",
+   "spark_2",
+   "spark_3"
+  ],
+  "frameRate": 24,
+  "repeat": 0
+ },
+ {
+  "key": "fx_smoke",
+  "atlas": "fx",
+  "frames": [
+   "smoke_0",
+   "smoke_1",
+   "smoke_2",
+   "smoke_3",
+   "smoke_4",
+   "smoke_5"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "fx_dust",
+  "atlas": "fx",
+  "frames": [
+   "dust_0",
+   "dust_1",
+   "dust_2",
+   "dust_3"
+  ],
+  "frameRate": 12,
+  "repeat": 0
+ },
+ {
+  "key": "fx_impact_wall",
+  "atlas": "fx",
+  "frames": [
+   "impact_wall_0",
+   "impact_wall_1",
+   "impact_wall_2",
+   "impact_wall_3"
+  ],
+  "frameRate": 20,
+  "repeat": 0
+ },
+ {
+  "key": "fx_ember",
+  "atlas": "fx",
+  "frames": [
+   "ember_0",
+   "ember_1",
+   "ember_2"
+  ],
+  "frameRate": 10,
+  "repeat": -1
+ },
+ {
+  "key": "boss_butcher_idle",
+  "atlas": "bosses",
+  "frames": [
+   "boss_butcher_idle_0",
+   "boss_butcher_idle_1"
+  ],
+  "frameRate": 3,
+  "repeat": -1
+ },
+ {
+  "key": "boss_butcher_walk",
+  "atlas": "bosses",
+  "frames": [
+   "boss_butcher_walk_0",
+   "boss_butcher_walk_1",
+   "boss_butcher_walk_2",
+   "boss_butcher_walk_3"
+  ],
+  "frameRate": 7,
+  "repeat": -1
+ },
+ {
+  "key": "boss_butcher_melee",
+  "atlas": "bosses",
+  "frames": [
+   "boss_butcher_melee_0",
+   "boss_butcher_melee_1"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_butcher_windup",
+  "atlas": "bosses",
+  "frames": [
+   "boss_butcher_windup_0",
+   "boss_butcher_windup_1"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "boss_butcher_special",
+  "atlas": "bosses",
+  "frames": [
+   "boss_butcher_special_0",
+   "boss_butcher_special_1"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_butcher_hit",
+  "atlas": "bosses",
+  "frames": [
+   "boss_butcher_hit_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "boss_butcher_death",
+  "atlas": "bosses",
+  "frames": [
+   "boss_butcher_death_0",
+   "boss_butcher_death_1",
+   "boss_butcher_death_2"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "boss_broodmother_idle",
+  "atlas": "bosses",
+  "frames": [
+   "boss_broodmother_idle_0",
+   "boss_broodmother_idle_1"
+  ],
+  "frameRate": 3,
+  "repeat": -1
+ },
+ {
+  "key": "boss_broodmother_walk",
+  "atlas": "bosses",
+  "frames": [
+   "boss_broodmother_walk_0",
+   "boss_broodmother_walk_1",
+   "boss_broodmother_walk_2",
+   "boss_broodmother_walk_3"
+  ],
+  "frameRate": 7,
+  "repeat": -1
+ },
+ {
+  "key": "boss_broodmother_melee",
+  "atlas": "bosses",
+  "frames": [
+   "boss_broodmother_melee_0",
+   "boss_broodmother_melee_1"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_broodmother_windup",
+  "atlas": "bosses",
+  "frames": [
+   "boss_broodmother_windup_0",
+   "boss_broodmother_windup_1"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "boss_broodmother_special",
+  "atlas": "bosses",
+  "frames": [
+   "boss_broodmother_special_0",
+   "boss_broodmother_special_1"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_broodmother_hit",
+  "atlas": "bosses",
+  "frames": [
+   "boss_broodmother_hit_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "boss_broodmother_death",
+  "atlas": "bosses",
+  "frames": [
+   "boss_broodmother_death_0",
+   "boss_broodmother_death_1",
+   "boss_broodmother_death_2"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "boss_howler_idle",
+  "atlas": "bosses",
+  "frames": [
+   "boss_howler_idle_0",
+   "boss_howler_idle_1"
+  ],
+  "frameRate": 3,
+  "repeat": -1
+ },
+ {
+  "key": "boss_howler_walk",
+  "atlas": "bosses",
+  "frames": [
+   "boss_howler_walk_0",
+   "boss_howler_walk_1",
+   "boss_howler_walk_2",
+   "boss_howler_walk_3"
+  ],
+  "frameRate": 7,
+  "repeat": -1
+ },
+ {
+  "key": "boss_howler_melee",
+  "atlas": "bosses",
+  "frames": [
+   "boss_howler_melee_0",
+   "boss_howler_melee_1"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_howler_windup",
+  "atlas": "bosses",
+  "frames": [
+   "boss_howler_windup_0",
+   "boss_howler_windup_1"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "boss_howler_special",
+  "atlas": "bosses",
+  "frames": [
+   "boss_howler_special_0",
+   "boss_howler_special_1"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_howler_hit",
+  "atlas": "bosses",
+  "frames": [
+   "boss_howler_hit_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "boss_howler_death",
+  "atlas": "bosses",
+  "frames": [
+   "boss_howler_death_0",
+   "boss_howler_death_1",
+   "boss_howler_death_2"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "boss_juggernaut_idle",
+  "atlas": "bosses",
+  "frames": [
+   "boss_juggernaut_idle_0",
+   "boss_juggernaut_idle_1"
+  ],
+  "frameRate": 3,
+  "repeat": -1
+ },
+ {
+  "key": "boss_juggernaut_walk",
+  "atlas": "bosses",
+  "frames": [
+   "boss_juggernaut_walk_0",
+   "boss_juggernaut_walk_1",
+   "boss_juggernaut_walk_2",
+   "boss_juggernaut_walk_3"
+  ],
+  "frameRate": 7,
+  "repeat": -1
+ },
+ {
+  "key": "boss_juggernaut_melee",
+  "atlas": "bosses",
+  "frames": [
+   "boss_juggernaut_melee_0",
+   "boss_juggernaut_melee_1"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_juggernaut_windup",
+  "atlas": "bosses",
+  "frames": [
+   "boss_juggernaut_windup_0",
+   "boss_juggernaut_windup_1"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "boss_juggernaut_special",
+  "atlas": "bosses",
+  "frames": [
+   "boss_juggernaut_special_0",
+   "boss_juggernaut_special_1"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_juggernaut_hit",
+  "atlas": "bosses",
+  "frames": [
+   "boss_juggernaut_hit_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "boss_juggernaut_death",
+  "atlas": "bosses",
+  "frames": [
+   "boss_juggernaut_death_0",
+   "boss_juggernaut_death_1",
+   "boss_juggernaut_death_2"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "boss_plague_idle",
+  "atlas": "bosses",
+  "frames": [
+   "boss_plague_idle_0",
+   "boss_plague_idle_1"
+  ],
+  "frameRate": 3,
+  "repeat": -1
+ },
+ {
+  "key": "boss_plague_walk",
+  "atlas": "bosses",
+  "frames": [
+   "boss_plague_walk_0",
+   "boss_plague_walk_1",
+   "boss_plague_walk_2",
+   "boss_plague_walk_3"
+  ],
+  "frameRate": 7,
+  "repeat": -1
+ },
+ {
+  "key": "boss_plague_melee",
+  "atlas": "bosses",
+  "frames": [
+   "boss_plague_melee_0",
+   "boss_plague_melee_1"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_plague_windup",
+  "atlas": "bosses",
+  "frames": [
+   "boss_plague_windup_0",
+   "boss_plague_windup_1"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "boss_plague_special",
+  "atlas": "bosses",
+  "frames": [
+   "boss_plague_special_0",
+   "boss_plague_special_1"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_plague_hit",
+  "atlas": "bosses",
+  "frames": [
+   "boss_plague_hit_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "boss_plague_death",
+  "atlas": "bosses",
+  "frames": [
+   "boss_plague_death_0",
+   "boss_plague_death_1",
+   "boss_plague_death_2"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "cola_foam",
+  "atlas": "cola",
+  "frames": [
+   "cola_foam_0",
+   "cola_foam_1",
+   "cola_foam_2",
+   "cola_foam_3"
+  ],
+  "frameRate": 10,
+  "repeat": -1
+ },
+ {
+  "key": "cola_splash",
+  "atlas": "cola",
+  "frames": [
+   "cola_splash_0",
+   "cola_splash_1",
+   "cola_splash_2"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_warden_idle",
+  "atlas": "warden",
+  "frames": [
+   "boss_warden_idle_0",
+   "boss_warden_idle_1"
+  ],
+  "frameRate": 3,
+  "repeat": -1
+ },
+ {
+  "key": "boss_warden_walk",
+  "atlas": "warden",
+  "frames": [
+   "boss_warden_walk_0",
+   "boss_warden_walk_1",
+   "boss_warden_walk_2",
+   "boss_warden_walk_3"
+  ],
+  "frameRate": 7,
+  "repeat": -1
+ },
+ {
+  "key": "boss_warden_melee",
+  "atlas": "warden",
+  "frames": [
+   "boss_warden_melee_0",
+   "boss_warden_melee_1"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_warden_windup",
+  "atlas": "warden",
+  "frames": [
+   "boss_warden_windup_0",
+   "boss_warden_windup_1"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "boss_warden_special",
+  "atlas": "warden",
+  "frames": [
+   "boss_warden_special_0",
+   "boss_warden_special_1"
+  ],
+  "frameRate": 8,
+  "repeat": 0
+ },
+ {
+  "key": "boss_warden_hit",
+  "atlas": "warden",
+  "frames": [
+   "boss_warden_hit_0"
+  ],
+  "frameRate": 1,
+  "repeat": 0
+ },
+ {
+  "key": "boss_warden_death",
+  "atlas": "warden",
+  "frames": [
+   "boss_warden_death_0",
+   "boss_warden_death_1",
+   "boss_warden_death_2"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_0_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_walker_0_climb_0",
+   "zombie_walker_0_climb_1",
+   "zombie_walker_0_climb_2",
+   "zombie_walker_0_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_1_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_walker_1_climb_0",
+   "zombie_walker_1_climb_1",
+   "zombie_walker_1_climb_2",
+   "zombie_walker_1_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_2_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_walker_2_climb_0",
+   "zombie_walker_2_climb_1",
+   "zombie_walker_2_climb_2",
+   "zombie_walker_2_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_walker_3_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_walker_3_climb_0",
+   "zombie_walker_3_climb_1",
+   "zombie_walker_3_climb_2",
+   "zombie_walker_3_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_0_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_runner_0_climb_0",
+   "zombie_runner_0_climb_1",
+   "zombie_runner_0_climb_2",
+   "zombie_runner_0_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_1_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_runner_1_climb_0",
+   "zombie_runner_1_climb_1",
+   "zombie_runner_1_climb_2",
+   "zombie_runner_1_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_runner_2_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_runner_2_climb_0",
+   "zombie_runner_2_climb_1",
+   "zombie_runner_2_climb_2",
+   "zombie_runner_2_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_crawler_0_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_crawler_0_climb_0",
+   "zombie_crawler_0_climb_1",
+   "zombie_crawler_0_climb_2",
+   "zombie_crawler_0_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_crawler_1_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_crawler_1_climb_0",
+   "zombie_crawler_1_climb_1",
+   "zombie_crawler_1_climb_2",
+   "zombie_crawler_1_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_brute_0_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_brute_0_climb_0",
+   "zombie_brute_0_climb_1",
+   "zombie_brute_0_climb_2",
+   "zombie_brute_0_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_brute_1_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_brute_1_climb_0",
+   "zombie_brute_1_climb_1",
+   "zombie_brute_1_climb_2",
+   "zombie_brute_1_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_bloater_0_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_bloater_0_climb_0",
+   "zombie_bloater_0_climb_1",
+   "zombie_bloater_0_climb_2",
+   "zombie_bloater_0_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ },
+ {
+  "key": "zombie_bloater_1_climb",
+  "atlas": "zombie_climb",
+  "frames": [
+   "zombie_bloater_1_climb_0",
+   "zombie_bloater_1_climb_1",
+   "zombie_bloater_1_climb_2",
+   "zombie_bloater_1_climb_3"
+  ],
+  "frameRate": 6,
+  "repeat": 0
+ }
+]

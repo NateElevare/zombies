@@ -1,0 +1,22 @@
+{
+  "id": "items-2-clean",
+  "kind": "items",
+  "types": [
+    "soda",
+    "energy_drink",
+    "scrap",
+    "wood",
+    "nails",
+    "cloth",
+    "gunpowder",
+    "gun_parts",
+    "electronics",
+    "chemicals"
+  ],
+  "cols": 4,
+  "rows": 3,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/angle/source/story-v1/items-2.png"
+  ],
+  "prompt": "Remove ALL background, checkerboard pattern, grid lines, outer border and shadows from this inventory sprite atlas. Keep ONLY the ten objects in exactly the same four-column three-row cell positions, sizes and orientations. Last two cells remain fully transparent. True alpha transparency outside the objects, clean opaque pixel-art silhouettes. No white or gray background, no grid lines, no new illustrations."
+}

@@ -1,0 +1,11 @@
+Generated using the built-in image generation tool.
+Reference: user-provided green zombie in beige vest.
+
+Use case: stylized-concept
+Asset type: pixel-art zombie game animation sprite sheet.
+Input image 1 is a character design and pixel-art style reference, not an edit target. Create a new sprite sheet of that same recognizable zombie: bald moss-green head, sunken bright red eyes, gaunt green limbs, ragged sleeveless beige buttoned vest, ripped charcoal trousers and worn dark sneakers with pale soles. Preserve its proportions and readable chunky pixel clusters.
+Composition: a square 1536x1536 transparent PNG, exact regular grid of 4 columns and 3 rows, 12 equally sized cells (384x512 each). One complete full-body zombie in each cell, consistent scale, camera, proportions and palette. Feet on the same local baseline in each cell, body centered with generous transparent margins, no clipping or overlapping cells. Three-quarter front view facing screen-right, matching the reference. Character about 400 pixels tall in each cell. Crisp nearest-neighbor style pixel edges, limited palette, dark pixel outlines, no smooth painterly shading.
+Row 1: four distinct sequential idle animation poses, subtle hunched breathing and hand/head movement.
+Row 2: four distinct sequential shambling walk poses, alternating legs and arm swing, left contact, passing, right contact, passing. Obvious stride changes.
+Row 3: four sequential claw attack poses: wind-up, reaching forward, full claw strike, recovery. Keep same character scale and camera.
+Scene/backdrop: actual alpha transparency everywhere outside the character silhouettes. No ground, no shadow, no white background, no checkerboard drawn into image. No labels, no letters, no grid lines, no frame borders, no pink border, no icons, no watermark. Only the twelve sprites.

@@ -1,0 +1,18 @@
+{
+  "id": "structures-0",
+  "kind": "structures",
+  "types": [
+    "bed",
+    "stash",
+    "workbench",
+    "wood_wall",
+    "metal_wall",
+    "wood_door"
+  ],
+  "cols": 4,
+  "rows": 6,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ],
+  "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Player-built base structures sprite pack. EXACT FOUR columns by SIX rows, 24 square cells. Each row shows one structure from four views: column1 front down-right along 22-degree street axis; column2 front down-left along 51-degree street axis; column3 rear up-left; column4 rear up-right. Row list: 1: sturdy crafted wooden bed and blue blanket; 2: reinforced wooden storage chest with metal bands; 3: heavy wooden workbench with metal vise, tools and small parts; 4: upright defensive wall of rough timber planks with cross braces; 5: upright defensive wall of salvaged corrugated metal sheets and steel posts; 6: closed wooden defensive door in frame. Complete isolated structure in every cell, all legs/posts/base visible, transparent 12% margins. Rich wood grain, rust, seams, bolts, fabric and useful recognizable details. No terrain or cast shadows."
+}

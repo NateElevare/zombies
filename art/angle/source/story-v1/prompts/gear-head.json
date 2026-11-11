@@ -1,0 +1,17 @@
+{
+  "id": "gear-head",
+  "kind": "gear",
+  "slot": "head",
+  "types": [
+    "cap",
+    "bike_helmet",
+    "riot_helmet",
+    "military_helmet"
+  ],
+  "cols": 4,
+  "rows": 5,
+  "prompt": "Use case: stylized-concept. Production pixel-art sprite pack matching the supplied gritty survival-game art style, crisp clustered pixels, controlled highlights, muted weathered materials, clean dark outlines. TRUE transparent clean background, opaque sprites, no floor, cast shadow, text, labels, grid or checkerboard. Every object completely inside its cell with empty gutters. Modular wearable equipment for the reference character. Only equipment, no person, skin, limbs, mannequins or weapons. Exact 4 columns by FIVE rows, equal SQUARE cells. Columns: 1: reinforced dark olive baseball cap; 2: red bicycle helmet with black vents; 3: black police riot helmet with clear face visor; 4: olive military combat helmet with fabric cover. Rows show five views at orthographic camera elevation45: RIGHT/east side; DOWN-RIGHT/southeast FRONT three-quarter; DOWN/south FRONT; UP-RIGHT/northeast REAR three-quarter; UP/north BACK. Each item sits as it would when WORN by a character facing that row direction. All views correct distinct visible faces. Full clean silhouette, detailed seams, buckles and straps. Helmets are hollow with transparent face and neck opening, so they can be placed over the character head.",
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ]
+}

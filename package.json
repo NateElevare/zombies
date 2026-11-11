@@ -1,0 +1,49 @@
+{
+  "name": "dead-zone",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "DEAD ZONE: top-down zombie survival RPG (Phaser 4 + TypeScript)",
+  "scripts": {
+    "dev": "vite",
+    "start": "node server/index.ts",
+    "serve": "npm run build && npm start",
+    "dev:server": "node --watch server/index.ts",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "art": "tsx art/build.ts",
+    "art:campaign": "tsx art/campaign/build.ts",
+    "art:chars": "tsx art/build.ts characters",
+    "art:chars2d": "tsx art/build.ts characters fx --chars2d",
+    "art:fx": "tsx art/build.ts fx --pixel-fx",
+    "art:bosses": "tsx art/build.ts bosses",
+    "art:warden": "tsx art/build.ts warden",
+    "art:climb": "tsx art/build.ts climb",
+    "art:cola": "tsx art/build.ts cola",
+    "art:angle": "tsx art/angle/build.ts",
+    "art:angle:materials": "tsx art/angle/materials.ts",
+    "art:angle:zombie": "tsx art/angle/reference-zombie.ts",
+    "art:angle:characters": "tsx art/angle/characters.ts",
+    "art:chars2d:procedural": "tsx art/build.ts characters --chars2d --procedural-zombies",
+    "art:sheet": "tsx art/chars3d/sheet.ts",
+    "art:story": "tsx art/angle/story-pack.ts",
+    "art:story:preview": "tsx art/angle/story-preview.ts"
+  },
+  "dependencies": {
+    "mongodb": "7.7.0",
+    "phaser": "4.2.1"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "1.0.13",
+    "@types/node": "^24.19.2",
+    "@types/three": "0.187.0",
+    "esbuild": "0.28.2",
+    "three": "0.187.0",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.5",
+    "vitest": "5.0.5"
+  }
+}

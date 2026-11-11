@@ -1,0 +1,24 @@
+{
+  "id": "items-1",
+  "kind": "items",
+  "types": [
+    "police_vest",
+    "military_vest",
+    "small_backpack",
+    "hiking_backpack",
+    "military_backpack",
+    "bandage",
+    "medkit",
+    "painkillers",
+    "canned_food",
+    "chips",
+    "mre",
+    "water_bottle"
+  ],
+  "cols": 4,
+  "rows": 3,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ],
+  "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Item-drop and inventory sprite pack. Exact FOUR columns by 3 rows, square cells, one item centered in each cell. The item lies at a natural angle on the ground, viewed from the 45-degree elevated camera, front-right three-quarter. No people, hands, shadows or floor. Cells in READING ORDER left to right then next row: 1 Police Vest (police_vest); 2 Military Vest (military_vest); 3 Small Backpack (small_backpack); 4 Hiking Backpack (hiking_backpack); 5 Military Backpack (military_backpack); 6 Bandage (bandage); 7 Medical Kit (medkit); 8 Painkillers (painkillers); 9 Canned Food (canned_food); 10 Chips (chips); 11 Field Ration (mre); 12 Water Bottle (water_bottle). Keep unused final cells empty/transparent. Make each item visually distinct and recognizable at small size, realistic muted colors, clean dark outline, readable silhouette. Ammunition in distinct small boxes plus visible cartridges, consumables in their actual packaging, tools and materials identifiable. No text, tiny blank label panels permitted. Each item fully inside cell with 18% transparent margin."
+}

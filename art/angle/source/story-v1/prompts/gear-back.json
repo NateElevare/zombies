@@ -1,0 +1,16 @@
+{
+  "id": "gear-back",
+  "kind": "gear",
+  "slot": "back",
+  "types": [
+    "small_backpack",
+    "hiking_backpack",
+    "military_backpack"
+  ],
+  "cols": 3,
+  "rows": 5,
+  "prompt": "Use case: stylized-concept. Production pixel-art sprite pack matching the supplied gritty survival-game art style, crisp clustered pixels, controlled highlights, muted weathered materials, clean dark outlines. TRUE transparent clean background, opaque sprites, no floor, cast shadow, text, labels, grid or checkerboard. Every object completely inside its cell with empty gutters. Modular wearable equipment for the reference character. Only equipment, no person, skin, limbs, mannequins or weapons. Exact 3 columns by FIVE rows, equal SQUARE cells. Columns: 1: small brown canvas daypack; 2: large blue hiking backpack with side pockets and rolled sleeping mat; 3: olive military rucksack with webbing and utility pouches. Rows show five views at orthographic camera elevation45: RIGHT/east side; DOWN-RIGHT/southeast FRONT three-quarter; DOWN/south FRONT; UP-RIGHT/northeast REAR three-quarter; UP/north BACK. Each item sits as it would when WORN by a character facing that row direction. All views correct distinct visible faces. Full clean silhouette, detailed seams, buckles and straps. Backpacks have shoulder straps and face outward from the wearer back; show side and straps from front views, rear bag from back views.",
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ]
+}

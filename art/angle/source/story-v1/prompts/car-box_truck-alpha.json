@@ -1,0 +1,11 @@
+{
+  "id": "car-box_truck-alpha",
+  "kind": "car",
+  "type": "box_truck",
+  "cols": 4,
+  "rows": 2,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/angle/source/story-v1/car-box_truck-clean.png"
+  ],
+  "prompt": "Remove the entire pale white/gray background and soft shadows from this eight-vehicle sprite atlas. Keep ONLY the eight trucks, exact grid, sizes, orientations, pixel art and damage states unchanged. All empty areas and gutters must be alpha ZERO fully transparent, including surrounding haze. Vehicle panels remain opaque. No replacement background, checkerboard or floor."
+}

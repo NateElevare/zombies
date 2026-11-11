@@ -1,0 +1,641 @@
+{
+ "about": "Image-generation prompts for DEAD ZONE: The Hive Below. Read README.md in this folder first. Each asset lists the file to deliver, the references to attach and the full prompt. Written 2026-11-11 from the signed-off plan in notes/hive-below.md.",
+ "cleanup_prompt": "Use case: background-extraction. Edit this sprite sheet ONLY to fix alpha transparency. Preserve every pose, its exact position, scale, pixel art, colours and the grid. Remove all white or grey background, haze, soft shadows, tinted halos and stray speckles around the creatures, including partly transparent background pixels. Every pixel outside the creature outlines must have alpha EXACTLY ZERO. Clean hard pixel-art edges. Keep the canvas size and the empty cells. This is extraction, not redrawing.",
+ "assets": [
+  {
+   "id": "drone",
+   "name": "Drone",
+   "kind": "enemy",
+   "build_step": 1,
+   "file": "art/source/hive-pixel/drone-0.png",
+   "canvas": "2:1, ideally 2048x1024",
+   "grid": "8 columns x 4 rows",
+   "imported_frame_px": 128,
+   "in_game_radius": 13,
+   "flies": false,
+   "style_reference": "art/source/zombies-pixel/walker-0.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/enemy-drone.png",
+    "art/source/hive-pixel/concepts/enemy-drone-walk.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: production overhead pixel-art animation sprite sheet for DEAD ZONE, a Phaser top-down zombie game.\nReference image 1 (art/source/zombies-pixel/walker-0.png) is the STYLE reference: match its camera, facing, grid, pixel-art rendering and level of detail. Reference image 2 (art/source/hive-pixel/concepts/enemy-drone.png) is the DESIGN reference for the new creature: its silhouette, anatomy, colours and markings. Reference image 3 (art/source/hive-pixel/concepts/enemy-drone-walk.png) shows the movement cycle. The design references are low resolution on purpose; paint the creature at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a wide 2:1 canvas, ideally 2048x1024. EXACTLY 8 columns and 4 rows of equal square cells. Invisible grid. Each sprite is centred on the middle of its thorax in its cell, at an identical body scale in every cell. The whole creature, including legs, antennae and wings at their widest, stays inside the central 70% of its cell. Nothing overlaps a cell boundary. Do not fill the empty cells. 29 poses:\nROW 1 cells 1-8: WALK frames 0-7. Brisk tripod gait, antennae twitching. Insects walk in an alternating tripod: the front and rear leg of one side move together with the middle leg of the other side.\nROW 2 cells 1-6: ATTACK frames 0-5: wind-up, rear back, lunge, full strike, retract, recover. Lunging bite, mandibles snapping shut. Cells 7-8: HIT frames 0-1: recoil and recovery.\nROW 3 cells 1-8: DEATH frames 0-7, staying faced to the right. Legs fold, it tips onto its side and then its back. The last frame is completely motionless.\nROW 4 cell 1: CORPSE: the same pose as death frame 7, eyes dark, with a small dark stain of ichor underneath.\nROW 4 cells 2-5: SPECIAL frames 0-3. ALARM. It rears the front of its body, antennae raised and spread wide, mandibles open, held with a slight tremble.\nROW 4 cells 6-8: completely empty and transparent.\nCREATURE: Drone, a worker ant. Worker ant the size of a person. Three clear body segments: a round head with short open bone-white mandibles and elbowed antennae, a narrow thorax, and a large oval abdomen with faint darker bands. Six thin dark legs splayed from the thorax. Rust-brown chitin (#7a4326, highlight #a8643c, shadow #40200f), near-black legs (#2b160b). Signs of death: a patch of grey-green rot (#7d8f45) on the abdomen, hairline cracks, one antenna shorter than the other."
+  },
+  {
+   "id": "hopper",
+   "name": "Hopper",
+   "kind": "enemy",
+   "build_step": 2,
+   "file": "art/source/hive-pixel/hopper-0.png",
+   "canvas": "2:1, ideally 2048x1024",
+   "grid": "8 columns x 4 rows",
+   "imported_frame_px": 128,
+   "in_game_radius": 11,
+   "flies": false,
+   "style_reference": "art/source/zombies-pixel/runner-0.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/enemy-hopper.png",
+    "art/source/hive-pixel/concepts/enemy-hopper-walk.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: production overhead pixel-art animation sprite sheet for DEAD ZONE, a Phaser top-down zombie game.\nReference image 1 (art/source/zombies-pixel/runner-0.png) is the STYLE reference: match its camera, facing, grid, pixel-art rendering and level of detail. Reference image 2 (art/source/hive-pixel/concepts/enemy-hopper.png) is the DESIGN reference for the new creature: its silhouette, anatomy, colours and markings. Reference image 3 (art/source/hive-pixel/concepts/enemy-hopper-walk.png) shows the movement cycle. The design references are low resolution on purpose; paint the creature at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a wide 2:1 canvas, ideally 2048x1024. EXACTLY 8 columns and 4 rows of equal square cells. Invisible grid. Each sprite is centred on the middle of its thorax in its cell, at an identical body scale in every cell. The whole creature, including legs, antennae and wings at their widest, stays inside the central 70% of its cell. Nothing overlaps a cell boundary. Do not fill the empty cells. 29 poses:\nROW 1 cells 1-8: WALK frames 0-7. Short quick steps on the four front legs while the big hind legs ride along folded. Insects walk in an alternating tripod: the front and rear leg of one side move together with the middle leg of the other side.\nROW 2 cells 1-6: ATTACK frames 0-5: wind-up, rear back, lunge, full strike, retract, recover. Kicks forward and bites. Cells 7-8: HIT frames 0-1: recoil and recovery.\nROW 3 cells 1-8: DEATH frames 0-7, staying faced to the right. Legs give way, rolls onto its back, hind legs kick and curl. The last frame is completely motionless.\nROW 4 cell 1: CORPSE: the same pose as death frame 7, eyes dark, with a small dark stain of ichor underneath.\nROW 4 cells 2-5: SPECIAL frames 0-3. LEAP. Deep crouch, launch, airborne with the hind legs stretched out behind and the wings half open, landing crouch.\nROW 4 cells 6-8: completely empty and transparent.\nCREATURE: Hopper, a locust. Locust. Long narrow body: a small head with short thread antennae, a saddle-shaped plate behind the head, and a long tapered abdomen covered by folded tan wings (#b7a060 and #7d6a38). Oversized jumping hind legs: thick olive thighs angled back and out, thin shins. Small front and middle legs. Olive green (#7f8c3c, highlight #aab65c, shadow #47511f). Signs of death: frayed wing tips, dull colour."
+  },
+  {
+   "id": "honeypot",
+   "name": "Honeypot",
+   "kind": "enemy",
+   "build_step": 1,
+   "file": "art/source/hive-pixel/honeypot-0.png",
+   "canvas": "2:1, ideally 2048x1024",
+   "grid": "8 columns x 4 rows",
+   "imported_frame_px": 192,
+   "in_game_radius": 19,
+   "flies": false,
+   "style_reference": "art/source/zombies-pixel/bloater-0.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/enemy-honeypot.png",
+    "art/source/hive-pixel/concepts/enemy-honeypot-walk.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: production overhead pixel-art animation sprite sheet for DEAD ZONE, a Phaser top-down zombie game.\nReference image 1 (art/source/zombies-pixel/bloater-0.png) is the STYLE reference: match its camera, facing, grid, pixel-art rendering and level of detail. Reference image 2 (art/source/hive-pixel/concepts/enemy-honeypot.png) is the DESIGN reference for the new creature: its silhouette, anatomy, colours and markings. Reference image 3 (art/source/hive-pixel/concepts/enemy-honeypot-walk.png) shows the movement cycle. The design references are low resolution on purpose; paint the creature at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a wide 2:1 canvas, ideally 2048x1024. EXACTLY 8 columns and 4 rows of equal square cells. Invisible grid. Each sprite is centred on the middle of its thorax in its cell, at an identical body scale in every cell. The whole creature, including legs, antennae and wings at their widest, stays inside the central 70% of its cell. Nothing overlaps a cell boundary. Do not fill the empty cells. 29 poses:\nROW 1 cells 1-8: WALK frames 0-7. Slow waddle, the abdomen dragging and wobbling. Insects walk in an alternating tripod: the front and rear leg of one side move together with the middle leg of the other side.\nROW 2 cells 1-6: ATTACK frames 0-5: wind-up, rear back, lunge, full strike, retract, recover. Weak bite, abdomen swinging. Cells 7-8: HIT frames 0-1: recoil and recovery.\nROW 3 cells 1-8: DEATH frames 0-7, staying faced to the right. The abdomen splits and deflates. The corpse is an empty wrinkled amber skin behind the small body. Do not draw the honey pool; the game draws it. The last frame is completely motionless.\nROW 4 cell 1: CORPSE: the same pose as death frame 7, eyes dark, with a small dark stain of ichor underneath.\nROW 4 cells 2-5: SPECIAL frames 0-3. PULSE. The abdomen swells and brightens a little more in each frame.\nROW 4 cells 6-8: completely empty and transparent.\nCREATURE: Honeypot, a honeypot ant. Honeypot ant. A tiny dark-brown head and thorax in front of an enormous, swollen, glossy amber abdomen, nearly spherical and three times the width of the head. The old dark armour plates are stretched apart into four small bars along the top of the abdomen. Abdomen amber #e39a28, highlight #ffd98a, shadow #a8641a, translucent with one bright specular highlight. Spindly legs that barely carry it."
+  },
+  {
+   "id": "shrieker",
+   "name": "Shrieker",
+   "kind": "enemy",
+   "build_step": 2,
+   "file": "art/source/hive-pixel/shrieker-0.png",
+   "canvas": "2:1, ideally 2048x1024",
+   "grid": "8 columns x 4 rows",
+   "imported_frame_px": 128,
+   "in_game_radius": 14,
+   "flies": false,
+   "style_reference": "art/source/zombies-pixel/walker-0.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/enemy-shrieker.png",
+    "art/source/hive-pixel/concepts/enemy-shrieker-walk.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: production overhead pixel-art animation sprite sheet for DEAD ZONE, a Phaser top-down zombie game.\nReference image 1 (art/source/zombies-pixel/walker-0.png) is the STYLE reference: match its camera, facing, grid, pixel-art rendering and level of detail. Reference image 2 (art/source/hive-pixel/concepts/enemy-shrieker.png) is the DESIGN reference for the new creature: its silhouette, anatomy, colours and markings. Reference image 3 (art/source/hive-pixel/concepts/enemy-shrieker-walk.png) shows the movement cycle. The design references are low resolution on purpose; paint the creature at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a wide 2:1 canvas, ideally 2048x1024. EXACTLY 8 columns and 4 rows of equal square cells. Invisible grid. Each sprite is centred on the middle of its thorax in its cell, at an identical body scale in every cell. The whole creature, including legs, antennae and wings at their widest, stays inside the central 70% of its cell. Nothing overlaps a cell boundary. Do not fill the empty cells. 29 poses:\nROW 1 cells 1-8: WALK frames 0-7. Slow heavy walk, wings folded. Insects walk in an alternating tripod: the front and rear leg of one side move together with the middle leg of the other side.\nROW 2 cells 1-6: ATTACK frames 0-5: wind-up, rear back, lunge, full strike, retract, recover. Headbutt. Cells 7-8: HIT frames 0-1: recoil and recovery.\nROW 3 cells 1-8: DEATH frames 0-7, staying faced to the right. Rolls onto its back, wings splayed, legs curl. The last frame is completely motionless.\nROW 4 cell 1: CORPSE: the same pose as death frame 7, eyes dark, with a small dark stain of ichor underneath.\nROW 4 cells 2-5: SPECIAL frames 0-3. CHORUS wind-up. It arches its back, the wings lift slightly, and the two orange markings glow brighter each frame; the body visibly vibrates in the last two frames.\nROW 4 cells 6-8: completely empty and transparent.\nCREATURE: Shrieker, a cicada. Cicada. Stout, broad body: a wide flat head with the eyes far apart at its corners, a broad thorax with two orange markings (#cf7a2a), a tapering banded abdomen. Two long clear wings with dark veins lie roof-like along the sides and reach past the abdomen (pale grey-green #a9c2b0, see-through). Dark green-black chitin (#44513e, highlight #718a62, shadow #1e261a). Short legs."
+  },
+  {
+   "id": "stinger",
+   "name": "Stinger",
+   "kind": "enemy",
+   "build_step": 2,
+   "file": "art/source/hive-pixel/stinger-0.png",
+   "canvas": "2:1, ideally 2048x1024",
+   "grid": "8 columns x 4 rows",
+   "imported_frame_px": 128,
+   "in_game_radius": 12,
+   "flies": true,
+   "style_reference": "art/source/zombies-pixel/runner-0.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/enemy-stinger.png",
+    "art/source/hive-pixel/concepts/enemy-stinger-walk.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: production overhead pixel-art animation sprite sheet for DEAD ZONE, a Phaser top-down zombie game.\nReference image 1 (art/source/zombies-pixel/runner-0.png) is the STYLE reference: match its camera, facing, grid, pixel-art rendering and level of detail. Reference image 2 (art/source/hive-pixel/concepts/enemy-stinger.png) is the DESIGN reference for the new creature: its silhouette, anatomy, colours and markings. Reference image 3 (art/source/hive-pixel/concepts/enemy-stinger-walk.png) shows the movement cycle. The design references are low resolution on purpose; paint the creature at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a wide 2:1 canvas, ideally 2048x1024. EXACTLY 8 columns and 4 rows of equal square cells. Invisible grid. Each sprite is centred on the middle of its thorax in its cell, at an identical body scale in every cell. The whole creature, including legs, antennae and wings at their widest, stays inside the central 70% of its cell. Nothing overlaps a cell boundary. Do not fill the empty cells. 29 poses:\nROW 1 cells 1-8: FLIGHT frames 0-7. HOVER instead of a walk: an 8-frame wing-beat cycle with the wings as blurred fans, legs dangling, a slight bob.\nROW 2 cells 1-6: ATTACK frames 0-5: wind-up, rear back, lunge, full strike, retract, recover. The abdomen curls forward under the body and jabs the sting to the right. Cells 7-8: HIT frames 0-1: recoil and recovery.\nROW 3 cells 1-8: DEATH frames 0-7, staying faced to the right. Wings stop, it drops and lies on its side with crumpled wings. The last frame is completely motionless.\nROW 4 cell 1: CORPSE: the same pose as death frame 7, eyes dark, with a small dark stain of ichor underneath.\nROW 4 cells 2-5: SPECIAL frames 0-3. DIVE. Body tilted forward, wings swept back, sting leading.\nROW 4 cells 6-8: completely empty and transparent.\nCREATURE: Stinger, a wasp. Wasp, always airborne. Narrow waist. Black head with a yellow face, black thorax with two yellow dots, a tapered abdomen in yellow (#e3b322) and black (#1d1a15) bands ending in a long black sting. Two pairs of clear wings swept back. Thin legs dangling underneath. Never show it standing on the ground while alive."
+  },
+  {
+   "id": "spitter",
+   "name": "Spitter",
+   "kind": "enemy",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/spitter-0.png",
+   "canvas": "2:1, ideally 2048x1024",
+   "grid": "8 columns x 4 rows",
+   "imported_frame_px": 128,
+   "in_game_radius": 17,
+   "flies": false,
+   "style_reference": "art/source/zombies-pixel/walker-0.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/enemy-spitter.png",
+    "art/source/hive-pixel/concepts/enemy-spitter-walk.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: production overhead pixel-art animation sprite sheet for DEAD ZONE, a Phaser top-down zombie game.\nReference image 1 (art/source/zombies-pixel/walker-0.png) is the STYLE reference: match its camera, facing, grid, pixel-art rendering and level of detail. Reference image 2 (art/source/hive-pixel/concepts/enemy-spitter.png) is the DESIGN reference for the new creature: its silhouette, anatomy, colours and markings. Reference image 3 (art/source/hive-pixel/concepts/enemy-spitter-walk.png) shows the movement cycle. The design references are low resolution on purpose; paint the creature at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a wide 2:1 canvas, ideally 2048x1024. EXACTLY 8 columns and 4 rows of equal square cells. Invisible grid. Each sprite is centred on the middle of its thorax in its cell, at an identical body scale in every cell. The whole creature, including legs, antennae and wings at their widest, stays inside the central 70% of its cell. Nothing overlaps a cell boundary. Do not fill the empty cells. 29 poses:\nROW 1 cells 1-8: WALK frames 0-7. Steady beetle walk. Insects walk in an alternating tripod: the front and rear leg of one side move together with the middle leg of the other side.\nROW 2 cells 1-6: ATTACK frames 0-5: wind-up, rear back, lunge, full strike, retract, recover. Close bite (it mostly sprays). Cells 7-8: HIT frames 0-1: recoil and recovery.\nROW 3 cells 1-8: DEATH frames 0-7, staying faced to the right. Flips onto its back, legs curl; the glow at the abdomen tip goes out. The last frame is completely motionless.\nROW 4 cell 1: CORPSE: the same pose as death frame 7, eyes dark, with a small dark stain of ichor underneath.\nROW 4 cells 2-5: SPECIAL frames 0-3. SPRAY TELL. It plants all six legs wide and swings the abdomen tip forward underneath itself so it points right. The tip goes from orange to white-hot across the frames, with a few wisps of steam. Do not draw the spray; the game draws it.\nROW 4 cells 6-8: completely empty and transparent.\nCREATURE: Spitter, a bombardier beetle. Bombardier beetle. Small orange head and orange plate behind it (#c9642b, highlight #ee9a5a), blue-black ridged wing cases with a centre seam (#232c40, highlight #3d4a66), orange legs, long thread antennae. The tip of the abdomen glows orange-hot (#ffb347)."
+  },
+  {
+   "id": "shieldback",
+   "name": "Shieldback",
+   "kind": "enemy",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/shieldback-0.png",
+   "canvas": "2:1, ideally 2048x1024",
+   "grid": "8 columns x 4 rows",
+   "imported_frame_px": 192,
+   "in_game_radius": 23,
+   "flies": false,
+   "style_reference": "art/source/zombies-pixel/brute-0.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/enemy-shieldback.png",
+    "art/source/hive-pixel/concepts/enemy-shieldback-walk.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: production overhead pixel-art animation sprite sheet for DEAD ZONE, a Phaser top-down zombie game.\nReference image 1 (art/source/zombies-pixel/brute-0.png) is the STYLE reference: match its camera, facing, grid, pixel-art rendering and level of detail. Reference image 2 (art/source/hive-pixel/concepts/enemy-shieldback.png) is the DESIGN reference for the new creature: its silhouette, anatomy, colours and markings. Reference image 3 (art/source/hive-pixel/concepts/enemy-shieldback-walk.png) shows the movement cycle. The design references are low resolution on purpose; paint the creature at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a wide 2:1 canvas, ideally 2048x1024. EXACTLY 8 columns and 4 rows of equal square cells. Invisible grid. Each sprite is centred on the middle of its thorax in its cell, at an identical body scale in every cell. The whole creature, including legs, antennae and wings at their widest, stays inside the central 70% of its cell. Nothing overlaps a cell boundary. Do not fill the empty cells. 29 poses:\nROW 1 cells 1-8: WALK frames 0-7. Heavy slow walk. Insects walk in an alternating tripod: the front and rear leg of one side move together with the middle leg of the other side.\nROW 2 cells 1-6: ATTACK frames 0-5: wind-up, rear back, lunge, full strike, retract, recover. Upward toss of the horn. Cells 7-8: HIT frames 0-1: recoil and recovery.\nROW 3 cells 1-8: DEATH frames 0-7, staying faced to the right. Sinks, tips onto its side, lies on its back with legs curled and horn pointing right. The last frame is completely motionless.\nROW 4 cell 1: CORPSE: the same pose as death frame 7, eyes dark, with a small dark stain of ichor underneath.\nROW 4 cells 2-5: SPECIAL frames 0-3. CHARGE. Head down so the horn is level and pointing right, legs at full stretch, a 4-frame gallop.\nROW 4 cells 6-8: completely empty and transparent.\nCREATURE: Shieldback, a rhinoceros beetle. Rhinoceros beetle, the biggest ordinary enemy. Heavy oval body in glossy dark brown-black (#3d2b1e, highlight #735238, shadow #1b120b). A wide armoured plate behind the head with a pale bronze rim (#c9a15a) along its front edge; that rim is how players read \"armoured from the front\", so keep it bright. A long forked horn projecting forward from the head. Thick spurred legs."
+  },
+  {
+   "id": "lurker",
+   "name": "Lurker",
+   "kind": "enemy",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/lurker-0.png",
+   "canvas": "2:1, ideally 2048x1024",
+   "grid": "8 columns x 4 rows",
+   "imported_frame_px": 128,
+   "in_game_radius": 16,
+   "flies": false,
+   "style_reference": "art/source/zombies-pixel/walker-0.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/enemy-lurker.png",
+    "art/source/hive-pixel/concepts/enemy-lurker-walk.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: production overhead pixel-art animation sprite sheet for DEAD ZONE, a Phaser top-down zombie game.\nReference image 1 (art/source/zombies-pixel/walker-0.png) is the STYLE reference: match its camera, facing, grid, pixel-art rendering and level of detail. Reference image 2 (art/source/hive-pixel/concepts/enemy-lurker.png) is the DESIGN reference for the new creature: its silhouette, anatomy, colours and markings. Reference image 3 (art/source/hive-pixel/concepts/enemy-lurker-walk.png) shows the movement cycle. The design references are low resolution on purpose; paint the creature at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a wide 2:1 canvas, ideally 2048x1024. EXACTLY 8 columns and 4 rows of equal square cells. Invisible grid. Each sprite is centred on the middle of its thorax in its cell, at an identical body scale in every cell. The whole creature, including legs, antennae and wings at their widest, stays inside the central 70% of its cell. Nothing overlaps a cell boundary. Do not fill the empty cells. 29 poses:\nROW 1 cells 1-8: WALK frames 0-7. Slow stalking steps with a side-to-side sway, forearms folded. Insects walk in an alternating tripod: the front and rear leg of one side move together with the middle leg of the other side.\nROW 2 cells 1-6: ATTACK frames 0-5: wind-up, rear back, lunge, full strike, retract, recover. Both forearms snap out to the right and close like a trap. Cells 7-8: HIT frames 0-1: recoil and recovery.\nROW 3 cells 1-8: DEATH frames 0-7, staying faced to the right. Folds up, falls on its side, forearms curled in. The last frame is completely motionless.\nROW 4 cell 1: CORPSE: the same pose as death frame 7, eyes dark, with a small dark stain of ichor underneath.\nROW 4 cells 2-5: SPECIAL frames 0-3. LUNGE. Body low and stretched long, forearms going from cocked to fully extended ahead.\nROW 4 cells 6-8: completely empty and transparent.\nCREATURE: Lurker, a praying mantis. Praying mantis. Slender: a triangular head with large eyes at its two rear corners, a long thin neck, a long leaf-shaped abdomen with a centre vein. Two raptorial forearms folded in front of the head, edged with pale spines. Four thin walking legs. Stone grey-green camouflage colours (#5f6c57, highlight #8b987f, shadow #333c2f) so it blends with cave rock. Paint it fully opaque; the game fades it when it hides."
+  },
+  {
+   "id": "dustwing",
+   "name": "Dustwing",
+   "kind": "enemy",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/dustwing-0.png",
+   "canvas": "2:1, ideally 2048x1024",
+   "grid": "8 columns x 4 rows",
+   "imported_frame_px": 128,
+   "in_game_radius": 13,
+   "flies": true,
+   "style_reference": "art/source/zombies-pixel/walker-0.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/enemy-dustwing.png",
+    "art/source/hive-pixel/concepts/enemy-dustwing-walk.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: production overhead pixel-art animation sprite sheet for DEAD ZONE, a Phaser top-down zombie game.\nReference image 1 (art/source/zombies-pixel/walker-0.png) is the STYLE reference: match its camera, facing, grid, pixel-art rendering and level of detail. Reference image 2 (art/source/hive-pixel/concepts/enemy-dustwing.png) is the DESIGN reference for the new creature: its silhouette, anatomy, colours and markings. Reference image 3 (art/source/hive-pixel/concepts/enemy-dustwing-walk.png) shows the movement cycle. The design references are low resolution on purpose; paint the creature at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a wide 2:1 canvas, ideally 2048x1024. EXACTLY 8 columns and 4 rows of equal square cells. Invisible grid. Each sprite is centred on the middle of its thorax in its cell, at an identical body scale in every cell. The whole creature, including legs, antennae and wings at their widest, stays inside the central 70% of its cell. Nothing overlaps a cell boundary. Do not fill the empty cells. 29 poses:\nROW 1 cells 1-8: FLIGHT frames 0-7. FLAP instead of a walk: an 8-frame wing cycle from fully spread to half closed and back.\nROW 2 cells 1-6: ATTACK frames 0-5: wind-up, rear back, lunge, full strike, retract, recover. Body-slam with the wings wrapping forward. Cells 7-8: HIT frames 0-1: recoil and recovery.\nROW 3 cells 1-8: DEATH frames 0-7, staying faced to the right. Wings fold, it spirals down and lies flat with wings spread. The last frame is completely motionless.\nROW 4 cell 1: CORPSE: the same pose as death frame 7, eyes dark, with a small dark stain of ichor underneath.\nROW 4 cells 2-5: SPECIAL frames 0-3. DUST BURST. The wings clap together above the body and a ring of pale dust puffs outward.\nROW 4 cells 6-8: completely empty and transparent.\nCREATURE: Dustwing, a moth. Moth, always airborne. Broad triangular forewings spread flat in a delta shape, each with a dark eye-spot ring and a small violet centre; smaller hindwings; a furry grey-brown body; feathery antennae. Pale ash colours (#b8ae9c, highlight #e6dfcd, shadow #6d6557). A few pale dust motes trail from the wings."
+  },
+  {
+   "id": "skitterer",
+   "name": "Skitterer",
+   "kind": "enemy",
+   "build_step": 4,
+   "file": "art/source/hive-pixel/skitterer-0.png",
+   "canvas": "2:1, ideally 2048x1024",
+   "grid": "8 columns x 4 rows",
+   "imported_frame_px": 128,
+   "in_game_radius": 10,
+   "flies": false,
+   "style_reference": "art/source/zombies-pixel/runner-0.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/enemy-skitterer.png",
+    "art/source/hive-pixel/concepts/enemy-skitterer-walk.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: production overhead pixel-art animation sprite sheet for DEAD ZONE, a Phaser top-down zombie game.\nReference image 1 (art/source/zombies-pixel/runner-0.png) is the STYLE reference: match its camera, facing, grid, pixel-art rendering and level of detail. Reference image 2 (art/source/hive-pixel/concepts/enemy-skitterer.png) is the DESIGN reference for the new creature: its silhouette, anatomy, colours and markings. Reference image 3 (art/source/hive-pixel/concepts/enemy-skitterer-walk.png) shows the movement cycle. The design references are low resolution on purpose; paint the creature at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a wide 2:1 canvas, ideally 2048x1024. EXACTLY 8 columns and 4 rows of equal square cells. Invisible grid. Each sprite is centred on the middle of its thorax in its cell, at an identical body scale in every cell. The whole creature, including legs, antennae and wings at their widest, stays inside the central 70% of its cell. Nothing overlaps a cell boundary. Do not fill the empty cells. 29 poses:\nROW 1 cells 1-8: WALK frames 0-7. Very fast scuttle: legs in sharply alternating positions, antennae whipping. Insects walk in an alternating tripod: the front and rear leg of one side move together with the middle leg of the other side.\nROW 2 cells 1-6: ATTACK frames 0-5: wind-up, rear back, lunge, full strike, retract, recover. Quick bite. Cells 7-8: HIT frames 0-1: recoil and recovery.\nROW 3 cells 1-8: DEATH frames 0-7, staying faced to the right. Flips onto its back, legs kick, then curl. The last frame is completely motionless.\nROW 4 cell 1: CORPSE: the same pose as death frame 7, eyes dark, with a small dark stain of ichor underneath.\nROW 4 cells 2-5: SPECIAL frames 0-3. GETS BACK UP. On its back with legs kicking, rocking, flipping over, upright again.\nROW 4 cells 6-8: completely empty and transparent.\nCREATURE: Skitterer, a cockroach. Cockroach. Flat oval body in glossy dark red-brown (#5e2e1b, highlight #93502e, shadow #2a1209). A shield behind the head with a pale tan margin (#c9a36a) hides most of the head. Overlapping wings on the back, very long antennae sweeping forward, six spiny legs splayed wide, two short tail spikes."
+  },
+  {
+   "id": "grub",
+   "name": "Grub",
+   "kind": "enemy",
+   "build_step": 1,
+   "file": "art/source/hive-pixel/grub-0.png",
+   "canvas": "2:1, ideally 2048x1024",
+   "grid": "8 columns x 4 rows",
+   "imported_frame_px": 128,
+   "in_game_radius": 8,
+   "flies": false,
+   "style_reference": "art/source/zombies-pixel/crawler-0.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/enemy-grub.png",
+    "art/source/hive-pixel/concepts/enemy-grub-walk.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: production overhead pixel-art animation sprite sheet for DEAD ZONE, a Phaser top-down zombie game.\nReference image 1 (art/source/zombies-pixel/crawler-0.png) is the STYLE reference: match its camera, facing, grid, pixel-art rendering and level of detail. Reference image 2 (art/source/hive-pixel/concepts/enemy-grub.png) is the DESIGN reference for the new creature: its silhouette, anatomy, colours and markings. Reference image 3 (art/source/hive-pixel/concepts/enemy-grub-walk.png) shows the movement cycle. The design references are low resolution on purpose; paint the creature at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a wide 2:1 canvas, ideally 2048x1024. EXACTLY 8 columns and 4 rows of equal square cells. Invisible grid. Each sprite is centred on the middle of its thorax in its cell, at an identical body scale in every cell. The whole creature, including legs, antennae and wings at their widest, stays inside the central 70% of its cell. Nothing overlaps a cell boundary. Do not fill the empty cells. 29 poses:\nROW 1 cells 1-8: WALK frames 0-7. S-curve wriggle, the wave travelling from head to tail. Insects walk in an alternating tripod: the front and rear leg of one side move together with the middle leg of the other side.\nROW 2 cells 1-6: ATTACK frames 0-5: wind-up, rear back, lunge, full strike, retract, recover. Small lunge with the head. Cells 7-8: HIT frames 0-1: recoil and recovery.\nROW 3 cells 1-8: DEATH frames 0-7, staying faced to the right. Curls into a C and goes still. The last frame is completely motionless.\nROW 4 cell 1: CORPSE: the same pose as death frame 7, eyes dark, with a small dark stain of ichor underneath.\nROW 4 cells 2-5: SPECIAL frames 0-3. BURROW. Head down into the ground, the body sinking until only the tail shows.\nROW 4 cells 6-8: completely empty and transparent.\nCREATURE: Grub, a larva. Larva. Six pale cream segments (#d8cdaa, highlight #f2ebd2, shadow #9b8f68), fattest in the middle, with a small dark amber head capsule (#7c4b1c) and tiny mandibles. Three pairs of stubby legs near the head."
+  },
+  {
+   "id": "marshal",
+   "name": "The Marshal",
+   "kind": "boss",
+   "build_step": 1,
+   "file": "art/source/hive-pixel/boss-marshal.png",
+   "canvas": "square, ideally 2048x2048",
+   "grid": "4 columns x 4 rows",
+   "imported_frame_px": 192,
+   "in_game_radius": 40,
+   "flies": false,
+   "style_reference": "art/source/bosses-pixel/butcher.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/boss-marshal.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset type: production overhead pixel-art boss sprite sheet for DEAD ZONE.\nReference image 1 (art/source/bosses-pixel/butcher.png) is the STYLE reference: match its camera, facing, grid, gritty pixel art, dark outlines and level of detail. Reference image 2 (art/source/hive-pixel/concepts/boss-marshal.png) is the DESIGN reference for the new boss: its silhouette, anatomy, colours and markings. It is low resolution on purpose; paint the boss at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a square canvas, ideally 2048x2048. EXACTLY 4 columns and 4 rows of equal square cells, 16 sprites, no margins between cells. Each creature is centred on the same cell anchor at a consistent body scale, with a maximum footprint of 80% of the cell and clear padding on all sides. Nothing crosses into another cell.\nCell order, left to right then down:\nrow 1: idle breathing 1, idle breathing 2, walk left step, walk passing.\nrow 2: walk right step, walk passing alternate, melee wind-up, melee strike.\nrow 3: special preparation 1, special preparation 2, special release 1, special release 2.\nrow 4: hit recoil or stunned, death collapse start, death collapse middle, dead body lying flat (on its back, legs curled, eyes dark).\nThe last three poses must clearly collapse onto the ground while still facing right.\nMelee: The mandibles open wide, then snap shut ahead of it.\nSpecial preparation: JAW CHARGE. Head lowered, mandibles spread to their widest, legs braced.\nSpecial release: At a full gallop, mandibles thrust forward.\nBOSS: The Marshal, a giant soldier ant, boss of The Warrens. Soldier ant major, colossal. An oversized blocky head, wider than the thorax, with huge serrated bone-white siege mandibles (#e6dcc0) as long as the head itself. Dark blood-red chitin (#7d2a1c, highlight #b0492e, shadow #3d120b). Backward-pointing spikes on the thorax. Banded abdomen with patches of grey-green rot. Thick spurred legs. Pale scars across the head."
+  },
+  {
+   "id": "famine",
+   "name": "Famine",
+   "kind": "boss",
+   "build_step": 2,
+   "file": "art/source/hive-pixel/boss-famine.png",
+   "canvas": "square, ideally 2048x2048",
+   "grid": "4 columns x 4 rows",
+   "imported_frame_px": 192,
+   "in_game_radius": 34,
+   "flies": false,
+   "style_reference": "art/source/bosses-pixel/butcher.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/boss-famine.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset type: production overhead pixel-art boss sprite sheet for DEAD ZONE.\nReference image 1 (art/source/bosses-pixel/butcher.png) is the STYLE reference: match its camera, facing, grid, gritty pixel art, dark outlines and level of detail. Reference image 2 (art/source/hive-pixel/concepts/boss-famine.png) is the DESIGN reference for the new boss: its silhouette, anatomy, colours and markings. It is low resolution on purpose; paint the boss at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a square canvas, ideally 2048x2048. EXACTLY 4 columns and 4 rows of equal square cells, 16 sprites, no margins between cells. Each creature is centred on the same cell anchor at a consistent body scale, with a maximum footprint of 80% of the cell and clear padding on all sides. Nothing crosses into another cell.\nCell order, left to right then down:\nrow 1: idle breathing 1, idle breathing 2, walk left step, walk passing.\nrow 2: walk right step, walk passing alternate, melee wind-up, melee strike.\nrow 3: special preparation 1, special preparation 2, special release 1, special release 2.\nrow 4: hit recoil or stunned, death collapse start, death collapse middle, dead body lying flat (on its back, legs curled, eyes dark).\nThe last three poses must clearly collapse onto the ground while still facing right.\nMelee: A forward kick with a hind leg, then a bite.\nSpecial preparation: SKYFALL. A deep crouch on the hind legs.\nSpecial release: Airborne: legs trailing, tattered wings fully open.\nBOSS: Famine, a giant locust, boss of The Granary. Giant locust, emaciated. A long gaunt body in pale yellow-grey (#a39c56, highlight #cfc77e, shadow #5c5628) with black banding on the abdomen and thighs. Enormous hind legs. Tattered see-through wings half spread. Dark mouthparts."
+  },
+  {
+   "id": "vespa",
+   "name": "Matriarch Vespa",
+   "kind": "boss",
+   "build_step": 2,
+   "file": "art/source/hive-pixel/boss-vespa.png",
+   "canvas": "square, ideally 2048x2048",
+   "grid": "4 columns x 4 rows",
+   "imported_frame_px": 192,
+   "in_game_radius": 36,
+   "flies": true,
+   "style_reference": "art/source/bosses-pixel/butcher.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/boss-vespa.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset type: production overhead pixel-art boss sprite sheet for DEAD ZONE.\nReference image 1 (art/source/bosses-pixel/butcher.png) is the STYLE reference: match its camera, facing, grid, gritty pixel art, dark outlines and level of detail. Reference image 2 (art/source/hive-pixel/concepts/boss-vespa.png) is the DESIGN reference for the new boss: its silhouette, anatomy, colours and markings. It is low resolution on purpose; paint the boss at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a square canvas, ideally 2048x2048. EXACTLY 4 columns and 4 rows of equal square cells, 16 sprites, no margins between cells. Each creature is centred on the same cell anchor at a consistent body scale, with a maximum footprint of 80% of the cell and clear padding on all sides. Nothing crosses into another cell.\nCell order, left to right then down:\nrow 1: idle breathing 1, idle breathing 2, walk left step, walk passing.\nrow 2: walk right step, walk passing alternate, melee wind-up, melee strike.\nrow 3: special preparation 1, special preparation 2, special release 1, special release 2.\nrow 4: hit recoil or stunned, death collapse start, death collapse middle, dead body lying flat (on its back, legs curled, eyes dark).\nThe last three poses must clearly collapse onto the ground while still facing right.\nMelee: A jab of the sting.\nSpecial preparation: STRAFING RUN. The abdomen swings forward underneath the body.\nSpecial release: The abdomen points right, firing. Do not draw the darts; the game draws them.\nShe hovers: use the two idle cells and the four walk cells for a wing-beat and drift cycle with blurred wings. In the death cells she falls and lies with crumpled wings.\nBOSS: Matriarch Vespa, a giant hornet, boss of The Paper Hive. Giant hornet matriarch, airborne. An orange head (#d9731e) with heavy mandibles, a black thorax with crown-like spikes, a long abdomen banded in yellow (#e0a81c) and black with a very long sting. Two pairs of large clear wings."
+  },
+  {
+   "id": "goliath",
+   "name": "Goliath",
+   "kind": "boss",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/boss-goliath.png",
+   "canvas": "square, ideally 2048x2048",
+   "grid": "4 columns x 4 rows",
+   "imported_frame_px": 192,
+   "in_game_radius": 48,
+   "flies": false,
+   "style_reference": "art/source/bosses-pixel/butcher.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/boss-goliath.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset type: production overhead pixel-art boss sprite sheet for DEAD ZONE.\nReference image 1 (art/source/bosses-pixel/butcher.png) is the STYLE reference: match its camera, facing, grid, gritty pixel art, dark outlines and level of detail. Reference image 2 (art/source/hive-pixel/concepts/boss-goliath.png) is the DESIGN reference for the new boss: its silhouette, anatomy, colours and markings. It is low resolution on purpose; paint the boss at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a square canvas, ideally 2048x2048. EXACTLY 4 columns and 4 rows of equal square cells, 16 sprites, no margins between cells. Each creature is centred on the same cell anchor at a consistent body scale, with a maximum footprint of 80% of the cell and clear padding on all sides. Nothing crosses into another cell.\nCell order, left to right then down:\nrow 1: idle breathing 1, idle breathing 2, walk left step, walk passing.\nrow 2: walk right step, walk passing alternate, melee wind-up, melee strike.\nrow 3: special preparation 1, special preparation 2, special release 1, special release 2.\nrow 4: hit recoil or stunned, death collapse start, death collapse middle, dead body lying flat (on its back, legs curled, eyes dark).\nThe last three poses must clearly collapse onto the ground while still facing right.\nMelee: An upward toss of the horn.\nSpecial preparation: RAM. Head down, front legs pawing.\nSpecial release: Full charge with the horn level.\nBOSS: Goliath, a giant Hercules beetle, boss of The Boiling Galleries. Hercules beetle, the largest brood boss. A black armoured plate behind the head with a bronze rim (#d9b25a), olive-yellow wing cases with black spots (#a39a3a), and a very long toothed horn projecting forward over a shorter head horn, so the two read as a pincer from above. Massive spurred legs."
+  },
+  {
+   "id": "prioress",
+   "name": "The Prioress",
+   "kind": "boss",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/boss-prioress.png",
+   "canvas": "square, ideally 2048x2048",
+   "grid": "4 columns x 4 rows",
+   "imported_frame_px": 192,
+   "in_game_radius": 34,
+   "flies": false,
+   "style_reference": "art/source/bosses-pixel/butcher.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/boss-prioress.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset type: production overhead pixel-art boss sprite sheet for DEAD ZONE.\nReference image 1 (art/source/bosses-pixel/butcher.png) is the STYLE reference: match its camera, facing, grid, gritty pixel art, dark outlines and level of detail. Reference image 2 (art/source/hive-pixel/concepts/boss-prioress.png) is the DESIGN reference for the new boss: its silhouette, anatomy, colours and markings. It is low resolution on purpose; paint the boss at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a square canvas, ideally 2048x2048. EXACTLY 4 columns and 4 rows of equal square cells, 16 sprites, no margins between cells. Each creature is centred on the same cell anchor at a consistent body scale, with a maximum footprint of 80% of the cell and clear padding on all sides. Nothing crosses into another cell.\nCell order, left to right then down:\nrow 1: idle breathing 1, idle breathing 2, walk left step, walk passing.\nrow 2: walk right step, walk passing alternate, melee wind-up, melee strike.\nrow 3: special preparation 1, special preparation 2, special release 1, special release 2.\nrow 4: hit recoil or stunned, death collapse start, death collapse middle, dead body lying flat (on its back, legs curled, eyes dark).\nThe last three poses must clearly collapse onto the ground while still facing right.\nMelee: REAP: a wide sweep of one scythe across the front.\nSpecial preparation: SCYTHE CROSS. Both arms cocked back high.\nSpecial release: Both scythes slash forward and cross in an X, the body stretched long.\nBOSS: The Prioress, a giant praying mantis, boss of The Lantern Deep. Giant mantis in orchid-mantis colours: bone pink (#d9c4c0, highlight #f6e8e4, shadow #8c716e) with magenta accents (#b4517a). A triangular head, a long neck, petal-shaped lobes on the walking legs, pale wings half open like a cloak, and two long scythe forearms held wide."
+  },
+  {
+   "id": "carrion_lord",
+   "name": "The Carrion Lord",
+   "kind": "boss",
+   "build_step": 4,
+   "file": "art/source/hive-pixel/boss-carrion_lord.png",
+   "canvas": "square, ideally 2048x2048",
+   "grid": "4 columns x 4 rows",
+   "imported_frame_px": 192,
+   "in_game_radius": 42,
+   "flies": true,
+   "style_reference": "art/source/bosses-pixel/butcher.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/boss-carrion_lord.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset type: production overhead pixel-art boss sprite sheet for DEAD ZONE.\nReference image 1 (art/source/bosses-pixel/butcher.png) is the STYLE reference: match its camera, facing, grid, gritty pixel art, dark outlines and level of detail. Reference image 2 (art/source/hive-pixel/concepts/boss-carrion_lord.png) is the DESIGN reference for the new boss: its silhouette, anatomy, colours and markings. It is low resolution on purpose; paint the boss at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a square canvas, ideally 2048x2048. EXACTLY 4 columns and 4 rows of equal square cells, 16 sprites, no margins between cells. Each creature is centred on the same cell anchor at a consistent body scale, with a maximum footprint of 80% of the cell and clear padding on all sides. Nothing crosses into another cell.\nCell order, left to right then down:\nrow 1: idle breathing 1, idle breathing 2, walk left step, walk passing.\nrow 2: walk right step, walk passing alternate, melee wind-up, melee strike.\nrow 3: special preparation 1, special preparation 2, special release 1, special release 2.\nrow 4: hit recoil or stunned, death collapse start, death collapse middle, dead body lying flat (on its back, legs curled, eyes dark).\nThe last three poses must clearly collapse onto the ground while still facing right.\nMelee: A stab with the proboscis.\nSpecial preparation: INFEST. The abdomen is raised high.\nSpecial release: The abdomen tip thrusts down and forward. No loose eggs or projectiles.\nIt crawls and buzzes: the walk cells are a heavy crawl with the wings buzzing.\nBOSS: The Carrion Lord, a giant blowfly, boss of The Rot Cellar. Bloated blowfly. A swollen metallic green-teal abdomen (#2f6f5e, highlight #5fae96) with banding, an open wound, and pale maggots crawling on it. A dark bristled thorax with two pale stripes. Huge dark-red compound eyes (#8a1f2a). A short proboscis. Tattered clear wings swept back. Six hairy black legs."
+  },
+  {
+   "id": "queen_court",
+   "name": "The Queen (fixed in place)",
+   "kind": "boss",
+   "build_step": 4,
+   "file": "art/source/hive-pixel/boss-queen-court.png",
+   "canvas": "square, ideally 2048x2048",
+   "grid": "4 columns x 4 rows",
+   "imported_frame_px": 384,
+   "style_reference": "art/source/bosses-pixel/warden.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/boss-queen.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset type: production overhead pixel-art boss sprite sheet for DEAD ZONE: the final boss while she is fixed in place (stages 1 and 2).\nReference image 1 (art/source/bosses-pixel/warden.png) is the STYLE reference: match its camera, facing, grid, gritty pixel art and level of detail. Reference image 2 (art/source/hive-pixel/concepts/boss-queen.png) is the DESIGN reference. It is low resolution on purpose; paint her at the quality of image 1.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a square canvas, ideally 2048x2048. EXACTLY 4 columns and 4 rows of equal square cells, 16 sprites, no margins between cells. Each creature is centred on the same cell anchor at a consistent body scale, with a maximum footprint of 80% of the cell and clear padding on all sides. Nothing crosses into another cell. She is much longer than she is wide: her long axis runs left to right and she spans most of the cell width.\nShe never moves from the spot in this sheet. Cell order, left to right then down:\ncell 1: idle, sac pulsing 1.\ncell 2: idle, sac pulsing 2.\ncell 3: idle, sac pulsing 3.\ncell 4: idle, sac pulsing 4.\ncell 5: laying a clutch 1 (eggs emerging at the rear, left side).\ncell 6: laying a clutch 2.\ncell 7: egg-bomb lob wind-up (rear of the sac contracts).\ncell 8: egg-bomb lob release.\ncell 9: foreleg slam wind-up (front legs raised).\ncell 10: foreleg slam strike.\ncell 11: pheromone command wind-up (antennae raised, violet spots brighter).\ncell 12: pheromone command release (violet spots at their brightest).\ncell 13: hit recoil.\ncell 14: tearing free 1 (the membrane splits behind the thorax).\ncell 15: tearing free 2 (thorax pulling away).\ncell 16: the empty torn sac alone, left behind.\nBOSS: The Queen. Termite and ant queen in one. A small dark-brown armoured head and thorax (#6b3a24, highlight #94573a) with bone-white crown ridges and long mandibles, in front of an enormous pale egg sac of seven swollen cream-pink segments (#d9c3a8, highlight #f3e5cf, shadow #9c7f66). The old brown armour plates are stretched apart into one small bar on top of each segment. Faint violet veins and glowing violet spots (#8f5fd6) along both sides. Six small legs around the thorax, too small to carry her. She is about fourteen times the length of a Drone."
+  },
+  {
+   "id": "queen_unbound",
+   "name": "The Queen (unbound)",
+   "kind": "boss",
+   "build_step": 4,
+   "file": "art/source/hive-pixel/boss-queen-unbound.png",
+   "canvas": "square, ideally 2048x2048",
+   "grid": "4 columns x 4 rows",
+   "imported_frame_px": 384,
+   "style_reference": "art/source/bosses-pixel/warden.png",
+   "design_references": [
+    "art/source/hive-pixel/concepts/boss-queen.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset type: production overhead pixel-art boss sprite sheet for DEAD ZONE: the final boss after she tears free (stages 3 and 4).\nReference image 1 (art/source/bosses-pixel/warden.png) is the STYLE reference. Reference image 2 (art/source/hive-pixel/concepts/boss-queen.png) shows her head, thorax and colours; in this sheet the egg sac is gone.\nCAMERA IS CRITICAL: orthographic, straight DOWN from directly above at 90 degrees. You see the creature's back: the top of the head, thorax and abdomen, the wing cases, with the legs splayed out to both sides. Every pose faces screen RIGHT (+X): head on the right, abdomen on the left. Never a side view, front view, three-quarter view or isometric view.\nWHAT IT IS: a giant dead insect the size of a person, from an underground hive. It is an insect on six legs. It is not a humanoid and not a human wearing insect parts. It is a reanimated corpse: dull chipped chitin, hairline cracks, a patch of grey-green rot, a frayed wing or a missing leg tip. Every creature from the rift has small glowing violet eyes (#c9a6ff). Keep them visible in every living frame and dark in the corpse.\nSTYLE: detailed crisp pixel art that matches the style reference: dark pixel outlines, a limited shaded palette, clean readable pixel clusters. Light from the upper left. No blur, no soft glow, no 3D render, no painterly smoothing.\nBACKGROUND: true alpha transparency. No floor, no cast shadow, no checkerboard, no text, labels, numbers, grid lines, borders, UI or props. No loose projectiles, sprays or particles unless the pose list asks for them.\nLAYOUT: a square canvas, ideally 2048x2048. EXACTLY 4 columns and 4 rows of equal square cells, 16 sprites, no margins between cells. Each creature is centred on the same cell anchor at a consistent body scale, with a maximum footprint of 80% of the cell and clear padding on all sides. Nothing crosses into another cell.\nCell order, left to right then down:\nrow 1: idle breathing 1, idle breathing 2, walk left step, walk passing.\nrow 2: walk right step, walk passing alternate, melee wind-up (mandibles wide), melee strike (mandibles shut ahead of her).\nrow 3: charge preparation 1 (crouch), charge preparation 2 (scream, head thrown back), charge release 1, charge release 2 (full gallop).\nrow 4: hit recoil, death collapse start, death collapse middle, dead body lying flat across the ground.\nBOSS: The Queen, unbound. The same queen torn free of her egg sac: the head and thorax, and a short ragged stump of abdomen trailing torn membrane. Her legs are now long enough to carry her. Mandibles wide. Violet light leaks from the wound."
+  },
+  {
+   "id": "formic_sprayer",
+   "name": "Formic Sprayer",
+   "kind": "weapon_icon",
+   "build_step": 1,
+   "file": "art/source/hive-pixel/icons/formic_sprayer.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-formic_sprayer.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: Formic Sprayer. A sprayer built around an ant's amber abdomen used as the tank: glossy, banded amber, mounted on the top rear of a short grey metal body. A hose runs from the tank to a dark nozzle. Brown pistol grip. A drip of yellow-green acid at the nozzle."
+  },
+  {
+   "id": "formic_sprayer",
+   "name": "Formic Sprayer",
+   "kind": "weapon_held",
+   "build_step": 1,
+   "file": "art/source/hive-pixel/held/formic_sprayer.png",
+   "canvas": "2:1, 1024x512",
+   "atlas_length_px": 110,
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-formic_sprayer.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: the weapon as the player holds it, seen from DIRECTLY ABOVE, for a top-down game. Style reference: the frames named weapon_* in public/assets/characters.png (their positions are listed in public/assets/characters.json).\nOne object on a transparent 2:1 canvas (1024x512). The weapon points right with its long axis horizontal. The grip sits 25% in from the left edge, vertically centred; the muzzle or striking end is toward the right. Top-down view of the weapon alone: no hands, no arms, no loose particles, no cast shadow. Crisp pixel art, dark outline, limited palette. In the game's sprite atlas it ends up about 110 px long (for comparison the pistol is 46, the shotgun 116 and the hunting rifle 137), so keep the shapes simple and bold.\nOBJECT: Formic Sprayer. A sprayer built around an ant's amber abdomen used as the tank: glossy, banded amber, mounted on the top rear of a short grey metal body. A hose runs from the tank to a dark nozzle. Brown pistol grip. A drip of yellow-green acid at the nozzle."
+  },
+  {
+   "id": "mandible_shears",
+   "name": "Mandible Shears",
+   "kind": "weapon_icon",
+   "build_step": 1,
+   "file": "art/source/hive-pixel/icons/mandible_shears.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-mandible_shears.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: Mandible Shears. Two serrated bone-white soldier-ant mandibles hinged like shears on a steel bolt, with two dark red-brown wrapped handles."
+  },
+  {
+   "id": "mandible_shears",
+   "name": "Mandible Shears",
+   "kind": "weapon_held",
+   "build_step": 1,
+   "file": "art/source/hive-pixel/held/mandible_shears.png",
+   "canvas": "2:1, 1024x512",
+   "atlas_length_px": 100,
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-mandible_shears.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: the weapon as the player holds it, seen from DIRECTLY ABOVE, for a top-down game. Style reference: the frames named weapon_* in public/assets/characters.png (their positions are listed in public/assets/characters.json).\nOne object on a transparent 2:1 canvas (1024x512). The weapon points right with its long axis horizontal. The grip sits 25% in from the left edge, vertically centred; the muzzle or striking end is toward the right. Top-down view of the weapon alone: no hands, no arms, no loose particles, no cast shadow. Crisp pixel art, dark outline, limited palette. In the game's sprite atlas it ends up about 100 px long (for comparison the pistol is 46, the shotgun 116 and the hunting rifle 137), so keep the shapes simple and bold.\nOBJECT: Mandible Shears. Two serrated bone-white soldier-ant mandibles hinged like shears on a steel bolt, with two dark red-brown wrapped handles."
+  },
+  {
+   "id": "locust_repeater",
+   "name": "Locust Repeater",
+   "kind": "weapon_icon",
+   "build_step": 2,
+   "file": "art/source/hive-pixel/icons/locust_repeater.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-locust_repeater.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: Locust Repeater. A submachine gun with a dull olive-metal body. The stock is a locust thigh, green with dark notches. A round green drum magazine under the body. Short dark barrel."
+  },
+  {
+   "id": "locust_repeater",
+   "name": "Locust Repeater",
+   "kind": "weapon_held",
+   "build_step": 2,
+   "file": "art/source/hive-pixel/held/locust_repeater.png",
+   "canvas": "2:1, 1024x512",
+   "atlas_length_px": 90,
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-locust_repeater.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: the weapon as the player holds it, seen from DIRECTLY ABOVE, for a top-down game. Style reference: the frames named weapon_* in public/assets/characters.png (their positions are listed in public/assets/characters.json).\nOne object on a transparent 2:1 canvas (1024x512). The weapon points right with its long axis horizontal. The grip sits 25% in from the left edge, vertically centred; the muzzle or striking end is toward the right. Top-down view of the weapon alone: no hands, no arms, no loose particles, no cast shadow. Crisp pixel art, dark outline, limited palette. In the game's sprite atlas it ends up about 90 px long (for comparison the pistol is 46, the shotgun 116 and the hunting rifle 137), so keep the shapes simple and bold.\nOBJECT: Locust Repeater. A submachine gun with a dull olive-metal body. The stock is a locust thigh, green with dark notches. A round green drum magazine under the body. Short dark barrel."
+  },
+  {
+   "id": "needler",
+   "name": "Needler",
+   "kind": "weapon_icon",
+   "build_step": 2,
+   "file": "art/source/hive-pixel/icons/needler.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-needler.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: Needler. A long rifle: dark wooden stock, black receiver with four yellow bands like a wasp's abdomen, a small scope, and a barrel that is a long tapering amber wasp sting."
+  },
+  {
+   "id": "needler",
+   "name": "Needler",
+   "kind": "weapon_held",
+   "build_step": 2,
+   "file": "art/source/hive-pixel/held/needler.png",
+   "canvas": "2:1, 1024x512",
+   "atlas_length_px": 140,
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-needler.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: the weapon as the player holds it, seen from DIRECTLY ABOVE, for a top-down game. Style reference: the frames named weapon_* in public/assets/characters.png (their positions are listed in public/assets/characters.json).\nOne object on a transparent 2:1 canvas (1024x512). The weapon points right with its long axis horizontal. The grip sits 25% in from the left edge, vertically centred; the muzzle or striking end is toward the right. Top-down view of the weapon alone: no hands, no arms, no loose particles, no cast shadow. Crisp pixel art, dark outline, limited palette. In the game's sprite atlas it ends up about 140 px long (for comparison the pistol is 46, the shotgun 116 and the hunting rifle 137), so keep the shapes simple and bold.\nOBJECT: Needler. A long rifle: dark wooden stock, black receiver with four yellow bands like a wasp's abdomen, a small scope, and a barrel that is a long tapering amber wasp sting."
+  },
+  {
+   "id": "vespiary",
+   "name": "The Vespiary",
+   "kind": "weapon_icon",
+   "build_step": 2,
+   "file": "art/source/hive-pixel/icons/vespiary.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-vespiary.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: The Vespiary. A grey-tan paper wasp nest the size of a football, with horizontal paper banding and several dark cell holes with yellow hornet faces looking out, mounted on a brown pistol grip. An opening at the front. Two or three hornets in the air beside it (icon only)."
+  },
+  {
+   "id": "vespiary",
+   "name": "The Vespiary",
+   "kind": "weapon_held",
+   "build_step": 2,
+   "file": "art/source/hive-pixel/held/vespiary.png",
+   "canvas": "2:1, 1024x512",
+   "atlas_length_px": 64,
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-vespiary.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: the weapon as the player holds it, seen from DIRECTLY ABOVE, for a top-down game. Style reference: the frames named weapon_* in public/assets/characters.png (their positions are listed in public/assets/characters.json).\nOne object on a transparent 2:1 canvas (1024x512). The weapon points right with its long axis horizontal. The grip sits 25% in from the left edge, vertically centred; the muzzle or striking end is toward the right. Top-down view of the weapon alone: no hands, no arms, no loose particles, no cast shadow. Crisp pixel art, dark outline, limited palette. In the game's sprite atlas it ends up about 64 px long (for comparison the pistol is 46, the shotgun 116 and the hunting rifle 137), so keep the shapes simple and bold.\nOBJECT: The Vespiary. A grey-tan paper wasp nest the size of a football, with horizontal paper banding and several dark cell holes with yellow hornet faces looking out, mounted on a brown pistol grip. An opening at the front. Two or three hornets in the air beside it (icon only)."
+  },
+  {
+   "id": "bombardier",
+   "name": "Bombardier",
+   "kind": "weapon_icon",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/icons/bombardier.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-bombardier.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: Bombardier. A short, fat shotgun. The housing is made of blue-black beetle wing cases with a centre seam, then an orange collar, then a wide flared dark muzzle glowing orange-hot inside. Small steam puffs at the muzzle (icon only). Dark grip."
+  },
+  {
+   "id": "bombardier",
+   "name": "Bombardier",
+   "kind": "weapon_held",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/held/bombardier.png",
+   "canvas": "2:1, 1024x512",
+   "atlas_length_px": 104,
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-bombardier.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: the weapon as the player holds it, seen from DIRECTLY ABOVE, for a top-down game. Style reference: the frames named weapon_* in public/assets/characters.png (their positions are listed in public/assets/characters.json).\nOne object on a transparent 2:1 canvas (1024x512). The weapon points right with its long axis horizontal. The grip sits 25% in from the left edge, vertically centred; the muzzle or striking end is toward the right. Top-down view of the weapon alone: no hands, no arms, no loose particles, no cast shadow. Crisp pixel art, dark outline, limited palette. In the game's sprite atlas it ends up about 104 px long (for comparison the pistol is 46, the shotgun 116 and the hunting rifle 137), so keep the shapes simple and bold.\nOBJECT: Bombardier. A short, fat shotgun. The housing is made of blue-black beetle wing cases with a centre seam, then an orange collar, then a wide flared dark muzzle glowing orange-hot inside. Small steam puffs at the muzzle (icon only). Dark grip."
+  },
+  {
+   "id": "hornbreaker",
+   "name": "Hornbreaker",
+   "kind": "weapon_icon",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/icons/hornbreaker.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-hornbreaker.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: Hornbreaker. A two-handed hammer: a long wooden haft with bronze wrapping, and a head made of a dark chitin block with a forked Hercules-beetle horn."
+  },
+  {
+   "id": "hornbreaker",
+   "name": "Hornbreaker",
+   "kind": "weapon_held",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/held/hornbreaker.png",
+   "canvas": "2:1, 1024x512",
+   "atlas_length_px": 124,
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-hornbreaker.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: the weapon as the player holds it, seen from DIRECTLY ABOVE, for a top-down game. Style reference: the frames named weapon_* in public/assets/characters.png (their positions are listed in public/assets/characters.json).\nOne object on a transparent 2:1 canvas (1024x512). The weapon points right with its long axis horizontal. The grip sits 25% in from the left edge, vertically centred; the muzzle or striking end is toward the right. Top-down view of the weapon alone: no hands, no arms, no loose particles, no cast shadow. Crisp pixel art, dark outline, limited palette. In the game's sprite atlas it ends up about 124 px long (for comparison the pistol is 46, the shotgun 116 and the hunting rifle 137), so keep the shapes simple and bold.\nOBJECT: Hornbreaker. A two-handed hammer: a long wooden haft with bronze wrapping, and a head made of a dark chitin block with a forked Hercules-beetle horn."
+  },
+  {
+   "id": "lure_lantern",
+   "name": "Lure Lantern",
+   "kind": "weapon_icon",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/icons/lure_lantern.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-lure_lantern.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: Lure Lantern. A launcher: a plain grey metal tube with a grip, ending in a caged glass cup that holds a glowing yellow-green firefly lantern (#d6f25a), with a few sparks around it (icon only)."
+  },
+  {
+   "id": "lure_lantern",
+   "name": "Lure Lantern",
+   "kind": "weapon_held",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/held/lure_lantern.png",
+   "canvas": "2:1, 1024x512",
+   "atlas_length_px": 70,
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-lure_lantern.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: the weapon as the player holds it, seen from DIRECTLY ABOVE, for a top-down game. Style reference: the frames named weapon_* in public/assets/characters.png (their positions are listed in public/assets/characters.json).\nOne object on a transparent 2:1 canvas (1024x512). The weapon points right with its long axis horizontal. The grip sits 25% in from the left edge, vertically centred; the muzzle or striking end is toward the right. Top-down view of the weapon alone: no hands, no arms, no loose particles, no cast shadow. Crisp pixel art, dark outline, limited palette. In the game's sprite atlas it ends up about 70 px long (for comparison the pistol is 46, the shotgun 116 and the hunting rifle 137), so keep the shapes simple and bold.\nOBJECT: Lure Lantern. A launcher: a plain grey metal tube with a grip, ending in a caged glass cup that holds a glowing yellow-green firefly lantern (#d6f25a), with a few sparks around it (icon only)."
+  },
+  {
+   "id": "mantis_scythes",
+   "name": "Mantis Scythes",
+   "kind": "weapon_icon",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/icons/mantis_scythes.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-mantis_scythes.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: Mantis Scythes. A pair of curved green mantis forearm blades with pale serrations along the inner edge, each on a short dark handle wrapped in magenta cloth. Icon: the pair crossed. Held sprite: the two blades side by side, both pointing right."
+  },
+  {
+   "id": "mantis_scythes",
+   "name": "Mantis Scythes",
+   "kind": "weapon_held",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/held/mantis_scythes.png",
+   "canvas": "2:1, 1024x512",
+   "atlas_length_px": 100,
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-mantis_scythes.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: the weapon as the player holds it, seen from DIRECTLY ABOVE, for a top-down game. Style reference: the frames named weapon_* in public/assets/characters.png (their positions are listed in public/assets/characters.json).\nOne object on a transparent 2:1 canvas (1024x512). The weapon points right with its long axis horizontal. The grip sits 25% in from the left edge, vertically centred; the muzzle or striking end is toward the right. Top-down view of the weapon alone: no hands, no arms, no loose particles, no cast shadow. Crisp pixel art, dark outline, limited palette. In the game's sprite atlas it ends up about 100 px long (for comparison the pistol is 46, the shotgun 116 and the hunting rifle 137), so keep the shapes simple and bold.\nOBJECT: Mantis Scythes. A pair of curved green mantis forearm blades with pale serrations along the inner edge, each on a short dark handle wrapped in magenta cloth. Icon: the pair crossed. Held sprite: the two blades side by side, both pointing right."
+  },
+  {
+   "id": "carrion_hive",
+   "name": "Carrion Hive",
+   "kind": "weapon_icon",
+   "build_step": 4,
+   "file": "art/source/hive-pixel/icons/carrion_hive.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-carrion_hive.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: Carrion Hive. A launcher with a dull metal body and grip. Its magazine is a dark teal organic pod riddled with holes, with pale maggots at the openings. Small black flies circle the muzzle (icon only)."
+  },
+  {
+   "id": "carrion_hive",
+   "name": "Carrion Hive",
+   "kind": "weapon_held",
+   "build_step": 4,
+   "file": "art/source/hive-pixel/held/carrion_hive.png",
+   "canvas": "2:1, 1024x512",
+   "atlas_length_px": 112,
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-carrion_hive.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: the weapon as the player holds it, seen from DIRECTLY ABOVE, for a top-down game. Style reference: the frames named weapon_* in public/assets/characters.png (their positions are listed in public/assets/characters.json).\nOne object on a transparent 2:1 canvas (1024x512). The weapon points right with its long axis horizontal. The grip sits 25% in from the left edge, vertically centred; the muzzle or striking end is toward the right. Top-down view of the weapon alone: no hands, no arms, no loose particles, no cast shadow. Crisp pixel art, dark outline, limited palette. In the game's sprite atlas it ends up about 112 px long (for comparison the pistol is 46, the shotgun 116 and the hunting rifle 137), so keep the shapes simple and bold.\nOBJECT: Carrion Hive. A launcher with a dull metal body and grip. Its magazine is a dark teal organic pod riddled with holes, with pale maggots at the openings. Small black flies circle the muzzle (icon only)."
+  },
+  {
+   "id": "queens_decree",
+   "name": "Queen's Decree",
+   "kind": "weapon_icon",
+   "build_step": 4,
+   "file": "art/source/hive-pixel/icons/queens_decree.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-queens_decree.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: Queen's Decree. A slim sceptre-like dart gun: a dark chitin shaft with a grip, bone-white crown spikes near the head, and a faceted violet pheromone crystal at the tip (#8f5fd6, highlight #dcc8ff) with faint sparkles (icon only)."
+  },
+  {
+   "id": "queens_decree",
+   "name": "Queen's Decree",
+   "kind": "weapon_held",
+   "build_step": 4,
+   "file": "art/source/hive-pixel/held/queens_decree.png",
+   "canvas": "2:1, 1024x512",
+   "atlas_length_px": 68,
+   "design_references": [
+    "art/source/hive-pixel/concepts/weapon-queens_decree.png"
+   ],
+   "prompt": "Use case: stylized-concept.\nAsset: the weapon as the player holds it, seen from DIRECTLY ABOVE, for a top-down game. Style reference: the frames named weapon_* in public/assets/characters.png (their positions are listed in public/assets/characters.json).\nOne object on a transparent 2:1 canvas (1024x512). The weapon points right with its long axis horizontal. The grip sits 25% in from the left edge, vertically centred; the muzzle or striking end is toward the right. Top-down view of the weapon alone: no hands, no arms, no loose particles, no cast shadow. Crisp pixel art, dark outline, limited palette. In the game's sprite atlas it ends up about 68 px long (for comparison the pistol is 46, the shotgun 116 and the hunting rifle 137), so keep the shapes simple and bold.\nOBJECT: Queen's Decree. A slim sceptre-like dart gun: a dark chitin shaft with a grip, bone-white crown spikes near the head, and a faceted violet pheromone crystal at the tip (#8f5fd6, highlight #dcc8ff) with faint sparkles (icon only)."
+  },
+  {
+   "id": "ichor",
+   "name": "ichor",
+   "kind": "item_icon",
+   "build_step": 1,
+   "file": "art/source/hive-pixel/icons/ichor.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: ichor. Ammo for every insect gun. A small stoppered glass vial of glowing yellow-green ichor (#b6d24a), a little spilled at the lip."
+  },
+  {
+   "id": "royal_jelly",
+   "name": "royal jelly",
+   "kind": "item_icon",
+   "build_step": 1,
+   "file": "art/source/hive-pixel/icons/royal_jelly.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: royal jelly. A healing item. One waxy six-sided comb cell used as a cup, filled with pearly white-gold jelly with a soft glow."
+  },
+  {
+   "id": "carapace_vest",
+   "name": "carapace vest",
+   "kind": "item_icon",
+   "build_step": 3,
+   "file": "art/source/hive-pixel/icons/carapace_vest.png",
+   "canvas": "square, 768x768 (reduced to 80x80)",
+   "design_references": [],
+   "prompt": "Use case: stylized-concept.\nAsset: inventory and HUD icon for DEAD ZONE. Style reference: public/assets/story-icons/pistol.png and public/assets/story-icons/machete.png for weapons, public/assets/story-icons/military_vest.png for gear (match their view, gritty pixel shading and dark outline).\nOne object, centred on a square transparent canvas (768x768; it is reduced to 80x80, so keep shapes bold and readable at that size). Weapons are a side view pointing right; gear and items face the viewer. The object fills about 85% of the canvas width. Crisp pixel art, dark outline, limited palette, light from the upper left. No hands, no text, no background, no cast shadow.\nOBJECT: carapace vest. Body armour: a vest cut from a dark brown beetle plate with a pale bronze rim, with leather straps and buckles. Same view as the existing vest icons."
+  }
+ ]
+}

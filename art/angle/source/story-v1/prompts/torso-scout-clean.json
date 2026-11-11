@@ -1,0 +1,6 @@
+{
+  "id": "torso-scout-clean",
+  "prompt": "Use case: background-extraction. EDIT the attached game sprite sheet. Remove ALL of the noisy gray, red and green background between and around the 60 upper-body character sprites, making those pixels fully transparent (alpha zero). Keep the 12-column by 5-row sheet, exact character positions, dimensions, clothing, faces, hands and every sprite's artwork unchanged. The actual character interiors must be opaque; only silhouette edge antialiasing may be partially transparent. No haze, shadows, checkerboard, colored fringe, paper or translucent fill between sprites. This is a strict production sprite alpha cleanup, not a redesign.",
+  "hint": "Generated images are saved to C:\\Users\\nphil\\.codex\\generated_images\\01a1bc36-1e70-7ee0-8775-0317a88da2be as C:\\Users\\nphil\\.codex\\generated_images\\01a1bc36-1e70-7ee0-8775-0317a88da2be\\exec-ce6cf255-dae9-46b7-9fc6-b85212340c5e.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+  "file": "art/angle/source/story-v1/torso-scout-clean.png"
+}

@@ -1,0 +1,24 @@
+{
+  "id": "items-0-clean",
+  "kind": "items",
+  "types": [
+    "mints",
+    "ammo_9mm",
+    "ammo_357",
+    "ammo_12g",
+    "ammo_556",
+    "ammo_308",
+    "cap",
+    "bike_helmet",
+    "riot_helmet",
+    "military_helmet",
+    "hoodie",
+    "leather_jacket"
+  ],
+  "cols": 4,
+  "rows": 3,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/angle/source/story-v1/items-0.png"
+  ],
+  "prompt": "Re-layout these twelve inventory item illustrations into a clean LANDSCAPE 1536x1152 transparent sprite atlas. EXACT FOUR columns and THREE rows with equally sized square cells, all cells evenly filling the entire canvas. Remove ALL white background, black background, brush marks and empty banner space. Only the twelve existing objects remain, same designs, colors and ordering. No new objects. Each object centered in its cell with 15% empty gutters. True alpha transparency everywhere outside objects. Crisp pixel art. Row1 mints, pistol ammunition box, revolver ammunition box, shotgun shell box. Row2 rifle ammunition box, second rifle ammunition box, cap, bicycle helmet. Row3 riot helmet, army helmet, padded hoodie, leather jacket."
+}

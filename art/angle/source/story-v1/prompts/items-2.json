@@ -1,0 +1,22 @@
+{
+  "id": "items-2",
+  "kind": "items",
+  "types": [
+    "soda",
+    "energy_drink",
+    "scrap",
+    "wood",
+    "nails",
+    "cloth",
+    "gunpowder",
+    "gun_parts",
+    "electronics",
+    "chemicals"
+  ],
+  "cols": 4,
+  "rows": 3,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+  ],
+  "prompt": "Create a polished pixel-art inventory atlas for a fictional survival game, 1536x1152 landscape, FOUR columns by THREE rows of equal square cells. Transparent background. One isolated object per cell, muted weathered materials, crisp dark outlines, elevated 45-degree view. Reading order: soda can; energy drink can; pile of scrap metal; bundle of wood boards; box of nails; folded cloth; closed small tin with a dark powder icon (fictional gunpowder inventory item); small case of mechanical gun replacement parts; circuit board and wires; sealed cleaning chemical bottle. Last two cells completely empty. These are collectible inventory illustrations only. No people, action, text, scenery, shadows or diagrams. Match the reference art's detailed pixel style."
+}

@@ -1,0 +1,9 @@
+﻿<!doctype html><html><body style="margin:0"><iframe id="f" src="../index.html" style="border:0;width:1280px;height:720px"></iframe>
+<script>
+const f=document.getElementById('f');
+f.onload=()=>{const w=f.contentWindow;w.Z.game.start();
+ const p=w.Z.state.player; let t=0;
+ const iv=setInterval(()=>{t++; w.Z.input.mouse.down=true; w.Z.input.keys['Mouse0']=true; w.Z.input.keys['KeyD']= (t%40)<20; w.Z.input.keys['KeyW']=(t%60)<30;
+   let z=w.Z.state.zombies[0]; if(z){w.Z.input.mouse.x=z.x-w.Z.state.camera.x; w.Z.input.mouse.y=z.y-w.Z.state.camera.y;}},50);
+};
+</script></body></html>

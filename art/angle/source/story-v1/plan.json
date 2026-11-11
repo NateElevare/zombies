@@ -1,0 +1,652 @@
+[
+  {
+    "id": "zombie-walker-1",
+    "kind": "zombie",
+    "type": "walker",
+    "variant": 1,
+    "cols": 12,
+    "rows": 5,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: gaunt female zombie with tangled gray hair, torn faded cream blouse and dark olive skirt, green gray skin and red eyes. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 dying collapsing onto knees; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct.  No human props or weapons."
+  },
+  {
+    "id": "zombie-walker-2",
+    "kind": "zombie",
+    "type": "walker",
+    "variant": 2,
+    "cols": 12,
+    "rows": 5,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: bald zombie mechanic in dirty blue overalls over a shredded gray shirt, heavy boots, green skin and red eyes. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 dying collapsing onto knees; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct.  No human props or weapons."
+  },
+  {
+    "id": "zombie-walker-3",
+    "kind": "zombie",
+    "type": "walker",
+    "variant": 3,
+    "cols": 12,
+    "rows": 5,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: zombie office worker with sparse dark hair, tattered brown suit jacket, loosened red tie and gray trousers, green skin and red eyes. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 dying collapsing onto knees; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct.  No human props or weapons."
+  },
+  {
+    "id": "zombie-runner-0",
+    "kind": "zombie",
+    "type": "runner",
+    "variant": 0,
+    "cols": 12,
+    "rows": 5,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: very lean green zombie in ripped red hooded sweatshirt, black track pants and dirty white sneakers, red eyes, forward athletic posture. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 dying collapsing onto knees; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct.  No human props or weapons."
+  },
+  {
+    "id": "zombie-runner-1",
+    "kind": "zombie",
+    "type": "runner",
+    "variant": 1,
+    "cols": 12,
+    "rows": 5,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: emaciated female zombie in torn ochre tank top, black leggings, short spiky hair, red eyes, visibly agile. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 dying collapsing onto knees; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct.  No human props or weapons."
+  },
+  {
+    "id": "zombie-runner-2",
+    "kind": "zombie",
+    "type": "runner",
+    "variant": 2,
+    "cols": 12,
+    "rows": 5,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: feral long-armed zombie in ragged dusty mauve sleeveless vest, charcoal ripped pants and bare feet, red eyes, hunched aggressive sprint posture. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 dying collapsing onto knees; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct.  No human props or weapons."
+  },
+  {
+    "id": "zombie-brute-0",
+    "kind": "zombie",
+    "type": "brute",
+    "variant": 0,
+    "cols": 12,
+    "rows": 5,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: enormous muscular green zombie, massive shoulders and arms, dirty torn white sleeveless undershirt, black work trousers and heavy boots, red eyes. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 dying collapsing onto knees; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct.  No human props or weapons."
+  },
+  {
+    "id": "zombie-brute-1",
+    "kind": "zombie",
+    "type": "brute",
+    "variant": 1,
+    "cols": 12,
+    "rows": 5,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: huge broad zombie construction worker, battered yellow hardhat, shredded orange reflective vest, immense bare arms, dark cargo trousers and steel-toe boots, red eyes. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 dying collapsing onto knees; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct.  No human props or weapons."
+  },
+  {
+    "id": "zombie-crawler-0",
+    "kind": "zombie",
+    "type": "crawler",
+    "variant": 0,
+    "cols": 12,
+    "rows": 5,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: green zombie dragging itself on its hands and elbows, ragged blue shirt, damaged useless legs trailing behind in shredded charcoal trousers; entire living silhouette stays LOW and horizontal, never stands. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 collapsing limply onto the ground; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct. CRITICAL: crawlers always drag on arms, including idle and locomotion, NEVER upright walking. No human props or weapons."
+  },
+  {
+    "id": "zombie-crawler-1",
+    "kind": "zombie",
+    "type": "crawler",
+    "variant": 1,
+    "cols": 12,
+    "rows": 5,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: pale green female crawler zombie with stringy dark hair, torn gray hospital gown, broken legs trailing, pulling along on forearms; entire living silhouette stays LOW and horizontal, never stands. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 collapsing limply onto the ground; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct. CRITICAL: crawlers always drag on arms, including idle and locomotion, NEVER upright walking. No human props or weapons."
+  },
+  {
+    "id": "zombie-bloater-0",
+    "kind": "zombie",
+    "type": "bloater",
+    "variant": 0,
+    "cols": 12,
+    "rows": 5,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: massively swollen sickly yellow-green zombie, exposed distended belly with glowing green pustules, ripped brown shirt and suspenders, short thick legs, red eyes, foul green drool. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 dying collapsing onto knees; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct.  No human props or weapons."
+  },
+  {
+    "id": "zombie-bloater-1",
+    "kind": "zombie",
+    "type": "bloater",
+    "variant": 1,
+    "cols": 12,
+    "rows": 5,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: obese infected worker with bloated green belly stretching a torn dirty yellow hazmat coverall, hood hanging behind neck, toxic boils, black rubber boots, red eyes. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 dying collapsing onto knees; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct.  No human props or weapons."
+  },
+  {
+    "id": "car-sedan",
+    "kind": "car",
+    "type": "sedan",
+    "cols": 4,
+    "rows": 2,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Asset: weathered blue four-door compact sedan, entire vehicle, four tires or correct truck wheels, believable coherent construction. EXACT FOUR columns by TWO rows, eight equally sized SQUARE cells, landscape 2048x1024. Each cell contains ONE complete vehicle with no cropping, the same design and color throughout. The vehicle sits on the game's street grid: camera looks down 45 degrees, street rotation ZERO degrees. Four columns are four headings: column1 front points horizontally RIGHT, showing the side and roof; column2 front points straight DOWN, showing the front and roof; column3 front points horizontally LEFT, showing the opposite side and roof; column4 front points straight UP, showing rear and roof. Axes are horizontal and vertical, NEVER diagonally rotated. Row1 intact but weathered abandoned vehicle, glass and all wheels present. Row2 SAME vehicle WRECKED: crushed hood, broken windows, rust, deflated tires, missing panels, no flames or smoke. Exact same physical size and placement as row1. Correct roof and panel perspective, no duplicate wheels, no stretched textures, no stacked or overlapping vehicles. Strong readable pixel-art silhouette. No letters or logos except simple medical cross on ambulance."
+  },
+  {
+    "id": "car-hatchback",
+    "kind": "car",
+    "type": "hatchback",
+    "cols": 4,
+    "rows": 2,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Asset: dull red small two-door hatchback with short rear hatch, entire vehicle, four tires or correct truck wheels, believable coherent construction. EXACT FOUR columns by TWO rows, eight equally sized SQUARE cells, landscape 2048x1024. Each cell contains ONE complete vehicle with no cropping, the same design and color throughout. The vehicle sits on the game's street grid: camera looks down 45 degrees, street rotation ZERO degrees. Four columns are four headings: column1 front points horizontally RIGHT, showing the side and roof; column2 front points straight DOWN, showing the front and roof; column3 front points horizontally LEFT, showing the opposite side and roof; column4 front points straight UP, showing rear and roof. Axes are horizontal and vertical, NEVER diagonally rotated. Row1 intact but weathered abandoned vehicle, glass and all wheels present. Row2 SAME vehicle WRECKED: crushed hood, broken windows, rust, deflated tires, missing panels, no flames or smoke. Exact same physical size and placement as row1. Correct roof and panel perspective, no duplicate wheels, no stretched textures, no stacked or overlapping vehicles. Strong readable pixel-art silhouette. No letters or logos except simple medical cross on ambulance."
+  },
+  {
+    "id": "car-van",
+    "kind": "car",
+    "type": "van",
+    "cols": 4,
+    "rows": 2,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Asset: off-white panel cargo van with tall roof and sliding side door, entire vehicle, four tires or correct truck wheels, believable coherent construction. EXACT FOUR columns by TWO rows, eight equally sized SQUARE cells, landscape 2048x1024. Each cell contains ONE complete vehicle with no cropping, the same design and color throughout. The vehicle sits on the game's street grid: camera looks down 45 degrees, street rotation ZERO degrees. Four columns are four headings: column1 front points horizontally RIGHT, showing the side and roof; column2 front points straight DOWN, showing the front and roof; column3 front points horizontally LEFT, showing the opposite side and roof; column4 front points straight UP, showing rear and roof. Axes are horizontal and vertical, NEVER diagonally rotated. Row1 intact but weathered abandoned vehicle, glass and all wheels present. Row2 SAME vehicle WRECKED: crushed hood, broken windows, rust, deflated tires, missing panels, no flames or smoke. Exact same physical size and placement as row1. Correct roof and panel perspective, no duplicate wheels, no stretched textures, no stacked or overlapping vehicles. Strong readable pixel-art silhouette. No letters or logos except simple medical cross on ambulance."
+  },
+  {
+    "id": "car-pickup",
+    "kind": "car",
+    "type": "pickup",
+    "cols": 4,
+    "rows": 2,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Asset: rusty ochre pickup truck with distinct open cargo bed, entire vehicle, four tires or correct truck wheels, believable coherent construction. EXACT FOUR columns by TWO rows, eight equally sized SQUARE cells, landscape 2048x1024. Each cell contains ONE complete vehicle with no cropping, the same design and color throughout. The vehicle sits on the game's street grid: camera looks down 45 degrees, street rotation ZERO degrees. Four columns are four headings: column1 front points horizontally RIGHT, showing the side and roof; column2 front points straight DOWN, showing the front and roof; column3 front points horizontally LEFT, showing the opposite side and roof; column4 front points straight UP, showing rear and roof. Axes are horizontal and vertical, NEVER diagonally rotated. Row1 intact but weathered abandoned vehicle, glass and all wheels present. Row2 SAME vehicle WRECKED: crushed hood, broken windows, rust, deflated tires, missing panels, no flames or smoke. Exact same physical size and placement as row1. Correct roof and panel perspective, no duplicate wheels, no stretched textures, no stacked or overlapping vehicles. Strong readable pixel-art silhouette. No letters or logos except simple medical cross on ambulance."
+  },
+  {
+    "id": "car-police",
+    "kind": "car",
+    "type": "police",
+    "cols": 4,
+    "rows": 2,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Asset: black-and-white police sedan with roof light bar and blank badge door emblem, entire vehicle, four tires or correct truck wheels, believable coherent construction. EXACT FOUR columns by TWO rows, eight equally sized SQUARE cells, landscape 2048x1024. Each cell contains ONE complete vehicle with no cropping, the same design and color throughout. The vehicle sits on the game's street grid: camera looks down 45 degrees, street rotation ZERO degrees. Four columns are four headings: column1 front points horizontally RIGHT, showing the side and roof; column2 front points straight DOWN, showing the front and roof; column3 front points horizontally LEFT, showing the opposite side and roof; column4 front points straight UP, showing rear and roof. Axes are horizontal and vertical, NEVER diagonally rotated. Row1 intact but weathered abandoned vehicle, glass and all wheels present. Row2 SAME vehicle WRECKED: crushed hood, broken windows, rust, deflated tires, missing panels, no flames or smoke. Exact same physical size and placement as row1. Correct roof and panel perspective, no duplicate wheels, no stretched textures, no stacked or overlapping vehicles. Strong readable pixel-art silhouette. No letters or logos except simple medical cross on ambulance."
+  },
+  {
+    "id": "car-ambulance",
+    "kind": "car",
+    "type": "ambulance",
+    "cols": 4,
+    "rows": 2,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Asset: white box ambulance with muted red stripe and medical cross symbols, tall rear treatment compartment, entire vehicle, four tires or correct truck wheels, believable coherent construction. EXACT FOUR columns by TWO rows, eight equally sized SQUARE cells, landscape 2048x1024. Each cell contains ONE complete vehicle with no cropping, the same design and color throughout. The vehicle sits on the game's street grid: camera looks down 45 degrees, street rotation ZERO degrees. Four columns are four headings: column1 front points horizontally RIGHT, showing the side and roof; column2 front points straight DOWN, showing the front and roof; column3 front points horizontally LEFT, showing the opposite side and roof; column4 front points straight UP, showing rear and roof. Axes are horizontal and vertical, NEVER diagonally rotated. Row1 intact but weathered abandoned vehicle, glass and all wheels present. Row2 SAME vehicle WRECKED: crushed hood, broken windows, rust, deflated tires, missing panels, no flames or smoke. Exact same physical size and placement as row1. Correct roof and panel perspective, no duplicate wheels, no stretched textures, no stacked or overlapping vehicles. Strong readable pixel-art silhouette. No letters or logos except simple medical cross on ambulance."
+  },
+  {
+    "id": "car-box_truck",
+    "kind": "car",
+    "type": "box_truck",
+    "cols": 4,
+    "rows": 2,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Asset: white medium box delivery truck, distinct cab and large rectangular cargo box, entire vehicle, four tires or correct truck wheels, believable coherent construction. EXACT FOUR columns by TWO rows, eight equally sized SQUARE cells, landscape 2048x1024. Each cell contains ONE complete vehicle with no cropping, the same design and color throughout. The vehicle sits on the game's street grid: camera looks down 45 degrees, street rotation ZERO degrees. Four columns are four headings: column1 front points horizontally RIGHT, showing the side and roof; column2 front points straight DOWN, showing the front and roof; column3 front points horizontally LEFT, showing the opposite side and roof; column4 front points straight UP, showing rear and roof. Axes are horizontal and vertical, NEVER diagonally rotated. Row1 intact but weathered abandoned vehicle, glass and all wheels present. Row2 SAME vehicle WRECKED: crushed hood, broken windows, rust, deflated tires, missing panels, no flames or smoke. Exact same physical size and placement as row1. Correct roof and panel perspective, no duplicate wheels, no stretched textures, no stacked or overlapping vehicles. Strong readable pixel-art silhouette. No letters or logos except simple medical cross on ambulance."
+  },
+  {
+    "id": "car-humvee",
+    "kind": "car",
+    "type": "humvee",
+    "cols": 4,
+    "rows": 2,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Asset: olive drab armored military humvee with wide stance and heavy tires, entire vehicle, four tires or correct truck wheels, believable coherent construction. EXACT FOUR columns by TWO rows, eight equally sized SQUARE cells, landscape 2048x1024. Each cell contains ONE complete vehicle with no cropping, the same design and color throughout. The vehicle sits on the game's street grid: camera looks down 45 degrees, street rotation ZERO degrees. Four columns are four headings: column1 front points horizontally RIGHT, showing the side and roof; column2 front points straight DOWN, showing the front and roof; column3 front points horizontally LEFT, showing the opposite side and roof; column4 front points straight UP, showing rear and roof. Axes are horizontal and vertical, NEVER diagonally rotated. Row1 intact but weathered abandoned vehicle, glass and all wheels present. Row2 SAME vehicle WRECKED: crushed hood, broken windows, rust, deflated tires, missing panels, no flames or smoke. Exact same physical size and placement as row1. Correct roof and panel perspective, no duplicate wheels, no stretched textures, no stacked or overlapping vehicles. Strong readable pixel-art silhouette. No letters or logos except simple medical cross on ambulance."
+  },
+  {
+    "id": "car-military_truck",
+    "kind": "car",
+    "type": "military_truck",
+    "cols": 4,
+    "rows": 2,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Asset: olive military cargo truck with long canvas-covered cargo bed and three axles, entire vehicle, four tires or correct truck wheels, believable coherent construction. EXACT FOUR columns by TWO rows, eight equally sized SQUARE cells, landscape 2048x1024. Each cell contains ONE complete vehicle with no cropping, the same design and color throughout. The vehicle sits on the game's street grid: camera looks down 45 degrees, street rotation ZERO degrees. Four columns are four headings: column1 front points horizontally RIGHT, showing the side and roof; column2 front points straight DOWN, showing the front and roof; column3 front points horizontally LEFT, showing the opposite side and roof; column4 front points straight UP, showing rear and roof. Axes are horizontal and vertical, NEVER diagonally rotated. Row1 intact but weathered abandoned vehicle, glass and all wheels present. Row2 SAME vehicle WRECKED: crushed hood, broken windows, rust, deflated tires, missing panels, no flames or smoke. Exact same physical size and placement as row1. Correct roof and panel perspective, no duplicate wheels, no stretched textures, no stacked or overlapping vehicles. Strong readable pixel-art silhouette. No letters or logos except simple medical cross on ambulance."
+  },
+  {
+    "id": "props-0",
+    "kind": "props",
+    "types": [
+      "armchair",
+      "barrel",
+      "bed",
+      "bench",
+      "bookshelf",
+      "booth",
+      "cabinet"
+    ],
+    "cols": 4,
+    "rows": 7,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Environmental furniture sprite pack. Exact FOUR columns by 7 rows, one complete isolated object per cell, square cells, all sprites have the same elevated camera. Each row contains four sides of the SAME object. Column1 front facing RIGHT; column2 front facing DOWN; column3 front facing LEFT; column4 front facing UP. Orthographic horizontal X and vertical Y axes, no diagonal street rotation. Row list from top to bottom: 1: worn brown upholstered armchair; 2: rusted metal fuel barrel; 3: wooden single bed with rumpled blue blanket and pillow; 4: weathered wooden park bench; 5: tall wooden bookcase with scattered books; 6: red cracked vinyl diner booth with a small table; 7: brown wooden storage cabinet with two doors. Scale every object to fit comfortably inside its cell with full feet/base and 12% transparent padding. Realistic worn survival-game materials, near-final game-quality pixels. No environment behind the objects. Objects must be distinct and recognizable, not generic boxes."
+  },
+  {
+    "id": "props-1",
+    "kind": "props",
+    "types": [
+      "cart",
+      "clothes",
+      "cooler",
+      "cot",
+      "counter",
+      "crate",
+      "desk"
+    ],
+    "cols": 4,
+    "rows": 7,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Environmental furniture sprite pack. Exact FOUR columns by 7 rows, one complete isolated object per cell, square cells, all sprites have the same elevated camera. Each row contains four sides of the SAME object. Column1 front facing RIGHT; column2 front facing DOWN; column3 front facing LEFT; column4 front facing UP. Orthographic horizontal X and vertical Y axes, no diagonal street rotation. Row list from top to bottom: 1: metal wheeled utility cart; 2: clothing rack with hanging garments; 3: blue portable insulated cooler; 4: folding army canvas cot; 5: shop checkout counter; 6: wooden shipping crate with slatted sides; 7: wooden office desk with drawers and papers. Scale every object to fit comfortably inside its cell with full feet/base and 12% transparent padding. Realistic worn survival-game materials, near-final game-quality pixels. No environment behind the objects. Objects must be distinct and recognizable, not generic boxes."
+  },
+  {
+    "id": "props-2",
+    "kind": "props",
+    "types": [
+      "dresser",
+      "dumpster",
+      "filing",
+      "fountain",
+      "fridge",
+      "guncase",
+      "gunrack"
+    ],
+    "cols": 4,
+    "rows": 7,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Environmental furniture sprite pack. Exact FOUR columns by 7 rows, one complete isolated object per cell, square cells, all sprites have the same elevated camera. Each row contains four sides of the SAME object. Column1 front facing RIGHT; column2 front facing DOWN; column3 front facing LEFT; column4 front facing UP. Orthographic horizontal X and vertical Y axes, no diagonal street rotation. Row list from top to bottom: 1: old wooden chest of drawers; 2: green industrial dumpster with hinged lid; 3: gray metal filing cabinet; 4: stone park fountain with dry basin; 5: dirty white refrigerator; 6: locked glass-and-steel gun display case; 7: wooden rack holding several rifles. Scale every object to fit comfortably inside its cell with full feet/base and 12% transparent padding. Realistic worn survival-game materials, near-final game-quality pixels. No environment behind the objects. Objects must be distinct and recognizable, not generic boxes."
+  },
+  {
+    "id": "props-3",
+    "kind": "props",
+    "types": [
+      "hbed",
+      "locker",
+      "mcrate",
+      "medcab",
+      "monitor",
+      "nightstand",
+      "pallet"
+    ],
+    "cols": 4,
+    "rows": 7,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Environmental furniture sprite pack. Exact FOUR columns by 7 rows, one complete isolated object per cell, square cells, all sprites have the same elevated camera. Each row contains four sides of the SAME object. Column1 front facing RIGHT; column2 front facing DOWN; column3 front facing LEFT; column4 front facing UP. Orthographic horizontal X and vertical Y axes, no diagonal street rotation. Row list from top to bottom: 1: hospital bed with metal rails and white sheets; 2: tall blue-gray steel locker; 3: olive military ammunition crate; 4: white medical cabinet with red cross; 5: old computer monitor and keyboard; 6: small wooden bedside table; 7: wooden shipping pallet stacked with parcels. Scale every object to fit comfortably inside its cell with full feet/base and 12% transparent padding. Realistic worn survival-game materials, near-final game-quality pixels. No environment behind the objects. Objects must be distinct and recognizable, not generic boxes."
+  },
+  {
+    "id": "props-4",
+    "kind": "props",
+    "types": [
+      "plant",
+      "planter",
+      "pump",
+      "rack",
+      "safe",
+      "sandbag",
+      "sdesk"
+    ],
+    "cols": 4,
+    "rows": 7,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Environmental furniture sprite pack. Exact FOUR columns by 7 rows, one complete isolated object per cell, square cells, all sprites have the same elevated camera. Each row contains four sides of the SAME object. Column1 front facing RIGHT; column2 front facing DOWN; column3 front facing LEFT; column4 front facing UP. Orthographic horizontal X and vertical Y axes, no diagonal street rotation. Row list from top to bottom: 1: leafy indoor plant in a ceramic pot; 2: rectangular outdoor concrete planter; 3: red old gas-station fuel pump; 4: industrial steel storage rack; 5: heavy dark steel safe; 6: low defensive pile of tan sandbags; 7: school desk and chair. Scale every object to fit comfortably inside its cell with full feet/base and 12% transparent padding. Realistic worn survival-game materials, near-final game-quality pixels. No environment behind the objects. Objects must be distinct and recognizable, not generic boxes."
+  },
+  {
+    "id": "props-5",
+    "kind": "props",
+    "types": [
+      "shelf",
+      "ship",
+      "sink",
+      "sofa",
+      "statue",
+      "stove",
+      "table"
+    ],
+    "cols": 4,
+    "rows": 7,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Environmental furniture sprite pack. Exact FOUR columns by 7 rows, one complete isolated object per cell, square cells, all sprites have the same elevated camera. Each row contains four sides of the SAME object. Column1 front facing RIGHT; column2 front facing DOWN; column3 front facing LEFT; column4 front facing UP. Orthographic horizontal X and vertical Y axes, no diagonal street rotation. Row list from top to bottom: 1: shop shelving unit with canned supplies; 2: large shipping container with corrugated rusty red metal sides; 3: porcelain utility sink on cabinet; 4: worn green three-seat sofa; 5: weathered stone human statue on pedestal; 6: old four-burner stove and oven; 7: plain wooden dining table. Scale every object to fit comfortably inside its cell with full feet/base and 12% transparent padding. Realistic worn survival-game materials, near-final game-quality pixels. No environment behind the objects. Objects must be distinct and recognizable, not generic boxes."
+  },
+  {
+    "id": "props-6",
+    "kind": "props",
+    "types": [
+      "toilet",
+      "toolbox",
+      "tower",
+      "tub",
+      "tv",
+      "wardrobe",
+      "woodpile"
+    ],
+    "cols": 4,
+    "rows": 7,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Environmental furniture sprite pack. Exact FOUR columns by 7 rows, one complete isolated object per cell, square cells, all sprites have the same elevated camera. Each row contains four sides of the SAME object. Column1 front facing RIGHT; column2 front facing DOWN; column3 front facing LEFT; column4 front facing UP. Orthographic horizontal X and vertical Y axes, no diagonal street rotation. Row list from top to bottom: 1: porcelain toilet with tank; 2: red metal toolbox; 3: military watchtower with wooden legs and small roof; 4: old white enamel bathtub; 5: old television on low stand; 6: tall dark wooden wardrobe; 7: stacked split firewood. Scale every object to fit comfortably inside its cell with full feet/base and 12% transparent padding. Realistic worn survival-game materials, near-final game-quality pixels. No environment behind the objects. Objects must be distinct and recognizable, not generic boxes."
+  },
+  {
+    "id": "structures-0",
+    "kind": "structures",
+    "types": [
+      "bed",
+      "stash",
+      "workbench",
+      "wood_wall",
+      "metal_wall",
+      "wood_door"
+    ],
+    "cols": 4,
+    "rows": 6,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Player-built base structures sprite pack. EXACT FOUR columns by SIX rows, 24 square cells. Each row shows one structure from four views: column1 front down-right along 22-degree street axis; column2 front down-left along 51-degree street axis; column3 rear up-left; column4 rear up-right. Row list: 1: sturdy crafted wooden bed and blue blanket; 2: reinforced wooden storage chest with metal bands; 3: heavy wooden workbench with metal vise, tools and small parts; 4: upright defensive wall of rough timber planks with cross braces; 5: upright defensive wall of salvaged corrugated metal sheets and steel posts; 6: closed wooden defensive door in frame. Complete isolated structure in every cell, all legs/posts/base visible, transparent 12% margins. Rich wood grain, rust, seams, bolts, fabric and useful recognizable details. No terrain or cast shadows."
+  },
+  {
+    "id": "structures-1",
+    "kind": "structures",
+    "types": [
+      "wood_door_open",
+      "barricade",
+      "spike_trap",
+      "campfire",
+      "turret",
+      "stash_open"
+    ],
+    "cols": 4,
+    "rows": 6,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Player-built base structures sprite pack. EXACT FOUR columns by SIX rows, 24 square cells. Each row shows one structure from four views: column1 front down-right along 22-degree street axis; column2 front down-left along 51-degree street axis; column3 rear up-left; column4 rear up-right. Row list: 1: same wooden defensive door open ninety degrees in frame; 2: waist-high wooden defensive barricade of crossed rough planks; 3: flat square board studded with sharpened wooden spikes; 4: stone ring with logs and small orange fire; 5: automatic defense machine-gun turret on tripod with ammo box; 6: reinforced wooden storage chest with lid open and visible supplies. Complete isolated structure in every cell, all legs/posts/base visible, transparent 12% margins. Rich wood grain, rust, seams, bolts, fabric and useful recognizable details. No terrain or cast shadows."
+  },
+  {
+    "id": "items-0",
+    "kind": "items",
+    "types": [
+      "mints",
+      "ammo_9mm",
+      "ammo_357",
+      "ammo_12g",
+      "ammo_556",
+      "ammo_308",
+      "cap",
+      "bike_helmet",
+      "riot_helmet",
+      "military_helmet",
+      "hoodie",
+      "leather_jacket"
+    ],
+    "cols": 4,
+    "rows": 3,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Item-drop and inventory sprite pack. Exact FOUR columns by 3 rows, square cells, one item centered in each cell. The item lies at a natural angle on the ground, viewed from the 45-degree elevated camera, front-right three-quarter. No people, hands, shadows or floor. Cells in READING ORDER left to right then next row: 1 Mints (mints); 2 9mm Rounds (ammo_9mm); 3 .357 Rounds (ammo_357); 4 12 Gauge Shells (ammo_12g); 5 5.56mm Rounds (ammo_556); 6 .308 Rounds (ammo_308); 7 Reinforced Cap (cap); 8 Bike Helmet (bike_helmet); 9 Riot Helmet (riot_helmet); 10 Military Helmet (military_helmet); 11 Padded Hoodie (hoodie); 12 Leather Jacket (leather_jacket). Keep unused final cells empty/transparent. Make each item visually distinct and recognizable at small size, realistic muted colors, clean dark outline, readable silhouette. Ammunition in distinct small boxes plus visible cartridges, consumables in their actual packaging, tools and materials identifiable. No text, tiny blank label panels permitted. Each item fully inside cell with 18% transparent margin."
+  },
+  {
+    "id": "items-1",
+    "kind": "items",
+    "types": [
+      "police_vest",
+      "military_vest",
+      "small_backpack",
+      "hiking_backpack",
+      "military_backpack",
+      "bandage",
+      "medkit",
+      "painkillers",
+      "canned_food",
+      "chips",
+      "mre",
+      "water_bottle"
+    ],
+    "cols": 4,
+    "rows": 3,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Item-drop and inventory sprite pack. Exact FOUR columns by 3 rows, square cells, one item centered in each cell. The item lies at a natural angle on the ground, viewed from the 45-degree elevated camera, front-right three-quarter. No people, hands, shadows or floor. Cells in READING ORDER left to right then next row: 1 Police Vest (police_vest); 2 Military Vest (military_vest); 3 Small Backpack (small_backpack); 4 Hiking Backpack (hiking_backpack); 5 Military Backpack (military_backpack); 6 Bandage (bandage); 7 Medical Kit (medkit); 8 Painkillers (painkillers); 9 Canned Food (canned_food); 10 Chips (chips); 11 Field Ration (mre); 12 Water Bottle (water_bottle). Keep unused final cells empty/transparent. Make each item visually distinct and recognizable at small size, realistic muted colors, clean dark outline, readable silhouette. Ammunition in distinct small boxes plus visible cartridges, consumables in their actual packaging, tools and materials identifiable. No text, tiny blank label panels permitted. Each item fully inside cell with 18% transparent margin."
+  },
+  {
+    "id": "items-2",
+    "kind": "items",
+    "types": [
+      "soda",
+      "energy_drink",
+      "scrap",
+      "wood",
+      "nails",
+      "cloth",
+      "gunpowder",
+      "gun_parts",
+      "electronics",
+      "chemicals"
+    ],
+    "cols": 4,
+    "rows": 3,
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ],
+    "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotation ZERO degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Item-drop and inventory sprite pack. Exact FOUR columns by 3 rows, square cells, one item centered in each cell. The item lies at a natural angle on the ground, viewed from the 45-degree elevated camera, front-right three-quarter. No people, hands, shadows or floor. Cells in READING ORDER left to right then next row: 1 Soda (soda); 2 Energy Drink (energy_drink); 3 Scrap Metal (scrap); 4 Wood (wood); 5 Nails (nails); 6 Cloth (cloth); 7 Gunpowder (gunpowder); 8 Gun Parts (gun_parts); 9 Electronics (electronics); 10 Chemicals (chemicals). Keep unused final cells empty/transparent. Make each item visually distinct and recognizable at small size, realistic muted colors, clean dark outline, readable silhouette. Ammunition in distinct small boxes plus visible cartridges, consumables in their actual packaging, tools and materials identifiable. No text, tiny blank label panels permitted. Each item fully inside cell with 18% transparent margin."
+  },
+  {
+    "id": "gear-head",
+    "kind": "gear",
+    "slot": "head",
+    "types": [
+      "cap",
+      "bike_helmet",
+      "riot_helmet",
+      "military_helmet"
+    ],
+    "cols": 4,
+    "rows": 5,
+    "prompt": "Use case: stylized-concept. Production pixel-art sprite pack matching the supplied gritty survival-game art style, crisp clustered pixels, controlled highlights, muted weathered materials, clean dark outlines. TRUE transparent clean background, opaque sprites, no floor, cast shadow, text, labels, grid or checkerboard. Every object completely inside its cell with empty gutters. Modular wearable equipment for the reference character. Only equipment, no person, skin, limbs, mannequins or weapons. Exact 4 columns by FIVE rows, equal SQUARE cells. Columns: 1: reinforced dark olive baseball cap; 2: red bicycle helmet with black vents; 3: black police riot helmet with clear face visor; 4: olive military combat helmet with fabric cover. Rows show five views at orthographic camera elevation45: RIGHT/east side; DOWN-RIGHT/southeast FRONT three-quarter; DOWN/south FRONT; UP-RIGHT/northeast REAR three-quarter; UP/north BACK. Each item sits as it would when WORN by a character facing that row direction. All views correct distinct visible faces. Full clean silhouette, detailed seams, buckles and straps. Helmets are hollow with transparent face and neck opening, so they can be placed over the character head.",
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ]
+  },
+  {
+    "id": "gear-body",
+    "kind": "gear",
+    "slot": "body",
+    "types": [
+      "hoodie",
+      "leather_jacket",
+      "police_vest",
+      "military_vest"
+    ],
+    "cols": 4,
+    "rows": 5,
+    "prompt": "Use case: stylized-concept. Production pixel-art sprite pack matching the supplied gritty survival-game art style, crisp clustered pixels, controlled highlights, muted weathered materials, clean dark outlines. TRUE transparent clean background, opaque sprites, no floor, cast shadow, text, labels, grid or checkerboard. Every object completely inside its cell with empty gutters. Modular wearable equipment for the reference character. Only equipment, no person, skin, limbs, mannequins or weapons. Exact 4 columns by FIVE rows, equal SQUARE cells. Columns: 1: dark gray padded hoodie torso with open neckline, NO HEAD OR ARMS; 2: worn brown leather protective jacket torso, NO HEAD OR ARMS; 3: navy police ballistic vest with pouches and shoulder straps, NO HEAD OR ARMS; 4: olive military plate carrier with magazine pouches, NO HEAD OR ARMS. Rows show five views at orthographic camera elevation45: RIGHT/east side; DOWN-RIGHT/southeast FRONT three-quarter; DOWN/south FRONT; UP-RIGHT/northeast REAR three-quarter; UP/north BACK. Each item sits as it would when WORN by a character facing that row direction. All views correct distinct visible faces. Full clean silhouette, detailed seams, buckles and straps. Torso shells have transparent arm holes and neck opening, waist cropped cleanly at belt level. No person inside.",
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ]
+  },
+  {
+    "id": "gear-back",
+    "kind": "gear",
+    "slot": "back",
+    "types": [
+      "small_backpack",
+      "hiking_backpack",
+      "military_backpack"
+    ],
+    "cols": 3,
+    "rows": 5,
+    "prompt": "Use case: stylized-concept. Production pixel-art sprite pack matching the supplied gritty survival-game art style, crisp clustered pixels, controlled highlights, muted weathered materials, clean dark outlines. TRUE transparent clean background, opaque sprites, no floor, cast shadow, text, labels, grid or checkerboard. Every object completely inside its cell with empty gutters. Modular wearable equipment for the reference character. Only equipment, no person, skin, limbs, mannequins or weapons. Exact 3 columns by FIVE rows, equal SQUARE cells. Columns: 1: small brown canvas daypack; 2: large blue hiking backpack with side pockets and rolled sleeping mat; 3: olive military rucksack with webbing and utility pouches. Rows show five views at orthographic camera elevation45: RIGHT/east side; DOWN-RIGHT/southeast FRONT three-quarter; DOWN/south FRONT; UP-RIGHT/northeast REAR three-quarter; UP/north BACK. Each item sits as it would when WORN by a character facing that row direction. All views correct distinct visible faces. Full clean silhouette, detailed seams, buckles and straps. Backpacks have shoulder straps and face outward from the wearer back; show side and straps from front views, rear bag from back views.",
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ]
+  },
+  {
+    "id": "materials",
+    "kind": "materials",
+    "types": [
+      "wall_siding",
+      "wall_brick",
+      "wall_concrete",
+      "wall_military",
+      "wall_drywall",
+      "wood_planks",
+      "metal_panels",
+      "chainlink",
+      "roof_shingle_red",
+      "roof_shingle_grey",
+      "roof_shingle_brown",
+      "roof_flat_gravel",
+      "roof_flat_tar",
+      "roof_metal",
+      "floor_wood",
+      "floor_tile",
+      "floor_carpet",
+      "floor_concrete",
+      "floor_linoleum",
+      "floor_military",
+      "asphalt",
+      "asphalt_cracked",
+      "sidewalk",
+      "parking",
+      "grass",
+      "grass_dry",
+      "forest_floor",
+      "dirt",
+      "gravel",
+      "mud",
+      "concrete",
+      "water"
+    ],
+    "cols": 8,
+    "rows": 4,
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Pixel-art TEXTURE TILE ATLAS for the gritty survival game reference. Exact EIGHT columns by FOUR rows of square 256px tiles, 2048x1024 canvas. OPAQUE edge-to-edge textures, no transparent gaps, labels, borders, shadows, perspective, objects or lighting gradients. Every tile is a flat straight-on seamless tiling material at consistent pixel density, neutral lighting, detailed restrained weathering. Cells in reading order: 1 wall siding; 2 wall brick; 3 wall concrete; 4 wall military; 5 wall drywall; 6 wood planks; 7 metal panels; 8 chainlink; 9 roof shingle red; 10 roof shingle grey; 11 roof shingle brown; 12 roof flat gravel; 13 roof flat tar; 14 roof metal; 15 floor wood; 16 floor tile; 17 floor carpet; 18 floor concrete; 19 floor linoleum; 20 floor military; 21 asphalt; 22 asphalt cracked; 23 sidewalk; 24 parking; 25 grass; 26 grass dry; 27 forest floor; 28 dirt; 29 gravel; 30 mud; 31 concrete; 32 water. Siding is cream painted horizontal clapboard; brick is weathered red-brown masonry; concrete gray aged block; military wall heavy olive concrete; drywall faded beige plaster; wood rough timber; chainlink a repeated steel mesh over dark neutral gray. Roof tiles clearly distinguish red, gray and brown shingles, gravel pebbles, black tar and corrugated gray metal. Floors wood boards, cream ceramic tiles, faded blue carpet, gray concrete, pale green linoleum, dark military concrete. Terrain textures natural subdued greens and browns; roads charcoal asphalt; sidewalks pale gray slab concrete; water dark muddy blue-gray. No lines between tiles, each material fills its square. Pixel art, not photorealistic textures.",
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ]
+  },
+  {
+    "id": "facades",
+    "kind": "materials",
+    "types": [
+      "window_siding",
+      "window_brick",
+      "window_concrete",
+      "window_military",
+      "door_wood",
+      "door_metal",
+      "shop_glass",
+      "warehouse_door",
+      "hospital_window",
+      "police_window",
+      "school_window",
+      "cabin_window"
+    ],
+    "cols": 4,
+    "rows": 3,
+    "transparent": false,
+    "prompt": "Use case: stylized-concept. Gritty polished pixel-art architectural texture atlas, EXACT FOUR columns by THREE rows, twelve SQUARE tiles, OPAQUE edge-to-edge, no gutters or borders between tiles. Front elevation views with NO perspective, for mapping onto game walls. One architectural wall panel fills each tile. Reading order: 1 cream clapboard siding with dark weathered sash window; 2 red brick masonry with metal-framed window; 3 gray concrete office wall with tall blue-gray window; 4 olive military concrete with narrow reinforced window; 5 wooden entry door and frame on neutral worn wall; 6 heavy gray metal security door and frame; 7 shopfront large plate-glass windows and glass door; 8 industrial warehouse roll-up steel door; 9 white hospital wall with pale blue window and a small red medical cross; 10 police-station brick wall with barred blue-gray window; 11 school brick wall with broad multi-pane classroom window; 12 log-cabin timber wall with a small wooden window and shutters. Match reference pixel style and scale. Full wall surface in every tile, neutral lighting, readable weathered details. No text, words, labels, ground, shadows or standalone building illustrations.",
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ]
+  },
+  {
+    "id": "environment",
+    "kind": "environment",
+    "types": [
+      "oak",
+      "pine",
+      "bush",
+      "rock",
+      "wood_fence",
+      "chainlink_fence",
+      "loot",
+      "deathbag"
+    ],
+    "cols": 4,
+    "rows": 8,
+    "prompt": "Use case: stylized-concept. Production pixel-art sprite pack matching the supplied gritty survival-game art style, crisp clustered pixels, controlled highlights, muted weathered materials, clean dark outlines. TRUE transparent clean background, opaque sprites, no floor, cast shadow, text, labels, grid or checkerboard. Every object completely inside its cell with empty gutters. EXACT FOUR columns by EIGHT rows, 32 square cells. Each row is one object in four orientations aligned with the 45-degree elevated camera and30-degree street rotation: front down-right along22-degree screen axis, front down-left along51-degree axis, rear up-left, rear up-right. Row objects: 1: tall broad oak tree with thick trunk and a detailed muted green leaf canopy; 2: tall evergreen pine tree with visible trunk and layered dark green needles; 3: low dense wild leafy shrub; 4: large irregular gray boulder; 5: wooden picket fence section with upright end posts; 6: steel chainlink fence panel with posts, transparent holes between wire mesh; 7: tied brown canvas loot sack with a few supplies visible at opening; 8: dark red rugged fallen-survivor backpack lying on the ground. Full object in every cell with base and top visible and 12% margin. Trees include both trunks and leafy canopies, NO ground. Fence holes truly transparent. Rich crisp game-quality detail.",
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ]
+  },
+  {
+    "id": "decals",
+    "kind": "decals",
+    "types": [
+      "blood",
+      "bones",
+      "debris",
+      "leaves",
+      "oil",
+      "firepit",
+      "tuft",
+      "puddle",
+      "tire",
+      "trash",
+      "manhole",
+      "helipad",
+      "crack",
+      "scorch",
+      "bullet_damage",
+      "structural_damage"
+    ],
+    "cols": 4,
+    "rows": 4,
+    "prompt": "Use case: stylized-concept. Production pixel-art sprite pack matching the supplied gritty survival-game art style, crisp clustered pixels, controlled highlights, muted weathered materials, clean dark outlines. TRUE transparent clean background, opaque sprites, no floor, cast shadow, text, labels, grid or checkerboard. Every object completely inside its cell with empty gutters. Ground/decal texture pack viewed DIRECTLY ABOVE, to be projected onto the angled game floor by code. EXACT FOUR columns by FOUR rows, sixteen square cells. Reading-order objects: 1 dark red blood pool and scattered small droplets; 2 scattered old bones; 3 small pile of broken masonry debris; 4 scattered dry leaves; 5 black motor oil stain; 6 stone firepit ring and charred logs without flame; 7 tuft of weeds; 8 muddy rain puddle; 9 abandoned black tire; 10 litter and crushed cans; 11 round iron manhole cover; 12 faded white helipad H marking in a circle; 13 branching asphalt crack with transparent gaps; 14 scorched black blast decal; 15 cluster of small bullet chips and holes with transparent gaps; 16 cracked broken wood and metal damage decal with splinters and transparent gaps. No surrounding ground or rectangular tiles, transparent outside each isolated decal. Muted gritty realistic pixels, no text except helipad H.",
+    "refs": [
+      "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-responder-v3-directions.png"
+    ]
+  }
+]

@@ -1,0 +1,4848 @@
+{
+ "artScale": 2,
+ "atlases": [
+  "zombies",
+  "zombies2",
+  "characters",
+  "fx",
+  "env_tiles",
+  "env_walls",
+  "env_props",
+  "env_props2",
+  "structures",
+  "player_variants",
+  "bosses",
+  "cola",
+  "warden",
+  "zombie_climb"
+ ],
+ "sprites": {
+  "decal_crosswalk": {
+   "atlas": "env_props",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "decal_manhole": {
+   "atlas": "env_props",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_bed": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_stash": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_workbench": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_wood_wall": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_wood_wall_damaged": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_metal_wall": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_metal_wall_damaged": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_wood_door": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_wood_door_damaged": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_wood_door_open": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_barricade": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_barricade_damaged": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_spike_trap": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_campfire": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_turret_base": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "struct_turret_head": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "drop_bag": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "drop_deathbag": {
+   "atlas": "structures",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_0_walk": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_0_attack": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_0_hit": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_0_death": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_0_corpse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_0_pulse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_1_walk": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_1_attack": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_1_hit": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_1_death": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_1_corpse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_1_pulse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_2_walk": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_2_attack": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_2_hit": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_2_death": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_2_corpse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_2_pulse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_3_walk": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_3_attack": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_3_hit": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_3_death": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_3_corpse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_3_pulse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_0_walk": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_0_attack": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_0_hit": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_0_death": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_0_corpse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_0_pulse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_1_walk": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_1_attack": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_1_hit": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_1_death": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_1_corpse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_1_pulse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_2_walk": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_2_attack": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_2_hit": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_2_death": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_2_corpse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_2_pulse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_0_walk": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_0_attack": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_0_hit": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_0_death": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_0_corpse": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_0_pulse": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_1_walk": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_1_attack": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_1_hit": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_1_death": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_1_corpse": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_1_pulse": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_0_walk": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_0_attack": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_0_hit": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_0_death": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_0_corpse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_0_pulse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_1_walk": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_1_attack": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_1_hit": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_1_death": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_1_corpse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_1_pulse": {
+   "atlas": "zombies",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_0_walk": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_0_attack": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_0_hit": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_0_death": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_0_corpse": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_0_pulse": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_1_walk": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_1_attack": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_1_hit": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_1_death": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_1_corpse": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_1_pulse": {
+   "atlas": "zombies2",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_legs_walk": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_legs_idle": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_torso_handgun_idle": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_torso_handgun_shoot": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_torso_handgun_reload": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_torso_long_idle": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_torso_long_shoot": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_torso_long_reload": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_torso_melee_idle": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_torso_melee_swing": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_torso_unarmed_idle": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_torso_unarmed_punch": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "armor_head_cap": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "armor_head_bike_helmet": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "armor_head_riot_helmet": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "armor_head_military_helmet": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "armor_body_hoodie": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "armor_body_leather_jacket": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "armor_body_police_vest": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "armor_body_military_vest": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "backpack_small": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "backpack_hiking": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "backpack_military": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "backpack_small_backpack": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "backpack_hiking_backpack": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "backpack_military_backpack": {
+   "atlas": "characters",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_survivor_torso_handgun_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_survivor_torso_handgun_shoot": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_survivor_torso_handgun_reload": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_survivor_torso_long_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_survivor_torso_long_shoot": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_survivor_torso_long_reload": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_survivor_torso_melee_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_survivor_torso_melee_swing": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_survivor_torso_unarmed_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_survivor_torso_unarmed_punch": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_survivor_legs_walk": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_survivor_legs_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_scout_torso_handgun_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_scout_torso_handgun_shoot": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_scout_torso_handgun_reload": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_scout_torso_long_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_scout_torso_long_shoot": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_scout_torso_long_reload": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_scout_torso_melee_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_scout_torso_melee_swing": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_scout_torso_unarmed_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_scout_torso_unarmed_punch": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_scout_legs_walk": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_scout_legs_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_responder_torso_handgun_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_responder_torso_handgun_shoot": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_responder_torso_handgun_reload": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_responder_torso_long_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_responder_torso_long_shoot": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_responder_torso_long_reload": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_responder_torso_melee_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_responder_torso_melee_swing": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_responder_torso_unarmed_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_responder_torso_unarmed_punch": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_responder_legs_walk": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "player_responder_legs_idle": {
+   "atlas": "player_variants",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "weapon_pistol": {
+   "atlas": "characters",
+   "origin": [
+    0.3,
+    0.5
+   ],
+   "grip": [
+    21.4,
+    1
+   ],
+   "muzzle": [
+    34.4,
+    1
+   ],
+   "angle": 0,
+   "length": 16.9
+  },
+  "weapon_revolver": {
+   "atlas": "characters",
+   "origin": [
+    0.26,
+    0.5
+   ],
+   "grip": [
+    21.4,
+    1
+   ],
+   "muzzle": [
+    37.7,
+    1
+   ],
+   "angle": 0,
+   "length": 20.2
+  },
+  "weapon_smg": {
+   "atlas": "characters",
+   "origin": [
+    0.323,
+    0.5
+   ],
+   "grip": [
+    10,
+    5.5
+   ],
+   "muzzle": [
+    32.1,
+    5.5
+   ],
+   "angle": 0,
+   "length": 31.2
+  },
+  "weapon_shotgun": {
+   "atlas": "characters",
+   "origin": [
+    0.343,
+    0.5
+   ],
+   "grip": [
+    10,
+    5.5
+   ],
+   "muzzle": [
+    45.1,
+    5.5
+   ],
+   "angle": 0,
+   "length": 52
+  },
+  "weapon_assault_rifle": {
+   "atlas": "characters",
+   "origin": [
+    0.326,
+    0.5
+   ],
+   "grip": [
+    10,
+    5.5
+   ],
+   "muzzle": [
+    47.7,
+    5.5
+   ],
+   "angle": 0,
+   "length": 54.6
+  },
+  "weapon_hunting_rifle": {
+   "atlas": "characters",
+   "origin": [
+    0.328,
+    0.5
+   ],
+   "grip": [
+    10,
+    5.5
+   ],
+   "muzzle": [
+    52.9,
+    5.5
+   ],
+   "angle": 0,
+   "length": 62.4
+  },
+  "weapon_knife": {
+   "atlas": "characters",
+   "origin": [
+    0.304,
+    0.5
+   ],
+   "grip": [
+    16.4,
+    10
+   ],
+   "muzzle": [
+    29.7,
+    1.8
+   ],
+   "angle": -0.55,
+   "length": 20.8
+  },
+  "weapon_bat": {
+   "atlas": "characters",
+   "origin": [
+    0.184,
+    0.5
+   ],
+   "grip": [
+    16.4,
+    10
+   ],
+   "muzzle": [
+    49.6,
+    -10.4
+   ],
+   "angle": -0.55,
+   "length": 45.5
+  },
+  "weapon_machete": {
+   "atlas": "characters",
+   "origin": [
+    0.211,
+    0.5
+   ],
+   "grip": [
+    16.4,
+    10
+   ],
+   "muzzle": [
+    44.1,
+    -7
+   ],
+   "angle": -0.55,
+   "length": 39
+  },
+  "muzzle_handgun": {
+   "atlas": "fx",
+   "origin": [
+    0,
+    0.5
+   ],
+   "note": "place origin at weapon muzzle, rotate to aim"
+  },
+  "muzzle_long": {
+   "atlas": "fx",
+   "origin": [
+    0,
+    0.5
+   ]
+  },
+  "muzzle_shotgun": {
+   "atlas": "fx",
+   "origin": [
+    0,
+    0.5
+   ]
+  },
+  "blood_spray": {
+   "atlas": "fx",
+   "origin": [
+    0.04,
+    0.5
+   ]
+  },
+  "blood_drop": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "blood_pool": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.5
+   ],
+   "decal": true
+  },
+  "blood_smear": {
+   "atlas": "fx",
+   "origin": [
+    0.85,
+    0.5
+   ],
+   "decal": true
+  },
+  "spark": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.5
+   ],
+   "blend": "add"
+  },
+  "smoke": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "dust": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "shell_casing": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "shell_shotgun": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "explosion": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "scorch": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.5
+   ],
+   "decal": true
+  },
+  "fire": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.74
+   ]
+  },
+  "ember": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.5
+   ],
+   "blend": "add"
+  },
+  "bullet_tracer": {
+   "atlas": "fx",
+   "origin": [
+    1,
+    0.5
+   ],
+   "blend": "add"
+  },
+  "impact_wall": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "footprint": {
+   "atlas": "fx",
+   "origin": [
+    0.5,
+    0.5
+   ],
+   "decal": true
+  },
+  "boss_butcher_idle": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_butcher_walk": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_butcher_melee": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_butcher_windup": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_butcher_special": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_butcher_hit": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_butcher_death": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_broodmother_idle": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_broodmother_walk": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_broodmother_melee": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_broodmother_windup": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_broodmother_special": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_broodmother_hit": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_broodmother_death": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_howler_idle": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_howler_walk": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_howler_melee": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_howler_windup": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_howler_special": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_howler_hit": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_howler_death": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_juggernaut_idle": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_juggernaut_walk": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_juggernaut_melee": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_juggernaut_windup": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_juggernaut_special": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_juggernaut_hit": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_juggernaut_death": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_plague_idle": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_plague_walk": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_plague_melee": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_plague_windup": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_plague_special": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_plague_hit": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_plague_death": {
+   "atlas": "bosses",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "weapon_cola_mints": {
+   "atlas": "cola",
+   "origin": [
+    0.3,
+    0.5
+   ]
+  },
+  "weapon_cola_mints_spray": {
+   "atlas": "cola",
+   "origin": [
+    0.3,
+    0.5
+   ]
+  },
+  "cola_foam": {
+   "atlas": "cola",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "cola_splash": {
+   "atlas": "cola",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_warden_idle": {
+   "atlas": "warden",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_warden_walk": {
+   "atlas": "warden",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_warden_melee": {
+   "atlas": "warden",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_warden_windup": {
+   "atlas": "warden",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_warden_special": {
+   "atlas": "warden",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_warden_hit": {
+   "atlas": "warden",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "boss_warden_death": {
+   "atlas": "warden",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_0_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_1_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_2_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_walker_3_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_0_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_1_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_runner_2_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_0_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_crawler_1_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_0_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_brute_1_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_0_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  },
+  "zombie_bloater_1_climb": {
+   "atlas": "zombie_climb",
+   "origin": [
+    0.5,
+    0.5
+   ]
+  }
+ },
+ "tiles": {
+  "asphalt": [
+   "tile_asphalt_0",
+   "tile_asphalt_1",
+   "tile_asphalt_2",
+   "tile_asphalt_3"
+  ],
+  "asphalt_cracked": [
+   "tile_asphalt_cracked_0",
+   "tile_asphalt_cracked_1",
+   "tile_asphalt_cracked_2",
+   "tile_asphalt_cracked_3"
+  ],
+  "sidewalk": [
+   "tile_sidewalk_0",
+   "tile_sidewalk_1",
+   "tile_sidewalk_2",
+   "tile_sidewalk_3"
+  ],
+  "grass": [
+   "tile_grass_0",
+   "tile_grass_1",
+   "tile_grass_2",
+   "tile_grass_3"
+  ],
+  "grass_dry": [
+   "tile_grass_dry_0",
+   "tile_grass_dry_1",
+   "tile_grass_dry_2",
+   "tile_grass_dry_3"
+  ],
+  "dirt": [
+   "tile_dirt_0",
+   "tile_dirt_1",
+   "tile_dirt_2",
+   "tile_dirt_3"
+  ],
+  "gravel": [
+   "tile_gravel_0",
+   "tile_gravel_1",
+   "tile_gravel_2",
+   "tile_gravel_3"
+  ],
+  "forest_floor": [
+   "tile_forest_floor_0",
+   "tile_forest_floor_1",
+   "tile_forest_floor_2",
+   "tile_forest_floor_3"
+  ],
+  "parking": [
+   "tile_parking_0",
+   "tile_parking_1",
+   "tile_parking_2",
+   "tile_parking_3"
+  ],
+  "wood": [
+   "tile_wood_0",
+   "tile_wood_1",
+   "tile_wood_2",
+   "tile_wood_3"
+  ],
+  "tile": [
+   "tile_tile_0",
+   "tile_tile_1",
+   "tile_tile_2",
+   "tile_tile_3"
+  ],
+  "carpet": [
+   "tile_carpet_0",
+   "tile_carpet_1",
+   "tile_carpet_2",
+   "tile_carpet_3"
+  ],
+  "concrete": [
+   "tile_concrete_0",
+   "tile_concrete_1",
+   "tile_concrete_2",
+   "tile_concrete_3"
+  ],
+  "linoleum": [
+   "tile_linoleum_0",
+   "tile_linoleum_1",
+   "tile_linoleum_2",
+   "tile_linoleum_3"
+  ],
+  "military": [
+   "tile_military_0",
+   "tile_military_1",
+   "tile_military_2",
+   "tile_military_3"
+  ],
+  "shingle_red": [
+   "tile_shingle_red_0",
+   "tile_shingle_red_1",
+   "tile_shingle_red_2",
+   "tile_shingle_red_3"
+  ],
+  "shingle_grey": [
+   "tile_shingle_grey_0",
+   "tile_shingle_grey_1",
+   "tile_shingle_grey_2",
+   "tile_shingle_grey_3"
+  ],
+  "shingle_brown": [
+   "tile_shingle_brown_0",
+   "tile_shingle_brown_1",
+   "tile_shingle_brown_2",
+   "tile_shingle_brown_3"
+  ],
+  "flat_gravel": [
+   "tile_flat_gravel_0",
+   "tile_flat_gravel_1",
+   "tile_flat_gravel_2",
+   "tile_flat_gravel_3"
+  ],
+  "flat_tar": [
+   "tile_flat_tar_0",
+   "tile_flat_tar_1",
+   "tile_flat_tar_2",
+   "tile_flat_tar_3"
+  ],
+  "metal": [
+   "tile_metal_0",
+   "tile_metal_1",
+   "tile_metal_2",
+   "tile_metal_3"
+  ]
+ },
+ "props": {
+  "furniture:sofa": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_sofa_0",
+    "prop_sofa_1",
+    "prop_sofa_2",
+    "prop_sofa_3",
+    "prop_sofa_4"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    110,
+    42
+   ],
+   "orient": "h",
+   "elev": 4,
+   "back": "n"
+  },
+  "furniture:armchair": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_armchair_0",
+    "prop_armchair_1",
+    "prop_armchair_2",
+    "prop_armchair_3"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    40,
+    40
+   ],
+   "orient": "h",
+   "elev": 4,
+   "back": "n"
+  },
+  "furniture:tv": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_tv_0",
+    "prop_tv_1"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    70,
+    20
+   ],
+   "orient": "h",
+   "elev": 4,
+   "back": "n"
+  },
+  "furniture:table": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_table_0",
+    "prop_table_1",
+    "prop_table_2",
+    "prop_table_3"
+   ],
+   "pad": 9,
+   "fit": "nine",
+   "nativeSize": [
+    70,
+    40
+   ],
+   "orient": "any",
+   "elev": 3,
+   "slice": [
+    32,
+    32,
+    32,
+    32
+   ]
+  },
+  "furniture:bed": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_bed_0",
+    "prop_bed_1",
+    "prop_bed_2",
+    "prop_bed_3"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    100,
+    60
+   ],
+   "orient": "h",
+   "elev": 4,
+   "back": "w"
+  },
+  "furniture:hbed": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_hbed_0",
+    "prop_hbed_1"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    90,
+    54
+   ],
+   "orient": "h",
+   "elev": 4,
+   "back": "w"
+  },
+  "furniture:cot": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_cot_0",
+    "prop_cot_1",
+    "prop_cot_2"
+   ],
+   "pad": 9,
+   "fit": "stretch",
+   "nativeSize": [
+    90,
+    40
+   ],
+   "orient": "h",
+   "elev": 3,
+   "back": "w"
+  },
+  "furniture:cabinet": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_cabinet_0",
+    "prop_cabinet_1",
+    "prop_cabinet_2",
+    "prop_cabinet_3"
+   ],
+   "pad": 14,
+   "fit": "stretch",
+   "nativeSize": [
+    64,
+    28
+   ],
+   "orient": "h",
+   "elev": 6,
+   "back": "n"
+  },
+  "furniture:nightstand": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_nightstand_0",
+    "prop_nightstand_1",
+    "prop_nightstand_2"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    28,
+    26
+   ],
+   "orient": "h",
+   "elev": 4,
+   "back": "n"
+  },
+  "furniture:dresser": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_dresser_0",
+    "prop_dresser_1",
+    "prop_dresser_2"
+   ],
+   "pad": 12,
+   "fit": "stretch",
+   "nativeSize": [
+    70,
+    28
+   ],
+   "orient": "h",
+   "elev": 5,
+   "back": "n"
+  },
+  "furniture:wardrobe": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_wardrobe_0",
+    "prop_wardrobe_1",
+    "prop_wardrobe_2"
+   ],
+   "pad": 19,
+   "fit": "stretch",
+   "nativeSize": [
+    66,
+    30
+   ],
+   "orient": "h",
+   "elev": 9,
+   "back": "n"
+  },
+  "furniture:bookshelf": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_bookshelf_0",
+    "prop_bookshelf_1",
+    "prop_bookshelf_2"
+   ],
+   "pad": 19,
+   "fit": "stretch",
+   "nativeSize": [
+    80,
+    22
+   ],
+   "orient": "h",
+   "elev": 9,
+   "back": "n"
+  },
+  "furniture:desk": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_desk_0",
+    "prop_desk_1",
+    "prop_desk_2",
+    "prop_desk_3"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    70,
+    36
+   ],
+   "orient": "h",
+   "elev": 4,
+   "back": "n"
+  },
+  "furniture:sdesk": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_sdesk_0",
+    "prop_sdesk_1",
+    "prop_sdesk_2"
+   ],
+   "pad": 9,
+   "fit": "stretch",
+   "nativeSize": [
+    36,
+    28
+   ],
+   "orient": "h",
+   "elev": 3,
+   "back": "n"
+  },
+  "furniture:filing": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_filing_0",
+    "prop_filing_1",
+    "prop_filing_2"
+   ],
+   "pad": 16,
+   "fit": "stretch",
+   "nativeSize": [
+    32,
+    30
+   ],
+   "orient": "h",
+   "elev": 7,
+   "back": "n"
+  },
+  "furniture:plant": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_plant_0",
+    "prop_plant_1",
+    "prop_plant_2"
+   ],
+   "pad": 12,
+   "fit": "contain",
+   "nativeSize": [
+    22,
+    22
+   ],
+   "orient": "any",
+   "elev": 5
+  },
+  "furniture:stove": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_stove_0",
+    "prop_stove_1",
+    "prop_stove_2"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    44,
+    40
+   ],
+   "orient": "h",
+   "elev": 4,
+   "back": "n"
+  },
+  "furniture:fridge": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_fridge_0",
+    "prop_fridge_1",
+    "prop_fridge_2",
+    "prop_fridge_3"
+   ],
+   "pad": 17,
+   "fit": "stretch",
+   "nativeSize": [
+    44,
+    40
+   ],
+   "orient": "h",
+   "elev": 8,
+   "back": "n"
+  },
+  "furniture:sink": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_sink_0",
+    "prop_sink_1"
+   ],
+   "pad": 9,
+   "fit": "stretch",
+   "nativeSize": [
+    36,
+    24
+   ],
+   "orient": "h",
+   "elev": 3,
+   "back": "n"
+  },
+  "furniture:counter": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_counter_0",
+    "prop_counter_1",
+    "prop_counter_2",
+    "prop_counter_3",
+    "prop_counter_4"
+   ],
+   "pad": 11,
+   "fit": "nine",
+   "nativeSize": [
+    100,
+    34
+   ],
+   "orient": "h",
+   "elev": 4,
+   "back": "n",
+   "slice": [
+    34,
+    34,
+    34,
+    34
+   ]
+  },
+  "furniture:toilet": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_toilet_0",
+    "prop_toilet_1"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    26,
+    30
+   ],
+   "orient": "any",
+   "elev": 4,
+   "back": "n"
+  },
+  "furniture:tub": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_tub_0",
+    "prop_tub_1"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    80,
+    40
+   ],
+   "orient": "h",
+   "elev": 4,
+   "back": "n"
+  },
+  "furniture:cooler": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_cooler_0",
+    "prop_cooler_1",
+    "prop_cooler_2"
+   ],
+   "pad": 17,
+   "fit": "stretch",
+   "nativeSize": [
+    50,
+    30
+   ],
+   "orient": "h",
+   "elev": 8,
+   "back": "n"
+  },
+  "furniture:shelf": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_shelf_0",
+    "prop_shelf_1",
+    "prop_shelf_2",
+    "prop_shelf_3"
+   ],
+   "pad": 17,
+   "fit": "nine",
+   "nativeSize": [
+    80,
+    28
+   ],
+   "orient": "h",
+   "elev": 8,
+   "slice": [
+    42,
+    42,
+    42,
+    42
+   ]
+  },
+  "furniture:rack": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_rack_0",
+    "prop_rack_1",
+    "prop_rack_2"
+   ],
+   "pad": 17,
+   "fit": "nine",
+   "nativeSize": [
+    80,
+    28
+   ],
+   "orient": "h",
+   "elev": 8,
+   "slice": [
+    44,
+    44,
+    44,
+    44
+   ]
+  },
+  "furniture:clothes": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_clothes_0",
+    "prop_clothes_1",
+    "prop_clothes_2"
+   ],
+   "pad": 14,
+   "fit": "nine",
+   "nativeSize": [
+    110,
+    30
+   ],
+   "orient": "h",
+   "elev": 6,
+   "slice": [
+    38,
+    38,
+    38,
+    38
+   ]
+  },
+  "furniture:crate": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_crate_0",
+    "prop_crate_1",
+    "prop_crate_2",
+    "prop_crate_3"
+   ],
+   "pad": 14,
+   "fit": "stretch",
+   "nativeSize": [
+    40,
+    40
+   ],
+   "orient": "any",
+   "elev": 6
+  },
+  "furniture:mcrate": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_mcrate_0",
+    "prop_mcrate_1",
+    "prop_mcrate_2"
+   ],
+   "pad": 14,
+   "fit": "stretch",
+   "nativeSize": [
+    50,
+    50
+   ],
+   "orient": "any",
+   "elev": 6
+  },
+  "furniture:pallet": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_pallet_0",
+    "prop_pallet_1",
+    "prop_pallet_2"
+   ],
+   "pad": 12,
+   "fit": "tile",
+   "nativeSize": [
+    50,
+    34
+   ],
+   "orient": "h",
+   "elev": 5
+  },
+  "furniture:barrel": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_barrel_0",
+    "prop_barrel_1",
+    "prop_barrel_2",
+    "prop_barrel_3"
+   ],
+   "pad": 14,
+   "fit": "contain",
+   "nativeSize": [
+    50,
+    50
+   ],
+   "orient": "any",
+   "elev": 6
+  },
+  "furniture:woodpile": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_woodpile_0",
+    "prop_woodpile_1"
+   ],
+   "pad": 12,
+   "fit": "stretch",
+   "nativeSize": [
+    50,
+    26
+   ],
+   "orient": "h",
+   "elev": 5
+  },
+  "furniture:ship": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_ship_0",
+    "prop_ship_1",
+    "prop_ship_2",
+    "prop_ship_3",
+    "prop_ship_4"
+   ],
+   "pad": 21,
+   "fit": "nine",
+   "nativeSize": [
+    200,
+    56
+   ],
+   "orient": "h",
+   "elev": 10,
+   "slice": [
+    66,
+    66,
+    66,
+    66
+   ]
+  },
+  "furniture:dumpster": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_dumpster_0",
+    "prop_dumpster_1",
+    "prop_dumpster_2",
+    "prop_dumpster_3"
+   ],
+   "pad": 14,
+   "fit": "stretch",
+   "nativeSize": [
+    60,
+    34
+   ],
+   "orient": "h",
+   "elev": 6,
+   "back": "n"
+  },
+  "furniture:pump": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_pump_0",
+    "prop_pump_1"
+   ],
+   "pad": 17,
+   "fit": "stretch",
+   "nativeSize": [
+    60,
+    24
+   ],
+   "orient": "h",
+   "elev": 8
+  },
+  "furniture:planter": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_planter_0",
+    "prop_planter_1"
+   ],
+   "pad": 12,
+   "fit": "contain",
+   "nativeSize": [
+    52,
+    52
+   ],
+   "orient": "any",
+   "elev": 5
+  },
+  "furniture:bench": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_bench_0",
+    "prop_bench_1",
+    "prop_bench_2"
+   ],
+   "pad": 9,
+   "fit": "nine",
+   "nativeSize": [
+    60,
+    20
+   ],
+   "orient": "h",
+   "elev": 3,
+   "slice": [
+    30,
+    30,
+    30,
+    30
+   ]
+  },
+  "furniture:sandbag": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_sandbag_0",
+    "prop_sandbag_1"
+   ],
+   "pad": 12,
+   "fit": "tile",
+   "nativeSize": [
+    32,
+    22
+   ],
+   "orient": "h",
+   "elev": 5
+  },
+  "furniture:tower": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_tower_0",
+    "prop_tower_1"
+   ],
+   "pad": 31,
+   "fit": "contain",
+   "nativeSize": [
+    60,
+    60
+   ],
+   "orient": "any",
+   "elev": 16
+  },
+  "furniture:booth": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_booth_0"
+   ],
+   "pad": 24,
+   "fit": "contain",
+   "nativeSize": [
+    50,
+    50
+   ],
+   "orient": "any",
+   "elev": 12
+  },
+  "furniture:fountain": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_fountain_0",
+    "prop_fountain_1"
+   ],
+   "pad": 11,
+   "fit": "contain",
+   "nativeSize": [
+    110,
+    110
+   ],
+   "orient": "any",
+   "elev": 4
+  },
+  "furniture:statue": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_statue_0"
+   ],
+   "pad": 21,
+   "fit": "contain",
+   "nativeSize": [
+    110,
+    110
+   ],
+   "orient": "any",
+   "elev": 10
+  },
+  "furniture:safe": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_safe_0",
+    "prop_safe_1",
+    "prop_safe_2"
+   ],
+   "pad": 17,
+   "fit": "stretch",
+   "nativeSize": [
+    40,
+    40
+   ],
+   "orient": "any",
+   "elev": 8,
+   "back": "n"
+  },
+  "furniture:locker": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_locker_0",
+    "prop_locker_1",
+    "prop_locker_2",
+    "prop_locker_3"
+   ],
+   "pad": 19,
+   "fit": "stretch",
+   "nativeSize": [
+    30,
+    22
+   ],
+   "orient": "h",
+   "elev": 9,
+   "back": "n"
+  },
+  "furniture:medcab": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_medcab_0",
+    "prop_medcab_1"
+   ],
+   "pad": 16,
+   "fit": "stretch",
+   "nativeSize": [
+    50,
+    24
+   ],
+   "orient": "h",
+   "elev": 7,
+   "back": "n"
+  },
+  "furniture:gunrack": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_gunrack_0",
+    "prop_gunrack_1"
+   ],
+   "pad": 14,
+   "fit": "stretch",
+   "nativeSize": [
+    60,
+    18
+   ],
+   "orient": "h",
+   "elev": 6,
+   "back": "n"
+  },
+  "furniture:guncase": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_guncase_0",
+    "prop_guncase_1",
+    "prop_guncase_2"
+   ],
+   "pad": 14,
+   "fit": "nine",
+   "nativeSize": [
+    80,
+    30
+   ],
+   "orient": "h",
+   "elev": 6,
+   "slice": [
+    38,
+    38,
+    38,
+    38
+   ]
+  },
+  "furniture:toolbox": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_toolbox_0",
+    "prop_toolbox_1",
+    "prop_toolbox_2"
+   ],
+   "pad": 14,
+   "fit": "stretch",
+   "nativeSize": [
+    48,
+    24
+   ],
+   "orient": "h",
+   "elev": 6,
+   "back": "n"
+  },
+  "furniture:cart": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_cart_0",
+    "prop_cart_1"
+   ],
+   "pad": 12,
+   "fit": "stretch",
+   "nativeSize": [
+    50,
+    22
+   ],
+   "orient": "h",
+   "elev": 5
+  },
+  "furniture:monitor": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_monitor_0"
+   ],
+   "pad": 19,
+   "fit": "contain",
+   "nativeSize": [
+    30,
+    30
+   ],
+   "orient": "any",
+   "elev": 9
+  },
+  "furniture:couch": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_sofa_0",
+    "prop_sofa_1",
+    "prop_sofa_2",
+    "prop_sofa_3",
+    "prop_sofa_4"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    110,
+    42
+   ],
+   "orient": "h",
+   "elev": 4,
+   "back": "n"
+  },
+  "furniture:container": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_ship_0",
+    "prop_ship_1",
+    "prop_ship_2",
+    "prop_ship_3",
+    "prop_ship_4"
+   ],
+   "pad": 21,
+   "fit": "nine",
+   "nativeSize": [
+    200,
+    56
+   ],
+   "orient": "h",
+   "elev": 10,
+   "slice": [
+    66,
+    66,
+    66,
+    66
+   ]
+  },
+  "furniture:cabinet_kitchen": {
+   "atlas": "env_props",
+   "frames": [
+    "prop_cabinet_0",
+    "prop_cabinet_1",
+    "prop_cabinet_2",
+    "prop_cabinet_3"
+   ],
+   "pad": 14,
+   "fit": "stretch",
+   "nativeSize": [
+    64,
+    28
+   ],
+   "orient": "h",
+   "elev": 6,
+   "back": "n"
+  },
+  "decor:blood": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_blood_0",
+    "decal_blood_1",
+    "decal_blood_2",
+    "decal_blood_3",
+    "decal_blood_4"
+   ],
+   "pad": 0,
+   "fit": "contain",
+   "nativeSize": [
+    36,
+    30
+   ],
+   "orient": "any",
+   "decal": true,
+   "rotate": true
+  },
+  "decor:bones": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_bones_0",
+    "decal_bones_1",
+    "decal_bones_2"
+   ],
+   "pad": 0,
+   "fit": "contain",
+   "nativeSize": [
+    36,
+    30
+   ],
+   "orient": "any",
+   "decal": true,
+   "rotate": true
+  },
+  "decor:debris": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_debris_0",
+    "decal_debris_1",
+    "decal_debris_2",
+    "decal_debris_3"
+   ],
+   "pad": 5,
+   "fit": "contain",
+   "nativeSize": [
+    24,
+    20
+   ],
+   "orient": "any",
+   "decal": true,
+   "rotate": true
+  },
+  "decor:leaves": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_leaves_0",
+    "decal_leaves_1",
+    "decal_leaves_2"
+   ],
+   "pad": 0,
+   "fit": "contain",
+   "nativeSize": [
+    80,
+    80
+   ],
+   "orient": "any",
+   "decal": true,
+   "rotate": true
+  },
+  "decor:crack": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_crack_0",
+    "decal_crack_1",
+    "decal_crack_2",
+    "decal_crack_3"
+   ],
+   "pad": 0,
+   "fit": "contain",
+   "nativeSize": [
+    48,
+    40
+   ],
+   "orient": "any",
+   "decal": true,
+   "rotate": true
+  },
+  "decor:oil": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_oil_0",
+    "decal_oil_1",
+    "decal_oil_2"
+   ],
+   "pad": 0,
+   "fit": "contain",
+   "nativeSize": [
+    40,
+    28
+   ],
+   "orient": "any",
+   "decal": true,
+   "rotate": true
+  },
+  "decor:trash": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_trash_0",
+    "decal_trash_1",
+    "decal_trash_2",
+    "decal_trash_3"
+   ],
+   "pad": 5,
+   "fit": "contain",
+   "nativeSize": [
+    40,
+    30
+   ],
+   "orient": "any",
+   "decal": true,
+   "rotate": true
+  },
+  "decor:tire": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_tire_0",
+    "decal_tire_1",
+    "decal_tire_2"
+   ],
+   "pad": 0,
+   "fit": "stretch",
+   "nativeSize": [
+    128,
+    40
+   ],
+   "orient": "h",
+   "decal": true,
+   "rotate": true
+  },
+  "decor:puddle": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_puddle_0",
+    "decal_puddle_1",
+    "decal_puddle_2"
+   ],
+   "pad": 0,
+   "fit": "contain",
+   "nativeSize": [
+    60,
+    40
+   ],
+   "orient": "any",
+   "decal": true,
+   "rotate": true
+  },
+  "decor:crosswalk": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_crosswalk"
+   ],
+   "fit": "tile",
+   "nativeSize": [
+    9,
+    64
+   ],
+   "orient": "v",
+   "pad": 0,
+   "decal": true,
+   "note": "one stripe; repeat every 18 world px across the road, tile along its length"
+  },
+  "decor:manhole": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_manhole"
+   ],
+   "fit": "contain",
+   "nativeSize": [
+    28,
+    28
+   ],
+   "orient": "any",
+   "pad": 0,
+   "decal": true
+  },
+  "decor:firepit": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_firepit_0",
+    "decal_firepit_1"
+   ],
+   "pad": 7,
+   "fit": "contain",
+   "nativeSize": [
+    30,
+    30
+   ],
+   "orient": "any",
+   "decal": true
+  },
+  "decor:helipad": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_helipad_0"
+   ],
+   "pad": 0,
+   "fit": "contain",
+   "nativeSize": [
+    160,
+    160
+   ],
+   "orient": "any",
+   "decal": true
+  },
+  "decor:canopy": {
+   "atlas": "env_props",
+   "frames": [
+    "decal_canopy_0"
+   ],
+   "pad": 14,
+   "fit": "nine",
+   "nativeSize": [
+    128,
+    128
+   ],
+   "orient": "any",
+   "slice": [
+    42,
+    42,
+    42,
+    42
+   ],
+   "note": "overhead roof; draw above actors with some alpha"
+  },
+  "car:sedan": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_sedan_0",
+    "car_sedan_1",
+    "car_sedan_2",
+    "car_sedan_3",
+    "car_sedan_4",
+    "car_sedan_5"
+   ],
+   "pad": 14,
+   "fit": "stretch",
+   "nativeSize": [
+    92,
+    44
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:sedan_wreck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_sedan_wreck_0",
+    "car_sedan_wreck_1"
+   ],
+   "pad": 12,
+   "fit": "stretch",
+   "nativeSize": [
+    92,
+    44
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:hatchback": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_hatchback_0",
+    "car_hatchback_1",
+    "car_hatchback_2",
+    "car_hatchback_3",
+    "car_hatchback_4"
+   ],
+   "pad": 14,
+   "fit": "stretch",
+   "nativeSize": [
+    84,
+    42
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:hatchback_wreck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_hatchback_wreck_0",
+    "car_hatchback_wreck_1"
+   ],
+   "pad": 12,
+   "fit": "stretch",
+   "nativeSize": [
+    84,
+    42
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:pickup": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_pickup_0",
+    "car_pickup_1",
+    "car_pickup_2",
+    "car_pickup_3",
+    "car_pickup_4"
+   ],
+   "pad": 16,
+   "fit": "stretch",
+   "nativeSize": [
+    98,
+    46
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:pickup_wreck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_pickup_wreck_0"
+   ],
+   "pad": 13,
+   "fit": "stretch",
+   "nativeSize": [
+    98,
+    46
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:van": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_van_0",
+    "car_van_1",
+    "car_van_2",
+    "car_van_3",
+    "car_van_4"
+   ],
+   "pad": 19,
+   "fit": "stretch",
+   "nativeSize": [
+    98,
+    46
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:van_wreck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_van_wreck_0"
+   ],
+   "pad": 16,
+   "fit": "stretch",
+   "nativeSize": [
+    98,
+    46
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:police": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_police_0",
+    "car_police_1",
+    "car_police_2",
+    "car_police_3"
+   ],
+   "pad": 14,
+   "fit": "stretch",
+   "nativeSize": [
+    94,
+    44
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:police_wreck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_police_wreck_0"
+   ],
+   "pad": 12,
+   "fit": "stretch",
+   "nativeSize": [
+    94,
+    44
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:ambulance": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_ambulance_0",
+    "car_ambulance_1",
+    "car_ambulance_2",
+    "car_ambulance_3"
+   ],
+   "pad": 21,
+   "fit": "stretch",
+   "nativeSize": [
+    112,
+    50
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:ambulance_wreck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_ambulance_wreck_0"
+   ],
+   "pad": 17,
+   "fit": "stretch",
+   "nativeSize": [
+    112,
+    50
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:box_truck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_box_truck_0",
+    "car_box_truck_1",
+    "car_box_truck_2",
+    "car_box_truck_3"
+   ],
+   "pad": 24,
+   "fit": "stretch",
+   "nativeSize": [
+    130,
+    52
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:box_truck_wreck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_box_truck_wreck_0"
+   ],
+   "pad": 20,
+   "fit": "stretch",
+   "nativeSize": [
+    130,
+    52
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:military_truck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_military_truck_0",
+    "car_military_truck_1",
+    "car_military_truck_2",
+    "car_military_truck_3"
+   ],
+   "pad": 24,
+   "fit": "stretch",
+   "nativeSize": [
+    140,
+    56
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:military_truck_wreck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_military_truck_wreck_0"
+   ],
+   "pad": 20,
+   "fit": "stretch",
+   "nativeSize": [
+    140,
+    56
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:humvee": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_humvee_0",
+    "car_humvee_1",
+    "car_humvee_2",
+    "car_humvee_3"
+   ],
+   "pad": 17,
+   "fit": "stretch",
+   "nativeSize": [
+    100,
+    48
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:humvee_wreck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_humvee_wreck_0"
+   ],
+   "pad": 15,
+   "fit": "stretch",
+   "nativeSize": [
+    100,
+    48
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:wreck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_sedan_wreck_0",
+    "car_sedan_wreck_1",
+    "car_hatchback_wreck_0",
+    "car_hatchback_wreck_1",
+    "car_pickup_wreck_0",
+    "car_van_wreck_0"
+   ],
+   "pad": 12,
+   "fit": "stretch",
+   "nativeSize": [
+    92,
+    44
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:truck": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_box_truck_0",
+    "car_box_truck_1",
+    "car_box_truck_2",
+    "car_box_truck_3"
+   ],
+   "pad": 24,
+   "fit": "stretch",
+   "nativeSize": [
+    130,
+    52
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "car:military": {
+   "atlas": "env_props2",
+   "frames": [
+    "car_military_truck_0",
+    "car_military_truck_1",
+    "car_military_truck_2",
+    "car_military_truck_3"
+   ],
+   "pad": 24,
+   "fit": "stretch",
+   "nativeSize": [
+    140,
+    56
+   ],
+   "orient": "h",
+   "back": "w",
+   "front": "e"
+  },
+  "tree:oak_s": {
+   "atlas": "env_props2",
+   "frames": [
+    "tree_oak_s_0",
+    "tree_oak_s_1",
+    "tree_oak_s_2"
+   ],
+   "pad": 28,
+   "fit": "contain",
+   "nativeSize": [
+    64,
+    64
+   ],
+   "orient": "any",
+   "canopy": 64,
+   "note": "centre on the trunk solid; scale so canopy diameter = 2*cr"
+  },
+  "tree:oak": {
+   "atlas": "env_props2",
+   "frames": [
+    "tree_oak_s_0",
+    "tree_oak_s_1",
+    "tree_oak_s_2",
+    "tree_oak_m_0",
+    "tree_oak_m_1",
+    "tree_oak_m_2",
+    "tree_oak_l_0",
+    "tree_oak_l_1",
+    "tree_oak_l_2"
+   ],
+   "pad": 28,
+   "fit": "contain",
+   "nativeSize": [
+    92,
+    92
+   ],
+   "orient": "any",
+   "sizes": {
+    "s": [
+     "tree_oak_s_0",
+     "tree_oak_s_1",
+     "tree_oak_s_2"
+    ],
+    "m": [
+     "tree_oak_m_0",
+     "tree_oak_m_1",
+     "tree_oak_m_2"
+    ],
+    "l": [
+     "tree_oak_l_0",
+     "tree_oak_l_1",
+     "tree_oak_l_2"
+    ],
+    "diameters": {
+     "s": 64,
+     "m": 92,
+     "l": 124
+    }
+   }
+  },
+  "tree:pine_s": {
+   "atlas": "env_props2",
+   "frames": [
+    "tree_pine_s_0",
+    "tree_pine_s_1",
+    "tree_pine_s_2"
+   ],
+   "pad": 28,
+   "fit": "contain",
+   "nativeSize": [
+    64,
+    64
+   ],
+   "orient": "any",
+   "canopy": 64
+  },
+  "tree:pine": {
+   "atlas": "env_props2",
+   "frames": [
+    "tree_pine_s_0",
+    "tree_pine_s_1",
+    "tree_pine_s_2",
+    "tree_pine_m_0",
+    "tree_pine_m_1",
+    "tree_pine_m_2",
+    "tree_pine_l_0",
+    "tree_pine_l_1",
+    "tree_pine_l_2"
+   ],
+   "pad": 28,
+   "fit": "contain",
+   "nativeSize": [
+    92,
+    92
+   ],
+   "orient": "any",
+   "sizes": {
+    "s": [
+     "tree_pine_s_0",
+     "tree_pine_s_1",
+     "tree_pine_s_2"
+    ],
+    "m": [
+     "tree_pine_m_0",
+     "tree_pine_m_1",
+     "tree_pine_m_2"
+    ],
+    "l": [
+     "tree_pine_l_0",
+     "tree_pine_l_1",
+     "tree_pine_l_2"
+    ],
+    "diameters": {
+     "s": 64,
+     "m": 92,
+     "l": 124
+    }
+   }
+  },
+  "tree:oak_m": {
+   "atlas": "env_props2",
+   "frames": [
+    "tree_oak_m_0",
+    "tree_oak_m_1",
+    "tree_oak_m_2"
+   ],
+   "pad": 33,
+   "fit": "contain",
+   "nativeSize": [
+    92,
+    92
+   ],
+   "orient": "any",
+   "canopy": 92,
+   "note": "centre on the trunk solid; scale so canopy diameter = 2*cr"
+  },
+  "tree:pine_m": {
+   "atlas": "env_props2",
+   "frames": [
+    "tree_pine_m_0",
+    "tree_pine_m_1",
+    "tree_pine_m_2"
+   ],
+   "pad": 33,
+   "fit": "contain",
+   "nativeSize": [
+    92,
+    92
+   ],
+   "orient": "any",
+   "canopy": 92
+  },
+  "tree:oak_l": {
+   "atlas": "env_props2",
+   "frames": [
+    "tree_oak_l_0",
+    "tree_oak_l_1",
+    "tree_oak_l_2"
+   ],
+   "pad": 39,
+   "fit": "contain",
+   "nativeSize": [
+    124,
+    124
+   ],
+   "orient": "any",
+   "canopy": 124,
+   "note": "centre on the trunk solid; scale so canopy diameter = 2*cr"
+  },
+  "tree:pine_l": {
+   "atlas": "env_props2",
+   "frames": [
+    "tree_pine_l_0",
+    "tree_pine_l_1",
+    "tree_pine_l_2"
+   ],
+   "pad": 39,
+   "fit": "contain",
+   "nativeSize": [
+    124,
+    124
+   ],
+   "orient": "any",
+   "canopy": 124
+  },
+  "decor:bush": {
+   "atlas": "env_props2",
+   "frames": [
+    "bush_0",
+    "bush_1",
+    "bush_2",
+    "bush_3"
+   ],
+   "pad": 11,
+   "fit": "contain",
+   "nativeSize": [
+    30,
+    28
+   ],
+   "orient": "any"
+  },
+  "rock:rock": {
+   "atlas": "env_props2",
+   "frames": [
+    "rock_0",
+    "rock_1",
+    "rock_2",
+    "rock_3",
+    "rock_4"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    40,
+    32
+   ],
+   "orient": "any"
+  },
+  "decor:tuft": {
+   "atlas": "env_props2",
+   "frames": [
+    "tuft_0",
+    "tuft_1",
+    "tuft_2",
+    "tuft_3"
+   ],
+   "pad": 5,
+   "fit": "contain",
+   "nativeSize": [
+    22,
+    22
+   ],
+   "orient": "any",
+   "decal": true
+  },
+  "structure:bed": {
+   "atlas": "structures",
+   "frames": [
+    "struct_bed"
+   ],
+   "pad": 9,
+   "fit": "stretch",
+   "nativeSize": [
+    32,
+    64
+   ],
+   "orient": "v",
+   "back": "n"
+  },
+  "structure:stash": {
+   "atlas": "structures",
+   "frames": [
+    "struct_stash"
+   ],
+   "pad": 14,
+   "fit": "stretch",
+   "nativeSize": [
+    32,
+    32
+   ],
+   "orient": "h",
+   "back": "n"
+  },
+  "structure:workbench": {
+   "atlas": "structures",
+   "frames": [
+    "struct_workbench"
+   ],
+   "pad": 12,
+   "fit": "stretch",
+   "nativeSize": [
+    64,
+    32
+   ],
+   "orient": "h",
+   "back": "n"
+  },
+  "structure:wood_wall": {
+   "atlas": "structures",
+   "frames": [
+    "struct_wood_wall"
+   ],
+   "pad": 19,
+   "fit": "stretch",
+   "nativeSize": [
+    64,
+    16
+   ],
+   "orient": "h"
+  },
+  "structure:wood_wall_damaged": {
+   "atlas": "structures",
+   "frames": [
+    "struct_wood_wall_damaged"
+   ],
+   "pad": 19,
+   "fit": "stretch",
+   "nativeSize": [
+    64,
+    16
+   ],
+   "orient": "h"
+  },
+  "structure:metal_wall": {
+   "atlas": "structures",
+   "frames": [
+    "struct_metal_wall"
+   ],
+   "pad": 19,
+   "fit": "stretch",
+   "nativeSize": [
+    64,
+    16
+   ],
+   "orient": "h"
+  },
+  "structure:metal_wall_damaged": {
+   "atlas": "structures",
+   "frames": [
+    "struct_metal_wall_damaged"
+   ],
+   "pad": 19,
+   "fit": "stretch",
+   "nativeSize": [
+    64,
+    16
+   ],
+   "orient": "h"
+  },
+  "structure:wood_door": {
+   "atlas": "structures",
+   "frames": [
+    "struct_wood_door"
+   ],
+   "pad": 17,
+   "fit": "stretch",
+   "nativeSize": [
+    32,
+    16
+   ],
+   "orient": "h"
+  },
+  "structure:wood_door_damaged": {
+   "atlas": "structures",
+   "frames": [
+    "struct_wood_door_damaged"
+   ],
+   "pad": 17,
+   "fit": "stretch",
+   "nativeSize": [
+    32,
+    16
+   ],
+   "orient": "h"
+  },
+  "structure:wood_door_open": {
+   "atlas": "structures",
+   "frames": [
+    "struct_wood_door_open"
+   ],
+   "pad": 17,
+   "fit": "stretch",
+   "nativeSize": [
+    32,
+    16
+   ],
+   "orient": "h"
+  },
+  "structure:barricade": {
+   "atlas": "structures",
+   "frames": [
+    "struct_barricade"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    64,
+    16
+   ],
+   "orient": "h"
+  },
+  "structure:barricade_damaged": {
+   "atlas": "structures",
+   "frames": [
+    "struct_barricade_damaged"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    64,
+    16
+   ],
+   "orient": "h"
+  },
+  "structure:spike_trap": {
+   "atlas": "structures",
+   "frames": [
+    "struct_spike_trap"
+   ],
+   "pad": 7,
+   "fit": "stretch",
+   "nativeSize": [
+    32,
+    32
+   ],
+   "orient": "h"
+  },
+  "structure:campfire": {
+   "atlas": "structures",
+   "frames": [
+    "struct_campfire"
+   ],
+   "pad": 7,
+   "fit": "stretch",
+   "nativeSize": [
+    32,
+    32
+   ],
+   "orient": "h",
+   "note": "base only; overlay fx fire_* at the centre"
+  },
+  "structure:turret": {
+   "atlas": "structures",
+   "frames": [
+    "struct_turret_base"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    32,
+    32
+   ],
+   "orient": "h",
+   "head": "struct_turret_head"
+  },
+  "structure:turret_base": {
+   "atlas": "structures",
+   "frames": [
+    "struct_turret_base"
+   ],
+   "pad": 11,
+   "fit": "stretch",
+   "nativeSize": [
+    32,
+    32
+   ],
+   "orient": "h"
+  },
+  "structure:turret_head": {
+   "atlas": "structures",
+   "frames": [
+    "struct_turret_head"
+   ],
+   "pad": 12,
+   "fit": "contain",
+   "nativeSize": [
+    44,
+    44
+   ],
+   "orient": "any",
+   "pivot": [
+    22,
+    22
+   ],
+   "facing": "right",
+   "note": "rotate by structure.aim around pivot (world px in body rect)"
+  },
+  "drop:loot": {
+   "atlas": "structures",
+   "frames": [
+    "drop_bag"
+   ],
+   "pad": 9,
+   "fit": "stretch",
+   "nativeSize": [
+    26,
+    18
+   ],
+   "orient": "any"
+  },
+  "drop:deathbag": {
+   "atlas": "structures",
+   "frames": [
+    "drop_deathbag"
+   ],
+   "pad": 9,
+   "fit": "stretch",
+   "nativeSize": [
+    24,
+    24
+   ],
+   "orient": "any"
+  },
+  "drop:bag": {
+   "atlas": "structures",
+   "frames": [
+    "drop_bag"
+   ],
+   "pad": 9,
+   "fit": "stretch",
+   "nativeSize": [
+    26,
+    18
+   ],
+   "orient": "any"
+  },
+  "fence:wood": {
+   "atlas": "env_walls",
+   "frames": [
+    "fence_wood_h",
+    "fence_wood_v"
+   ],
+   "fit": "tile",
+   "nativeSize": [
+    64,
+    8
+   ],
+   "orient": "h",
+   "pad": 0,
+   "note": "h strip for horizontal fences, v strip for vertical; tile along length, scale thickness to rect"
+  },
+  "fence:chain": {
+   "atlas": "env_walls",
+   "frames": [
+    "fence_chain_h",
+    "fence_chain_v"
+   ],
+   "fit": "tile",
+   "nativeSize": [
+    64,
+    8
+   ],
+   "orient": "h",
+   "pad": 0,
+   "seeThrough": true
+  },
+  "fence:chainlink": {
+   "atlas": "env_walls",
+   "frames": [
+    "fence_chain_h",
+    "fence_chain_v"
+   ],
+   "fit": "tile",
+   "nativeSize": [
+    64,
+    8
+   ],
+   "orient": "h",
+   "pad": 0,
+   "seeThrough": true
+  }
+ },
+ "zombieClimbArt": "reference-pixel-overhead-v1",
+ "icons": {
+  "pistol": "icons/pistol.png",
+  "revolver": "icons/revolver.png",
+  "smg": "icons/smg.png",
+  "shotgun": "icons/shotgun.png",
+  "assault_rifle": "icons/assault_rifle.png",
+  "hunting_rifle": "icons/hunting_rifle.png",
+  "knife": "icons/knife.png",
+  "bat": "icons/bat.png",
+  "machete": "icons/machete.png",
+  "ammo_9mm": "icons/ammo_9mm.png",
+  "ammo_357": "icons/ammo_357.png",
+  "ammo_12g": "icons/ammo_12g.png",
+  "ammo_556": "icons/ammo_556.png",
+  "ammo_308": "icons/ammo_308.png",
+  "cap": "icons/cap.png",
+  "bike_helmet": "icons/bike_helmet.png",
+  "riot_helmet": "icons/riot_helmet.png",
+  "military_helmet": "icons/military_helmet.png",
+  "hoodie": "icons/hoodie.png",
+  "leather_jacket": "icons/leather_jacket.png",
+  "police_vest": "icons/police_vest.png",
+  "military_vest": "icons/military_vest.png",
+  "small_backpack": "icons/small_backpack.png",
+  "hiking_backpack": "icons/hiking_backpack.png",
+  "military_backpack": "icons/military_backpack.png",
+  "bandage": "icons/bandage.png",
+  "medkit": "icons/medkit.png",
+  "painkillers": "icons/painkillers.png",
+  "canned_food": "icons/canned_food.png",
+  "chips": "icons/chips.png",
+  "mre": "icons/mre.png",
+  "water_bottle": "icons/water_bottle.png",
+  "soda": "icons/soda.png",
+  "energy_drink": "icons/energy_drink.png",
+  "scrap": "icons/scrap.png",
+  "wood": "icons/wood.png",
+  "nails": "icons/nails.png",
+  "cloth": "icons/cloth.png",
+  "gunpowder": "icons/gunpowder.png",
+  "gun_parts": "icons/gun_parts.png",
+  "electronics": "icons/electronics.png",
+  "chemicals": "icons/chemicals.png",
+  "struct_bed": "icons/struct_bed.png",
+  "struct_stash": "icons/struct_stash.png",
+  "struct_workbench": "icons/struct_workbench.png",
+  "struct_wood_wall": "icons/struct_wood_wall.png",
+  "struct_metal_wall": "icons/struct_metal_wall.png",
+  "struct_wood_door": "icons/struct_wood_door.png",
+  "struct_barricade": "icons/struct_barricade.png",
+  "struct_spike_trap": "icons/struct_spike_trap.png",
+  "struct_campfire": "icons/struct_campfire.png",
+  "struct_turret": "icons/struct_turret.png",
+  "cola_mints": "icons/cola_mints.png",
+  "mints": "icons/mints.png"
+ },
+ "wardenArt": "reference-pixel-overhead-v1",
+ "colaArt": "pixel-v1",
+ "bossArt": "reference-pixel-overhead-v1",
+ "effectsStyle": "pixel-v1",
+ "characterInfo": {
+  "zombieArt": "reference-pixel-overhead-v1",
+  "playerArt": "reference-pixel-v1",
+  "artScale": 2,
+  "displayScale": 0.5,
+  "note": "All character/zombie frames are drawn at ART_SCALE (2x) and facing +x, origin at the body center. Display at scale (1/ART_SCALE) * (entityRadius / designRadius); at the design radius that is 0.5. Baked key light is top-left with a drop shadow down-right (sprite space).",
+  "player": {
+   "frame": 128,
+   "designRadius": 14,
+   "figureScale": 1.3,
+   "figureNote": "figure drawn 1.3x the design radius inside the same 128 frame (to match zombie on-screen size); display at 0.5 as before, no extra leg scaling needed",
+   "layerOrder": [
+    "player_legs_*",
+    "weapon_<id>",
+    "player_torso_*",
+    "armor_body_<id>",
+    "backpack_<id>",
+    "armor_head_<id>"
+   ],
+   "legs": {
+    "walk": 8,
+    "idle": 1,
+    "note": "rotate legs to movement direction, torso to aim"
+   },
+   "torsoPoses": {
+    "handgun_idle": 1,
+    "handgun_shoot": 2,
+    "handgun_reload": 6,
+    "long_idle": 1,
+    "long_shoot": 2,
+    "long_reload": 6,
+    "melee_idle": 1,
+    "melee_swing": 6,
+    "unarmed_idle": 1,
+    "unarmed_punch": 4
+   },
+   "poseForWeaponClass": {
+    "handgun": "handgun",
+    "smg": "long",
+    "shotgun": "long",
+    "rifle": "long",
+    "melee": "melee",
+    "unarmed": "unarmed"
+   },
+   "handsPerFrame": {
+    "player_torso_handgun_idle_0": {
+     "hand": [
+      21.4,
+      1
+     ],
+     "offHand": [
+      20.4,
+      -0.9
+     ],
+     "weaponAngle": 0,
+     "torsoYaw": 0
+    },
+    "player_torso_handgun_shoot_0": {
+     "hand": [
+      18.7,
+      0.7
+     ],
+     "offHand": [
+      17.5,
+      -0.9
+     ],
+     "weaponAngle": 0,
+     "torsoYaw": 0.03
+    },
+    "player_torso_handgun_shoot_1": {
+     "hand": [
+      20.6,
+      0.7
+     ],
+     "offHand": [
+      19.3,
+      -0.9
+     ],
+     "weaponAngle": 0,
+     "torsoYaw": 0.01
+    },
+    "player_torso_handgun_reload_0": {
+     "hand": [
+      18.2,
+      1.8
+     ],
+     "offHand": [
+      18.2,
+      0
+     ],
+     "weaponAngle": 0.25,
+     "torsoYaw": 0
+    },
+    "player_torso_handgun_reload_1": {
+     "hand": [
+      17.3,
+      2.9
+     ],
+     "offHand": [
+      10.9,
+      -13.1
+     ],
+     "weaponAngle": 0.55,
+     "torsoYaw": 0
+    },
+    "player_torso_handgun_reload_2": {
+     "hand": [
+      16.7,
+      2.9
+     ],
+     "offHand": [
+      0.9,
+      -16.7
+     ],
+     "weaponAngle": 0.6,
+     "torsoYaw": -0.08
+    },
+    "player_torso_handgun_reload_3": {
+     "hand": [
+      17.3,
+      2.9
+     ],
+     "offHand": [
+      8.2,
+      -11.3
+     ],
+     "weaponAngle": 0.55,
+     "torsoYaw": 0
+    },
+    "player_torso_handgun_reload_4": {
+     "hand": [
+      18.2,
+      2.2
+     ],
+     "offHand": [
+      16.7,
+      1.1
+     ],
+     "weaponAngle": 0.35,
+     "torsoYaw": 0
+    },
+    "player_torso_handgun_reload_5": {
+     "hand": [
+      20.4,
+      0.9
+     ],
+     "offHand": [
+      19.7,
+      -0.7
+     ],
+     "weaponAngle": 0.1,
+     "torsoYaw": 0
+    },
+    "player_torso_long_idle_0": {
+     "hand": [
+      10,
+      5.5
+     ],
+     "offHand": [
+      22.1,
+      1.5
+     ],
+     "weaponAngle": 0,
+     "torsoYaw": 0.16
+    },
+    "player_torso_long_shoot_0": {
+     "hand": [
+      7.6,
+      5.5
+     ],
+     "offHand": [
+      21.5,
+      2.9
+     ],
+     "weaponAngle": 0,
+     "torsoYaw": 0.2
+    },
+    "player_torso_long_shoot_1": {
+     "hand": [
+      9.1,
+      5.5
+     ],
+     "offHand": [
+      21.9,
+      2.1
+     ],
+     "weaponAngle": 0,
+     "torsoYaw": 0.18
+    },
+    "player_torso_long_reload_0": {
+     "hand": [
+      10,
+      5.8
+     ],
+     "offHand": [
+      17.3,
+      6
+     ],
+     "weaponAngle": 0.15,
+     "torsoYaw": 0.16
+    },
+    "player_torso_long_reload_1": {
+     "hand": [
+      10,
+      5.8
+     ],
+     "offHand": [
+      10,
+      -8.2
+     ],
+     "weaponAngle": 0.3,
+     "torsoYaw": 0.16
+    },
+    "player_torso_long_reload_2": {
+     "hand": [
+      10,
+      5.8
+     ],
+     "offHand": [
+      0.9,
+      -15.5
+     ],
+     "weaponAngle": 0.35,
+     "torsoYaw": 0.16
+    },
+    "player_torso_long_reload_3": {
+     "hand": [
+      10,
+      5.8
+     ],
+     "offHand": [
+      8.2,
+      -6.4
+     ],
+     "weaponAngle": 0.3,
+     "torsoYaw": 0.16
+    },
+    "player_torso_long_reload_4": {
+     "hand": [
+      10,
+      5.8
+     ],
+     "offHand": [
+      16.7,
+      6.2
+     ],
+     "weaponAngle": 0.2,
+     "torsoYaw": 0.16
+    },
+    "player_torso_long_reload_5": {
+     "hand": [
+      10,
+      5.8
+     ],
+     "offHand": [
+      22.1,
+      1.5
+     ],
+     "weaponAngle": 0.05,
+     "torsoYaw": 0.16
+    },
+    "player_torso_melee_idle_0": {
+     "hand": [
+      16.4,
+      10
+     ],
+     "offHand": [
+      14.6,
+      -8.2
+     ],
+     "weaponAngle": -0.55,
+     "torsoYaw": 0.05
+    },
+    "player_torso_melee_swing_0": {
+     "hand": [
+      8.1,
+      -12.5
+     ],
+     "offHand": [
+      7.1,
+      -9.2
+     ],
+     "weaponAngle": -1.3,
+     "torsoYaw": -0.516
+    },
+    "player_torso_melee_swing_1": {
+     "hand": [
+      11.4,
+      -10.5
+     ],
+     "offHand": [
+      9.7,
+      -8.1
+     ],
+     "weaponAngle": -1.05,
+     "torsoYaw": -0.336
+    },
+    "player_torso_melee_swing_2": {
+     "hand": [
+      17.9,
+      -4.9
+     ],
+     "offHand": [
+      14.3,
+      -3.2
+     ],
+     "weaponAngle": -0.45,
+     "torsoYaw": -0.144
+    },
+    "player_torso_melee_swing_3": {
+     "hand": [
+      18.8,
+      6.4
+     ],
+     "offHand": [
+      15,
+      5.2
+     ],
+     "weaponAngle": 0.3,
+     "torsoYaw": 0.096
+    },
+    "player_torso_melee_swing_4": {
+     "hand": [
+      13,
+      14.4
+     ],
+     "offHand": [
+      10.5,
+      10.5
+     ],
+     "weaponAngle": 0.95,
+     "torsoYaw": 0.304
+    },
+    "player_torso_melee_swing_5": {
+     "hand": [
+      9.6,
+      16.2
+     ],
+     "offHand": [
+      8.1,
+      11.5
+     ],
+     "weaponAngle": 1.2,
+     "torsoYaw": 0.384
+    },
+    "player_torso_unarmed_idle_0": {
+     "hand": [
+      14.9,
+      8.7
+     ],
+     "offHand": [
+      17.3,
+      -7.3
+     ],
+     "weaponAngle": 0,
+     "torsoYaw": 0
+    },
+    "player_torso_unarmed_punch_0": {
+     "hand": [
+      17.3,
+      7.6
+     ],
+     "offHand": [
+      17.3,
+      -7.3
+     ],
+     "weaponAngle": 0,
+     "torsoYaw": -0.05
+    },
+    "player_torso_unarmed_punch_1": {
+     "hand": [
+      23.7,
+      3.6
+     ],
+     "offHand": [
+      17.3,
+      -7.3
+     ],
+     "weaponAngle": 0,
+     "torsoYaw": -0.16
+    },
+    "player_torso_unarmed_punch_2": {
+     "hand": [
+      25.1,
+      2.2
+     ],
+     "offHand": [
+      17.3,
+      -7.3
+     ],
+     "weaponAngle": 0,
+     "torsoYaw": -0.2
+    },
+    "player_torso_unarmed_punch_3": {
+     "hand": [
+      19.7,
+      6.9
+     ],
+     "offHand": [
+      17.3,
+      -7.3
+     ],
+     "weaponAngle": 0,
+     "torsoYaw": -0.1
+    }
+   },
+   "handsNote": "hand/offHand in WORLD px from the player center (facing +x). Place weapon_<id> at `hand` rotated by weaponAngle (rad) to follow reload/swing frames; torsoYaw is the torso rotation baked into that frame (armor_body/backpack overlays are drawn at yaw 0, rotate them by torsoYaw to match).",
+   "weapons": {
+    "pistol": {
+     "pose": "handgun",
+     "grip": [
+      21.4,
+      1
+     ],
+     "muzzle": [
+      34.4,
+      1
+     ],
+     "idleAngle": 0,
+     "lengthWorld": 16.9
+    },
+    "revolver": {
+     "pose": "handgun",
+     "grip": [
+      21.4,
+      1
+     ],
+     "muzzle": [
+      37.7,
+      1
+     ],
+     "idleAngle": 0,
+     "lengthWorld": 20.2
+    },
+    "smg": {
+     "pose": "long",
+     "grip": [
+      10,
+      5.5
+     ],
+     "muzzle": [
+      32.1,
+      5.5
+     ],
+     "idleAngle": 0,
+     "lengthWorld": 31.2
+    },
+    "shotgun": {
+     "pose": "long",
+     "grip": [
+      10,
+      5.5
+     ],
+     "muzzle": [
+      45.1,
+      5.5
+     ],
+     "idleAngle": 0,
+     "lengthWorld": 52
+    },
+    "assault_rifle": {
+     "pose": "long",
+     "grip": [
+      10,
+      5.5
+     ],
+     "muzzle": [
+      47.7,
+      5.5
+     ],
+     "idleAngle": 0,
+     "lengthWorld": 54.6
+    },
+    "hunting_rifle": {
+     "pose": "long",
+     "grip": [
+      10,
+      5.5
+     ],
+     "muzzle": [
+      52.9,
+      5.5
+     ],
+     "idleAngle": 0,
+     "lengthWorld": 62.4
+    },
+    "knife": {
+     "pose": "melee",
+     "grip": [
+      16.4,
+      10
+     ],
+     "muzzle": [
+      29.7,
+      1.8
+     ],
+     "idleAngle": -0.55,
+     "lengthWorld": 20.8
+    },
+    "bat": {
+     "pose": "melee",
+     "grip": [
+      16.4,
+      10
+     ],
+     "muzzle": [
+      49.6,
+      -10.4
+     ],
+     "idleAngle": -0.55,
+     "lengthWorld": 45.5
+    },
+    "machete": {
+     "pose": "melee",
+     "grip": [
+      16.4,
+      10
+     ],
+     "muzzle": [
+      44.1,
+      -7
+     ],
+     "idleAngle": -0.55,
+     "lengthWorld": 39
+    }
+   },
+   "armorHead": [
+    "cap",
+    "bike_helmet",
+    "riot_helmet",
+    "military_helmet"
+   ],
+   "armorBody": [
+    "hoodie",
+    "leather_jacket",
+    "police_vest",
+    "military_vest"
+   ],
+   "backpacks": {
+    "small": "backpack_small",
+    "hiking": "backpack_hiking",
+    "military": "backpack_military",
+    "aliases": "backpack_<itemId> (backpack_small_backpack, ...)"
+   }
+  },
+  "zombies": {
+   "walker": {
+    "atlas": "zombies",
+    "frame": 128,
+    "designRadius": 15,
+    "variants": 4,
+    "anims": {
+     "walk": 8,
+     "attack": 6,
+     "hit": 2,
+     "death": 8,
+     "corpse": 1
+    },
+    "walkFrameRate": 8
+   },
+   "runner": {
+    "atlas": "zombies",
+    "frame": 128,
+    "designRadius": 13,
+    "variants": 3,
+    "anims": {
+     "walk": 8,
+     "attack": 6,
+     "hit": 2,
+     "death": 8,
+     "corpse": 1
+    },
+    "walkFrameRate": 14
+   },
+   "brute": {
+    "atlas": "zombies2",
+    "frame": 192,
+    "designRadius": 24,
+    "variants": 2,
+    "anims": {
+     "walk": 8,
+     "attack": 6,
+     "hit": 2,
+     "death": 8,
+     "corpse": 1
+    },
+    "walkFrameRate": 7
+   },
+   "crawler": {
+    "atlas": "zombies",
+    "frame": 128,
+    "designRadius": 13,
+    "variants": 2,
+    "anims": {
+     "walk": 8,
+     "attack": 6,
+     "hit": 2,
+     "death": 8,
+     "corpse": 1
+    },
+    "walkFrameRate": 8
+   },
+   "bloater": {
+    "atlas": "zombies2",
+    "frame": 192,
+    "designRadius": 20,
+    "variants": 2,
+    "anims": {
+     "walk": 8,
+     "attack": 6,
+     "hit": 2,
+     "death": 8,
+     "corpse": 1,
+     "pulse": 4
+    },
+    "walkFrameRate": 7
+   }
+  },
+  "zombieNaming": "frame zombie_<type>_<v>_<anim>_<i>; anim key zombie_<type>_<v>_<anim>"
+ },
+ "wallInfo": {
+  "atlas": "env_walls",
+  "tilePx": 128,
+  "thicknessPx": 32,
+  "worldLength": 64,
+  "worldThickness": 16,
+  "note": "h strips tile along x, v strips along y. Scale the strip thickness to the wall thickness (16 exterior, 10 interior). Caps are square posts for corners/ends. Light is top-left: h strips are lit on their top edge, v strips on their left edge.",
+  "materials": {
+   "brick": {
+    "h": "wall_brick_h",
+    "v": "wall_brick_v",
+    "cap": "wall_brick_cap",
+    "seeThrough": false
+   },
+   "concrete": {
+    "h": "wall_concrete_h",
+    "v": "wall_concrete_v",
+    "cap": "wall_concrete_cap",
+    "seeThrough": false
+   },
+   "siding": {
+    "h": "wall_siding_h",
+    "v": "wall_siding_v",
+    "cap": "wall_siding_cap",
+    "seeThrough": false
+   },
+   "drywall": {
+    "h": "wall_drywall_h",
+    "v": "wall_drywall_v",
+    "cap": "wall_drywall_cap",
+    "seeThrough": false
+   },
+   "military": {
+    "h": "wall_military_h",
+    "v": "wall_military_v",
+    "cap": "wall_military_cap",
+    "seeThrough": false
+   },
+   "chainlink": {
+    "h": "wall_chainlink_h",
+    "v": "wall_chainlink_v",
+    "cap": "wall_chainlink_cap",
+    "seeThrough": true
+   }
+  },
+  "window": {
+   "h": "window_h",
+   "v": "window_v",
+   "broken_h": "window_broken_h",
+   "broken_v": "window_broken_v",
+   "fit": "nine",
+   "sliceH": [
+    8,
+    0,
+    8,
+    0
+   ],
+   "sliceV": [
+    0,
+    8,
+    0,
+    8
+   ]
+  },
+  "door": {
+   "h": "door_frame_h",
+   "v": "door_frame_v",
+   "fit": "nine",
+   "sliceH": [
+    8,
+    0,
+    8,
+    0
+   ],
+   "sliceV": [
+    0,
+    8,
+    0,
+    8
+   ],
+   "note": "threshold+jambs drawn on the floor across the door gap"
+  },
+  "fence": {
+   "wood": {
+    "h": "fence_wood_h",
+    "v": "fence_wood_v"
+   },
+   "chain": {
+    "h": "fence_chain_h",
+    "v": "fence_chain_v"
+   },
+   "thicknessPx": 16,
+   "worldThickness": 8,
+   "fit": "tile"
+  }
+ },
+ "propsFallback": {
+  "furniture": "furniture:cabinet",
+  "car": "car:sedan",
+  "tree": "tree:oak",
+  "rock": "rock:rock",
+  "fence": "fence:wood",
+  "decor": "decor:debris",
+  "structure": "structure:stash",
+  "drop": "drop:loot"
+ },
+ "tileAliases": {
+  "park": "grass",
+  "field": "grass",
+  "lawn": "grass",
+  "forest": "forest_floor",
+  "base": "parking",
+  "lot": "parking",
+  "concrete_lot": "sidewalk",
+  "plaza": "sidewalk",
+  "path": "dirt",
+  "path_plaza": "sidewalk",
+  "drive": "parking",
+  "alley": "asphalt_cracked",
+  "rural": "dirt",
+  "street": "asphalt",
+  "avenue": "asphalt",
+  "dirt_road": "dirt",
+  "floor_default": "wood"
+ }
+}

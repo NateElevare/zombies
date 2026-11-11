@@ -1,0 +1,11 @@
+{
+  "id": "car-military_truck-clean",
+  "kind": "car",
+  "type": "military_truck",
+  "cols": 4,
+  "rows": 2,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/angle/source/story-v1/car-military_truck.png"
+  ],
+  "prompt": "Edit this 4-column 2-row pixel-art vehicle sheet. Remove every medical cross and replace with plain olive canvas or body paint. These are regular army cargo trucks. Preserve all eight vehicles, exact layout, scale, orientation and damage states. True transparent alpha background, opaque vehicles, no floor, haze, white background or cast shadows. No symbols or text."
+}

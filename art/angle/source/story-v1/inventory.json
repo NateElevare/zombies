@@ -1,0 +1,508 @@
+{
+  "camera": {
+    "tilt": 45,
+    "yaw": 0,
+    "zoom": 1.35
+  },
+  "characters": [
+    {
+      "id": "survivor",
+      "name": "Survivor",
+      "description": "Olive field jacket · charcoal beanie"
+    },
+    {
+      "id": "scout",
+      "name": "Scout",
+      "description": "Burgundy jacket · dark ponytail"
+    },
+    {
+      "id": "responder",
+      "name": "Responder",
+      "description": "Navy workwear · ochre shoulders"
+    }
+  ],
+  "weapons": {
+    "cola_mints": {
+      "name": "Cola & Mints",
+      "class": "smg"
+    },
+    "pistol": {
+      "name": "Pistol",
+      "class": "handgun"
+    },
+    "revolver": {
+      "name": "Revolver",
+      "class": "handgun"
+    },
+    "smg": {
+      "name": "SMG",
+      "class": "smg"
+    },
+    "shotgun": {
+      "name": "Shotgun",
+      "class": "shotgun"
+    },
+    "assault_rifle": {
+      "name": "Assault Rifle",
+      "class": "rifle"
+    },
+    "hunting_rifle": {
+      "name": "Hunting Rifle",
+      "class": "rifle"
+    },
+    "knife": {
+      "name": "Knife",
+      "class": "melee"
+    },
+    "bat": {
+      "name": "Baseball Bat",
+      "class": "melee"
+    },
+    "machete": {
+      "name": "Machete",
+      "class": "melee"
+    },
+    "unarmed": {
+      "name": "Fists",
+      "class": "unarmed"
+    }
+  },
+  "zombies": {
+    "walker": {
+      "variants": 4,
+      "radius": 14
+    },
+    "runner": {
+      "variants": 3,
+      "radius": 11
+    },
+    "brute": {
+      "variants": 2,
+      "radius": 22
+    },
+    "crawler": {
+      "variants": 2,
+      "radius": 9
+    },
+    "bloater": {
+      "variants": 2,
+      "radius": 19
+    }
+  },
+  "structures": [
+    "bed",
+    "stash",
+    "workbench",
+    "wood_wall",
+    "metal_wall",
+    "wood_door",
+    "barricade",
+    "spike_trap",
+    "campfire",
+    "turret"
+  ],
+  "items": [
+    {
+      "id": "cola_mints",
+      "name": "Cola & Mints",
+      "type": "weapon",
+      "slot": "primary"
+    },
+    {
+      "id": "mints",
+      "name": "Mints",
+      "type": "ammo"
+    },
+    {
+      "id": "pistol",
+      "name": "9mm Pistol",
+      "type": "weapon",
+      "slot": "secondary"
+    },
+    {
+      "id": "revolver",
+      "name": ".357 Revolver",
+      "type": "weapon",
+      "slot": "secondary"
+    },
+    {
+      "id": "smg",
+      "name": "Submachine Gun",
+      "type": "weapon",
+      "slot": "primary"
+    },
+    {
+      "id": "shotgun",
+      "name": "Pump Shotgun",
+      "type": "weapon",
+      "slot": "primary"
+    },
+    {
+      "id": "assault_rifle",
+      "name": "Assault Rifle",
+      "type": "weapon",
+      "slot": "primary"
+    },
+    {
+      "id": "hunting_rifle",
+      "name": "Hunting Rifle",
+      "type": "weapon",
+      "slot": "primary"
+    },
+    {
+      "id": "knife",
+      "name": "Survival Knife",
+      "type": "weapon",
+      "slot": "melee"
+    },
+    {
+      "id": "bat",
+      "name": "Baseball Bat",
+      "type": "weapon",
+      "slot": "melee"
+    },
+    {
+      "id": "machete",
+      "name": "Machete",
+      "type": "weapon",
+      "slot": "melee"
+    },
+    {
+      "id": "ammo_9mm",
+      "name": "9mm Rounds",
+      "type": "ammo"
+    },
+    {
+      "id": "ammo_357",
+      "name": ".357 Rounds",
+      "type": "ammo"
+    },
+    {
+      "id": "ammo_12g",
+      "name": "12 Gauge Shells",
+      "type": "ammo"
+    },
+    {
+      "id": "ammo_556",
+      "name": "5.56mm Rounds",
+      "type": "ammo"
+    },
+    {
+      "id": "ammo_308",
+      "name": ".308 Rounds",
+      "type": "ammo"
+    },
+    {
+      "id": "cap",
+      "name": "Reinforced Cap",
+      "type": "armor",
+      "slot": "head"
+    },
+    {
+      "id": "bike_helmet",
+      "name": "Bike Helmet",
+      "type": "armor",
+      "slot": "head"
+    },
+    {
+      "id": "riot_helmet",
+      "name": "Riot Helmet",
+      "type": "armor",
+      "slot": "head"
+    },
+    {
+      "id": "military_helmet",
+      "name": "Military Helmet",
+      "type": "armor",
+      "slot": "head"
+    },
+    {
+      "id": "hoodie",
+      "name": "Padded Hoodie",
+      "type": "armor",
+      "slot": "body"
+    },
+    {
+      "id": "leather_jacket",
+      "name": "Leather Jacket",
+      "type": "armor",
+      "slot": "body"
+    },
+    {
+      "id": "police_vest",
+      "name": "Police Vest",
+      "type": "armor",
+      "slot": "body"
+    },
+    {
+      "id": "military_vest",
+      "name": "Military Vest",
+      "type": "armor",
+      "slot": "body"
+    },
+    {
+      "id": "small_backpack",
+      "name": "Small Backpack",
+      "type": "backpack"
+    },
+    {
+      "id": "hiking_backpack",
+      "name": "Hiking Backpack",
+      "type": "backpack"
+    },
+    {
+      "id": "military_backpack",
+      "name": "Military Backpack",
+      "type": "backpack"
+    },
+    {
+      "id": "bandage",
+      "name": "Bandage",
+      "type": "consumable"
+    },
+    {
+      "id": "medkit",
+      "name": "Medical Kit",
+      "type": "consumable"
+    },
+    {
+      "id": "painkillers",
+      "name": "Painkillers",
+      "type": "consumable"
+    },
+    {
+      "id": "canned_food",
+      "name": "Canned Food",
+      "type": "consumable"
+    },
+    {
+      "id": "chips",
+      "name": "Chips",
+      "type": "consumable"
+    },
+    {
+      "id": "mre",
+      "name": "Field Ration",
+      "type": "consumable"
+    },
+    {
+      "id": "water_bottle",
+      "name": "Water Bottle",
+      "type": "consumable"
+    },
+    {
+      "id": "soda",
+      "name": "Soda",
+      "type": "consumable"
+    },
+    {
+      "id": "energy_drink",
+      "name": "Energy Drink",
+      "type": "consumable"
+    },
+    {
+      "id": "scrap",
+      "name": "Scrap Metal",
+      "type": "material"
+    },
+    {
+      "id": "wood",
+      "name": "Wood",
+      "type": "material"
+    },
+    {
+      "id": "nails",
+      "name": "Nails",
+      "type": "material"
+    },
+    {
+      "id": "cloth",
+      "name": "Cloth",
+      "type": "material"
+    },
+    {
+      "id": "gunpowder",
+      "name": "Gunpowder",
+      "type": "material"
+    },
+    {
+      "id": "gun_parts",
+      "name": "Gun Parts",
+      "type": "material"
+    },
+    {
+      "id": "electronics",
+      "name": "Electronics",
+      "type": "material"
+    },
+    {
+      "id": "chemicals",
+      "name": "Chemicals",
+      "type": "material"
+    }
+  ],
+  "world": {
+    "tree": [
+      "oak",
+      "pine"
+    ],
+    "rock": [
+      "rock"
+    ],
+    "car": [
+      "ambulance",
+      "ambulance_wreck",
+      "hatchback",
+      "hatchback_wreck",
+      "humvee",
+      "humvee_wreck",
+      "military_truck",
+      "pickup",
+      "pickup_wreck",
+      "police",
+      "police_wreck",
+      "sedan",
+      "sedan_wreck",
+      "van",
+      "van_wreck"
+    ],
+    "wall": [
+      "brick",
+      "concrete",
+      "military",
+      "siding"
+    ],
+    "window": [
+      "window"
+    ],
+    "furniture": [
+      "armchair",
+      "barrel",
+      "bed",
+      "bench",
+      "bookshelf",
+      "booth",
+      "cabinet",
+      "cart",
+      "clothes",
+      "cooler",
+      "cot",
+      "counter",
+      "crate",
+      "desk",
+      "dresser",
+      "dumpster",
+      "filing",
+      "fountain",
+      "fridge",
+      "guncase",
+      "gunrack",
+      "hbed",
+      "locker",
+      "mcrate",
+      "medcab",
+      "monitor",
+      "nightstand",
+      "pallet",
+      "plant",
+      "planter",
+      "pump",
+      "rack",
+      "safe",
+      "sandbag",
+      "sdesk",
+      "shelf",
+      "ship",
+      "sink",
+      "sofa",
+      "statue",
+      "stove",
+      "table",
+      "toilet",
+      "toolbox",
+      "tower",
+      "tub",
+      "tv",
+      "wardrobe",
+      "woodpile"
+    ],
+    "fence": [
+      "chainlink",
+      "wood"
+    ],
+    "building": [
+      "gas_station",
+      "gun_store",
+      "hospital",
+      "house",
+      "military",
+      "office",
+      "police",
+      "school",
+      "store",
+      "warehouse"
+    ],
+    "wallMaterial": [
+      "brick",
+      "concrete",
+      "military",
+      "siding"
+    ],
+    "roofMaterial": [
+      "flat_gravel",
+      "flat_tar",
+      "metal",
+      "shingle_brown",
+      "shingle_grey",
+      "shingle_red"
+    ],
+    "floorMaterial": [
+      "carpet",
+      "concrete",
+      "linoleum",
+      "military",
+      "tile",
+      "wood"
+    ],
+    "container": [
+      "cabinet",
+      "car_trunk",
+      "crate",
+      "desk",
+      "dumpster",
+      "fridge",
+      "locker",
+      "medical_cabinet",
+      "shelf",
+      "toolbox",
+      "wardrobe",
+      "weapon_case"
+    ],
+    "decor": [
+      "alley",
+      "asphalt",
+      "base",
+      "blood",
+      "bones",
+      "bush",
+      "canopy",
+      "concrete",
+      "crack",
+      "crosswalk",
+      "debris",
+      "dirt",
+      "drive",
+      "field",
+      "firepit",
+      "forest",
+      "grass",
+      "gravel",
+      "helipad",
+      "leaves",
+      "oil",
+      "park",
+      "path",
+      "tuft"
+    ]
+  }
+}

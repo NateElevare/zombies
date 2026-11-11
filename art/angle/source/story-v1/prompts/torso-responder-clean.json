@@ -1,0 +1,6 @@
+{
+  "id": "torso-responder-clean",
+  "prompt": "Use case: precise-object-edit. Edit this exact 12-column 5-row modular character upper-body atlas. Keep every torso, face, costume, position, scale, waist baseline, pose and view exactly unchanged. Remove the small black pistol/object from the gripping hands in columns 6 and 7 of every row, leaving anatomically correct EMPTY hands in the exact same grip pose. All hands everywhere must be empty. Clean all stray colored noise between sprites so background is alpha ZERO, with opaque character interiors and clean antialiased silhouette edges only. Preserve transparent background, exact grid, no text, no shadows, no new objects. Do not change any other part of any character.",
+  "hint": "Generated images are saved to C:\\Users\\nphil\\.codex\\generated_images\\01a1bc36-1e70-7ee0-8775-0317a88da2be as C:\\Users\\nphil\\.codex\\generated_images\\01a1bc36-1e70-7ee0-8775-0317a88da2be\\exec-7585e8ea-8d21-43a9-a004-3475b4b851ae.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+  "file": "art/angle/source/story-v1/torso-responder-clean.png"
+}

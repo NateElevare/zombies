@@ -1,0 +1,12 @@
+{
+  "id": "zombie-bloater-0",
+  "kind": "zombie",
+  "type": "bloater",
+  "variant": 0,
+  "cols": 12,
+  "rows": 5,
+  "refs": [
+    "C:/Users/nphil/Documents/Code/zombie/art/preview/angle-zombie-v3-directions.png"
+  ],
+  "prompt": "Production game sprite atlas, gritty polished pixel art with crisp clustered pixels, controlled highlights, dark outlines, weathered materials, matching the attached approved game art. Orthographic camera 45 degrees above the ground, world rotated 30 degrees. TRUE fully transparent background, opaque object interiors, no translucent noise, shadows, ground, text, labels, borders, checkerboard or overlapping cells. All sprites fully inside their cell with generous transparent gutters. Consistent proportions, camera, scale and lighting. Character: massively swollen sickly yellow-green zombie, exposed distended belly with glowing green pustules, ripped brown shirt and suspenders, short thick legs, red eyes, foul green drool. These are complete FULL-BODY sprites, same recognizable individual in every cell. EXACT TWELVE columns by FIVE rows, sixty equally sized SQUARE cells, landscape 3072x1280. The rows are directions relative to screen: row1 RIGHT east side view; row2 DOWN-RIGHT southeast front three-quarter; row3 DOWN south front; row4 UP-RIGHT northeast REAR three-quarter showing back of skull and clothing; row5 UP north BACK. Every living pose in a row faces that row's direction. Columns EXACTLY: 1 idle; 2 walking left contact; 3 walking passing; 4 walking right contact; 5 walking opposite passing; 6 running left contact; 7 running right contact; 8 claw attack windup; 9 claw attack fully extending; 10 hurt recoil; 11 dying collapsing onto knees; 12 final motionless fully prone corpse lying down on the ground. Feet/ground anchor at 86% cell height, centered. Corpse keeps original body scale and lies low in its cell. All animation poses distinct.  No human props or weapons."
+}
