@@ -5,7 +5,7 @@ conventions as `art/source/zombies-pixel` and `art/source/bosses-pixel`: one tra
 creature, on a fixed grid, which the game's art build cuts into frames. The full design is in
 [`notes/hive-below.md`](../../../notes/hive-below.md). This file is everything needed to paint the art.
 
-Nate signed the plan off on 2026-11-11. Art is painted by an image model from this brief; nothing here is painted yet.
+Nate signed the plan off on 2026-11-11. All 44 source images are now painted. See [IMPLEMENTATION.md](IMPLEMENTATION.md) for atlas files, animation names, preview controls, and rebuild instructions.
 
 ## What to deliver
 

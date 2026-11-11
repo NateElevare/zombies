@@ -15,6 +15,7 @@ export class BootScene extends Phaser.Scene {
   preload() {
     for (const key of ['campaign_people','campaign_props']) this.load.atlas(key, assetUrl(`assets/${key}.png`), assetUrl(`assets/${key}.json`));
     this.load.json('storyArt', assetUrl('assets/story-art.json'));
+    this.load.json('hiveArt', assetUrl('assets/hive-art.json'));
     for (const actor of ['responder','zombie']) {
       const key = `angle_${actor}_v3_256`;
       this.load.atlas(key, assetUrl(`assets/${key}.png`), assetUrl(`assets/${key}.json`));
@@ -30,12 +31,19 @@ export class BootScene extends Phaser.Scene {
     manifest.atlases=[...new Set([...manifest.atlases,'campaign_materials'])];
     manifest.tiles.campaign_water=['campaign_water_0','campaign_water_1','campaign_water_2','campaign_water_3'];
     if(storyArt){manifest.storyArt=storyArt;manifest.atlases=[...new Set([...manifest.atlases,...storyArt.atlases])];}
+    const hiveArt = this.cache.json.get('hiveArt');
+    if (hiveArt) {
+      manifest.hiveArt = hiveArt;
+      manifest.atlases = [...new Set([...manifest.atlases, ...hiveArt.atlases])];
+      manifest.sprites = { ...manifest.sprites, ...hiveArt.sprites };
+      this.cache.json.add('anims', [...(this.cache.json.get('anims') || []), ...hiveArt.anims]);
+    }
     this.registry.set('manifest', manifest);
     for (const a of manifest.atlases) this.load.atlas(a, assetUrl(`assets/${a}.png`), assetUrl(`assets/${a}.json`));
     const bar = document.getElementById('boot-progress');
     this.load.on('progress', (p: number) => { if (bar) bar.style.width = Math.round(p * 100) + '%'; });
     this.load.once('complete', () => {
-      for (const key of ['campaign_people','campaign_props']) {
+      for (const key of ['campaign_people','campaign_props', ...(hiveArt?.atlases || [])]) {
         if (this.textures.exists(key)) this.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
       }
       if (manifest.characterInfo?.zombieArt === 'reference-pixel-overhead-v1') {
